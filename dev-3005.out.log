@@ -1,0 +1,25 @@
+
+> habitquest@1.0.0 dev
+> next dev --hostname 127.0.0.1 --port 3005
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mNext.js[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+  ▲ Next.js 14.2.35
+  - Local:        http://127.0.0.1:3005
+  - Network:      http://127.0.0.1:3005
+  - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 5.4s
+ ○ Compiling /register ...
+ ✓ Compiled /register in 5.4s (590 modules)
+ GET /register 200 in 6266ms
+ ✓ Compiled /api/auth/register in 308ms (348 modules)
+ POST /api/auth/register 201 in 8156ms
+   Reload env: .env
+ ✓ Compiled in 408ms (597 modules)
+ ✓ Compiled in 198ms (597 modules)
+ ✓ Compiled in 321ms (597 modules)
+ ✓ Compiled in 238ms (597 modules)
+   Reload env: .env
+ ✓ Compiled in 169ms (374 modules)
+ ✓ Compiled in 166ms (374 modules)

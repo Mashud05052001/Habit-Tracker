@@ -1,0 +1,26 @@
+(node:23628) [MONGOOSE] Warning: mongoose: Duplicate schema index on {"email":1} for model "User". This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(Use `node --trace-warnings ...` to show where the warning was created)
+SMTP credentials are not configured. Verification email delivery was skipped.
+[GET /api/habits] AuthError: Please log in to continue
+    at requireSessionUser (webpack-internal:///(rsc)/./src/app/api/auth/auth.service.ts:160:15)
+    at async GET (webpack-internal:///(rsc)/./src/app/api/habits/route.ts:22:22)
+    at async C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:57228
+    at async eT.execute (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:46851)
+    at async eT.handle (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:58760)
+    at async doRender (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\base-server.js:1366:42)
+    at async cacheEntry.responseCache.get.routeKind (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\base-server.js:1588:28)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\base-server.js:1496:28)
+    at async DevServer.renderPageComponent (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\base-server.js:1924:24)
+    at async DevServer.renderToResponseImpl (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\base-server.js:1962:32)
+    at async DevServer.pipeImpl (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\next-server.js:272:17)
+    at async DevServer.handleRequestImpl (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\base-server.js:818:17)
+    at async C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (C:\Users\Asus\Downloads\hq\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\lib\router-server.js:359:24)
+    at async requestHandlerImpl (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\lib\start-server.js:143:13) {
+  statusCode: 401
+}

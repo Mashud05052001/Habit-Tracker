@@ -2,6 +2,7 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 
 // ── Habit definition (stored once, referenced by logs) ───────────────────
 export interface IHabit extends Document {
+  userId: mongoose.Types.ObjectId;
   name: string;
   icon: string;
   order: number;
@@ -12,6 +13,7 @@ export interface IHabit extends Document {
 
 const HabitSchema = new Schema<IHabit>(
   {
+    userId: { type: Schema.Types.ObjectId, ref: "User", index: true },
     name:   { type: String, required: true, trim: true, maxlength: 80 },
     icon:   { type: String, default: "✅", maxlength: 4 },
     order:  { type: Number, default: 0 },
@@ -22,6 +24,7 @@ const HabitSchema = new Schema<IHabit>(
 
 // ── Daily log — one doc per (habit × year × month × day) ─────────────────
 export interface ILog extends Document {
+  userId:  mongoose.Types.ObjectId;
   habitId: mongoose.Types.ObjectId;
   year:    number;
   month:   number; // 0-indexed to match JS Date
@@ -33,6 +36,7 @@ export interface ILog extends Document {
 
 const LogSchema = new Schema<ILog>(
   {
+    userId:  { type: Schema.Types.ObjectId, ref: "User", index: true },
     habitId: { type: Schema.Types.ObjectId, ref: "Habit", required: true },
     year:    { type: Number, required: true },
     month:   { type: Number, required: true },
@@ -43,7 +47,7 @@ const LogSchema = new Schema<ILog>(
 );
 
 // Ensure only one log per habit per day
-LogSchema.index({ habitId: 1, year: 1, month: 1, day: 1 }, { unique: true });
+LogSchema.index({ userId: 1, habitId: 1, year: 1, month: 1, day: 1 }, { unique: true });
 
 // ── Model helpers (handles hot-reload in dev) ─────────────────────────────
 export const Habit: Model<IHabit> =

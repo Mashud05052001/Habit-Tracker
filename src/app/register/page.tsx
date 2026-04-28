@@ -1,14 +1,13 @@
 import { redirect } from "next/navigation";
 import { AuthRoutes } from "@/app/api/auth/auth.route";
 import { getSessionUserFromCookieStore } from "@/app/api/auth/auth.service";
-import HabitTracker from "@/components/HabitTracker";
+import RegisterForm from "@/components/RegisterForm";
 
-export default async function Home() {
+export default async function RegisterPage() {
   const currentUser = await getSessionUserFromCookieStore();
-
-  if (!currentUser) {
-    redirect(AuthRoutes.loginPage);
+  if (currentUser) {
+    redirect(AuthRoutes.homePage);
   }
 
-  return <HabitTracker currentUser={currentUser} />;
+  return <RegisterForm />;
 }

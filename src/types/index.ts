@@ -20,3 +20,10 @@ export interface MonthData {
   habits: Habit[];
   logs: Log[];
 }
+
+export interface SessionUser {
+  id: string;
+  name: string;
+  email: string;
+  isVerified: true;
+}

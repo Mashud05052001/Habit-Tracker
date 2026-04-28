@@ -1,288 +1,215 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { randomUUID } from "crypto";
+import { cookies } from "next/headers";
+import type { NextRequest, NextResponse } from "next/server";
+import { connectDB } from "@/lib/mongodb";
+import { User } from "@/models/User";
+import sendEmail from "../components/sendEmail";
 import {
-  createToken,
-  generateHashedPassword,
-  verifyAccessToken,
-  verifyRefrestToken,
-} from './auth.utils';
-import { resetPasswordEmail } from './auth.constant';
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import sendEmail from '../../utils/sendEmail';
-import AppError from '../../errors/AppError';
-import { User } from '../user/user.model';
-import httpStatus from 'http-status';
-import config from '../../config';
+  AUTH_COOKIE_NAME,
+  EMAIL_VERIFICATION_DURATION_MS,
+  SESSION_DURATION_MS,
+  VERIFICATION_EMAIL_SUBJECT,
+  verificationEmailHtml,
+  verificationEmailText,
+} from "./auth.constant";
+import type { TLoginUser, TRegisterResult, TRegisterUser, TSessionUser } from "./auth.interface";
 import {
-  TChangePassword,
-  TJwtPayload,
-  TLoginUser,
-  TResetPassword,
-} from './auth.interface';
+  AuthError,
+  buildVerificationUrl,
+  createSessionToken,
+  createVerificationToken,
+  hashPassword,
+  normalizeEmail,
+  toPublicUser,
+  verifyPassword,
+  verifySessionToken,
+  verifyVerificationToken,
+} from "./auth.utils";
 
-/*
-Login
-1. Check the user existancy , (isDeleted or not) & (blocked or not)
-2. Checking the password matched or not
-3. Create access token & refresh token using different time & secret.
-4. Send the access token from res.json({..}) but
-5. Send the refresh token using cookie like res.cookie(....)
-
-
-Change Password
-1. Token comes from the headers & (oldPassword, newPassword) comes from the body
-2. Go the the auth validator & check all condition. set the userInfo into req.user
-3. Check the user existancy , (isDeleted or not) & (blocked or not) from req.user.userId
-4. Check the oldPassword is matched or not with the DB saved old password
-5. make a hashed password 
-6. update password into db
-
-
-Refresh Token => 
-  Whenever the access token will expired using the refresh token automatically generate a new access token from the client side & all works in behind the scene. But whenever the refresh token expired the user will automatically log out from the website
-
-1. Refresh token will provide as cookies like req.cookies
-2. Validate the refresh token & find the decoded data.
-3. From decoded userId check the user existancy , (isDeleted or not) & (blocked or not)
-4. Check the token is before updating the password or not.
-5. Create a access token & send it to client side
-
-
-Forget Password
-1. Check the user existancy , (isDeleted or not) & (blocked or not)
-2. Create an access token for short time like 5-20 minutes (5m, 10m, 20m)
-3. make a resetUrl & resetEmail(html)
-4. Send the email using nodemailer
-
-
-Reset Password
-1. Check the token availability
-2. Check the user existancy , (isDeleted or not) & (blocked or not)
-3. Check the token userId === provided id cause an user cannot reset another user 
-   password  with the token
-4. make a hashed password 
-5. update password into db
-*/
-
-const loginUser = async (payload: TLoginUser) => {
-  const user = await User.isUserExistByCustomId(payload.id, true);
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
-  }
-
-  const isDeleted = user?.isDeleted;
-  if (isDeleted) {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted !');
-  }
-
-  const isBlocked = user?.status === 'blocked';
-  if (isBlocked) {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked ! !');
-  }
-
-  if (!(await User.isPasswordMatched(payload.password, user?.password))) {
-    throw new AppError(httpStatus.FORBIDDEN, `Password doesn't matched`);
-  }
-
-  const jwtPayload = {
-    userId: user?.id,
-    role: user?.role,
-  };
-  const accessToken = createToken(
-    jwtPayload,
-    config.jwt_access_secret as string,
-    config.jwt_access_expires_in as string,
-  );
-  const refreshToken = createToken(
-    jwtPayload,
-    config.jwt_refresh_secret as string,
-    config.jwt_refresh_expires_in as string,
-  );
-
+function getCookieConfig() {
   return {
-    accessToken,
-    refreshToken,
-    needsPasswordChange: user?.needsPasswordChange,
+    httpOnly: true,
+    sameSite: "lax" as const,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: Math.floor(SESSION_DURATION_MS / 1000),
   };
-};
+}
 
-const changePassword = async (
-  userData: JwtPayload,
-  payload: TChangePassword,
-) => {
-  const user = await User.isUserExistByCustomId(userData.userId, true);
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
+export async function registerUser(
+  payload: TRegisterUser,
+  origin?: string
+): Promise<TRegisterResult> {
+  await connectDB();
+
+  const email = normalizeEmail(payload.email);
+  const existingUser = await User.findOne({ email });
+  const passwordHash = await hashPassword(payload.password);
+  const verificationNonce = randomUUID();
+  const verificationExpiresAt = new Date(Date.now() + EMAIL_VERIFICATION_DURATION_MS);
+
+  if (existingUser?.isVerified) {
+    throw new AuthError(409, "An account with this email already exists");
   }
 
-  const isDeleted = user?.isDeleted;
-  if (isDeleted) {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted !');
-  }
+  const user =
+    existingUser ||
+    new User({
+      name: payload.name,
+      email,
+      passwordHash,
+    });
 
-  const isBlocked = user?.status === 'blocked';
-  if (isBlocked) {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked ! !');
-  }
+  user.name = payload.name;
+  user.email = email;
+  user.passwordHash = passwordHash;
+  user.isVerified = false;
+  user.verifiedAt = null;
+  user.emailVerificationNonce = verificationNonce;
+  user.emailVerificationExpiresAt = verificationExpiresAt;
+  await user.save();
 
-  if (!(await User.isPasswordMatched(payload?.oldPassword, user?.password))) {
-    throw new AppError(httpStatus.FORBIDDEN, `Old Password doesn't matched`);
-  }
-
-  // hashed new password
-  const newHashedPassword = await generateHashedPassword(payload?.newPassword);
-
-  // updating
-  const result = await User.findOneAndUpdate(
-    { id: userData.userId, role: userData.role },
+  const verificationToken = createVerificationToken(
     {
-      password: newHashedPassword,
-      needsPasswordChange: false,
-      passwordChangedAt: new Date(),
+      type: "verify-email",
+      userId: user._id.toString(),
+      email: user.email,
+      nonce: verificationNonce,
     },
-    { new: true },
+    EMAIL_VERIFICATION_DURATION_MS
   );
 
-  return null;
-};
-
-const refreshToken = async (refreshToken: string) => {
-  if (!refreshToken) {
-    throw new AppError(httpStatus.UNAUTHORIZED, 'Refresh token is missing !');
-  }
-
-  const decoded = verifyRefrestToken(refreshToken);
-
-  const { userId, iat } = decoded;
-  // checking if the user is exist
-  const user = await User.isUserExistByCustomId(userId, false);
-
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
-  }
-
-  // checking if the user is already deleted
-  const isDeleted = user?.isDeleted;
-
-  if (isDeleted) {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted !');
-  }
-
-  // checking if the user is blocked
-  const userStatus = user?.status;
-
-  if (userStatus === 'blocked') {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked ! !');
-  }
-
-  if (
-    user.passwordChangedAt &&
-    (await User.isJwtIssuedBeforePasswordChanged(
-      user.passwordChangedAt,
-      iat as number,
-    ))
-  ) {
-    throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized !');
-  }
-
-  const jwtPayload = {
-    userId: user.id,
-    role: user.role,
-  };
-
-  const accessToken = createToken(
-    jwtPayload,
-    config.jwt_access_secret as string,
-    config.jwt_access_expires_in as string,
-  );
+  const verificationUrl = buildVerificationUrl(verificationToken, origin);
+  const emailResult = await sendEmail({
+    to: user.email,
+    subject: VERIFICATION_EMAIL_SUBJECT,
+    text: verificationEmailText(user.name, verificationUrl),
+    html: verificationEmailHtml(user.name, verificationUrl),
+  });
 
   return {
-    accessToken,
+    user: toPublicUser(user),
+    emailDelivered: emailResult.delivered,
+    verificationExpiresAt: verificationExpiresAt.toISOString(),
+    verificationUrl: emailResult.delivered ? undefined : verificationUrl,
+    emailPreviewUrl: emailResult.previewUrl,
   };
-};
+}
 
-// send a mail to the user
-const forgetPassword = async (id: string) => {
-  const user = await User.isUserExistByCustomId(id, false);
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'This user is not found!');
-  }
-
-  // checking if the user is already deleted
-  const isDeleted = user?.isDeleted;
-  if (isDeleted) {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted!');
-  }
-
-  // checking if the user is blocked
-  const userStatus = user?.status;
-
-  if (userStatus === 'blocked') {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked!');
-  }
-
-  // Create access token
-  // eikhane ekebare short time er jonno just password change tai custom kom time dilam
-  const jwtPayload: TJwtPayload = {
-    userId: user?.id,
-    role: user?.role,
-  };
-  const accessToken = createToken(
-    jwtPayload,
-    config.jwt_access_secret as string,
-    '10m',
-  );
-  const resetUrl = `${config.reset_pass_ui_link}?id=${user?.id}&token=${accessToken}`;
-  const resetEmail = resetPasswordEmail(resetUrl);
-  await sendEmail(user.email, resetEmail);
-};
-
-// from the mail take the password & update the password
-const resetPassword = async (payload: TResetPassword, token: string) => {
+export async function verifyUserEmail(token: string) {
   if (!token) {
-    throw new AppError(httpStatus.FORBIDDEN, 'Reset password token is missing');
+    throw new AuthError(400, "Verification token is missing");
   }
 
-  const user = await User.isUserExistByCustomId(payload.id, false);
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'This user is not found!');
-  }
-  const isDeleted = user?.isDeleted;
-  if (isDeleted) {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is deleted!');
-  }
-  const userStatus = user?.status;
-  if (userStatus === 'blocked') {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked!');
+  const decoded = verifyVerificationToken(token);
+  await connectDB();
+
+  const user = await User.findById(decoded.userId);
+  if (!user || normalizeEmail(user.email) !== normalizeEmail(decoded.email)) {
+    throw new AuthError(404, "User not found for verification");
   }
 
-  const decodedData = verifyAccessToken(token);
-
-  if (decodedData.userId !== payload?.id) {
-    throw new AppError(
-      httpStatus.FORBIDDEN,
-      'Token id & userId is not matched',
-    );
+  if (user.isVerified) {
+    return toPublicUser(user);
   }
 
-  const hashedPassword = await generateHashedPassword(payload?.newPassword);
+  if (!user.emailVerificationNonce || user.emailVerificationNonce !== decoded.nonce) {
+    throw new AuthError(400, "Verification link is no longer valid");
+  }
 
-  const result = await User.findOneAndUpdate(
-    { id: decodedData?.userId, role: decodedData?.role },
+  if (!user.emailVerificationExpiresAt || user.emailVerificationExpiresAt.getTime() < Date.now()) {
+    throw new AuthError(400, "Verification link has expired");
+  }
+
+  user.isVerified = true;
+  user.verifiedAt = new Date();
+  user.emailVerificationNonce = null;
+  user.emailVerificationExpiresAt = null;
+  await user.save();
+
+  return toPublicUser(user);
+}
+
+export async function loginUser(payload: TLoginUser) {
+  await connectDB();
+
+  const email = normalizeEmail(payload.email);
+  const user = await User.findOne({ email });
+
+  if (!user || !(await verifyPassword(payload.password, user.passwordHash))) {
+    throw new AuthError(401, "Invalid email or password");
+  }
+
+  if (!user.isVerified) {
+    throw new AuthError(403, "Verify your email before logging in");
+  }
+
+  const sessionToken = createSessionToken(
     {
-      password: hashedPassword,
-      needsPasswordChange: false,
-      passwordChangedAt: new Date(),
+      type: "session",
+      userId: user._id.toString(),
+      email: user.email,
+      name: user.name,
     },
-    { new: true },
+    SESSION_DURATION_MS
   );
 
-  return null;
-};
+  return {
+    sessionToken,
+    user: toPublicUser(user),
+  };
+}
 
-export const AuthService = {
-  loginUser,
-  changePassword,
-  refreshToken,
-  forgetPassword,
-  resetPassword,
-};
+async function resolveSessionUser(token?: string | null): Promise<TSessionUser | null> {
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const decoded = verifySessionToken(token);
+    await connectDB();
+
+    const user = await User.findById(decoded.userId);
+    if (!user || !user.isVerified) {
+      return null;
+    }
+
+    return {
+      id: user._id.toString(),
+      name: user.name,
+      email: user.email,
+      isVerified: true,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export async function getSessionUserFromRequest(request: NextRequest) {
+  return resolveSessionUser(request.cookies.get(AUTH_COOKIE_NAME)?.value ?? null);
+}
+
+export async function getSessionUserFromCookieStore() {
+  return resolveSessionUser(cookies().get(AUTH_COOKIE_NAME)?.value ?? null);
+}
+
+export async function requireSessionUser(request: NextRequest) {
+  const user = await getSessionUserFromRequest(request);
+
+  if (!user) {
+    throw new AuthError(401, "Please log in to continue");
+  }
+
+  return user;
+}
+
+export function applySessionCookie(response: NextResponse, token: string) {
+  response.cookies.set(AUTH_COOKIE_NAME, token, getCookieConfig());
+}
+
+export function clearSessionCookie(response: NextResponse) {
+  response.cookies.set(AUTH_COOKIE_NAME, "", {
+    ...getCookieConfig(),
+    maxAge: 0,
+  });
+}

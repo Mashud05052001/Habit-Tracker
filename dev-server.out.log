@@ -70,3 +70,49 @@
  ✓ Compiled /_error in 1982ms (717 modules)
  POST /api/logs 500 in 2533ms
  GET / 500 in 42ms
+ GET / 200 in 111ms
+ GET /api/habits 200 in 352ms
+ GET /api/logs?year=2026&month=3 200 in 373ms
+ GET /api/habits 200 in 371ms
+ GET /api/logs?year=2026&month=3 200 in 352ms
+ POST /api/logs 200 in 628ms
+ POST /api/logs 200 in 637ms
+ POST /api/logs 200 in 622ms
+ POST /api/logs 200 in 633ms
+ POST /api/logs 200 in 610ms
+ POST /api/logs 201 in 622ms
+ POST /api/logs 201 in 630ms
+ GET / 200 in 60ms
+ GET /api/habits 200 in 392ms
+ GET /api/logs?year=2026&month=3 200 in 391ms
+ GET /api/habits 200 in 415ms
+ GET /api/logs?year=2026&month=3 200 in 419ms
+ ✓ Compiled in 3.1s (679 modules)
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 611ms (717 modules)
+ GET /_next/static/webpack/03b50db7d5d5da30.webpack.hot-update.json 404 in 752ms
+ GET / 200 in 59ms
+ GET /api/habits 200 in 883ms
+ GET /api/logs?year=2026&month=3 200 in 885ms
+ GET /api/logs?year=2026&month=3 200 in 326ms
+ GET /api/habits 200 in 335ms
+ GET /api/habits 200 in 479ms
+ GET /api/logs?year=2026&month=3 200 in 486ms
+ ✓ Compiled in 692ms (727 modules)
+ GET /api/habits 200 in 336ms
+ GET /api/logs?year=2026&month=3 200 in 344ms
+ ✓ Compiled in 3.9s (679 modules)
+ ✓ Compiled in 3s (679 modules)
+ ✓ Compiled in 10.3s (751 modules)
+ ✓ Compiled in 1428ms (751 modules)
+   Reload env: .env.local
+   Reload env: .env
+ ✓ Compiled in 1342ms (751 modules)
+   Reload env: .env
+ ✓ Compiled in 415ms (751 modules)
+ ✓ Compiled in 263ms (751 modules)
+ ✓ Compiled in 376ms (751 modules)
+ ✓ Compiled in 308ms (751 modules)
+   Reload env: .env
+ ✓ Compiled in 357ms (751 modules)
+ ✓ Compiled in 308ms (751 modules)

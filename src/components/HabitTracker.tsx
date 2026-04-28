@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import type { Habit, Log } from "@/types";
+import { useRouter } from "next/navigation";
+import type { Habit, Log, SessionUser } from "@/types";
 import styles from "./HabitTracker.module.css";
 
 const MONTHS = [
@@ -60,8 +61,9 @@ async function apiFetch(url: string, opts?: RequestInit) {
   return data;
 }
 
-export default function HabitTracker() {
+export default function HabitTracker({ currentUser }: { currentUser: SessionUser }) {
   const now = new Date();
+  const router = useRouter();
   const [viewYear,  setViewYear]  = useState(now.getFullYear());
   const [viewMonth, setViewMonth] = useState(now.getMonth());
   const [habits, setHabits]       = useState<Habit[]>([]);
@@ -72,6 +74,7 @@ export default function HabitTracker() {
   const [newIcon, setNewIcon]     = useState("");
   const [seeding, setSeeding]     = useState(false);
   const [pinTaskColumn, setPinTaskColumn] = useState(true);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const { toast, showToast } = useToast();
 
@@ -241,6 +244,19 @@ export default function HabitTracker() {
     return cnt / habits.length;
   }
 
+  async function logout() {
+    if (loggingOut) return;
+
+    setLoggingOut(true);
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } finally {
+      router.push("/login");
+      router.refresh();
+      setLoggingOut(false);
+    }
+  }
+
   // ── Render ────────────────────────────────────────────────────────────
   return (
     <div className={styles.wrapper}>
@@ -250,9 +266,20 @@ export default function HabitTracker() {
           <div className={styles.logoIcon}>🎮</div>
           <h1 className={styles.logoText}>Habit<span>Quest</span></h1>
         </div>
-        <div className={styles.headerStats}>
-          <div className={styles.statPill}><div className={styles.dot} />{habits.length} habits</div>
-          <div className={styles.statPill}><div className={styles.dot} />{totalDoneMonth()} done this month</div>
+        <div className={styles.headerRight}>
+          <div className={styles.headerStats}>
+            <div className={styles.statPill}><div className={styles.dot} />{habits.length} habits</div>
+            <div className={styles.statPill}><div className={styles.dot} />{totalDoneMonth()} done this month</div>
+          </div>
+          <div className={styles.userPanel}>
+            <div className={styles.userText}>
+              <div className={styles.userName}>{currentUser.name}</div>
+              <div className={styles.userEmail}>{currentUser.email}</div>
+            </div>
+            <button type="button" className={styles.logoutBtn} onClick={logout} disabled={loggingOut}>
+              {loggingOut ? "Logging out..." : "Log out"}
+            </button>
+          </div>
         </div>
       </header>
 

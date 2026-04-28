@@ -10,3 +10,59 @@
 
  ✓ Starting...
  ✓ Ready in 3.5s
+ ○ Compiling / ...
+ ✓ Compiled / in 3s (475 modules)
+ GET / 200 in 3271ms
+ ✓ Compiled /api/habits in 453ms (258 modules)
+ GET /api/habits 200 in 4214ms
+ ✓ Compiled /api/logs in 113ms (260 modules)
+ POST /api/logs 400 in 151ms
+ GET /api/habits 200 in 5492ms
+ POST /api/logs 200 in 654ms
+ ✓ Compiled in 467ms (227 modules)
+ ✓ Compiled in 271ms (237 modules)
+ ✓ Compiled / in 545ms (225 modules)
+ GET / 200 in 734ms
+ ✓ Compiled in 2.3s (227 modules)
+ ✓ Compiled in 3.2s (228 modules)
+ ○ Compiling /register ...
+ ✓ Compiled /register in 9s (580 modules)
+ GET /login 200 in 10002ms
+ GET /register 200 in 9832ms
+ ○ Compiling /api/auth/register ...
+ ✓ Compiled /api/auth/register in 2.6s (354 modules)
+ POST /api/auth/register 201 in 3944ms
+ ✓ Compiled /api/auth/login in 415ms (356 modules)
+ POST /api/auth/login 403 in 1343ms
+ ✓ Compiled /api/auth/verify in 415ms (358 modules)
+ GET /api/auth/verify?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoidmVyaWZ5LWVtYWlsIiwidXNlcklkIjoiNjlmMGM3OWNiOTk5YTgxZmM0Mjk4NWRiIiwiZW1haWwiOiJhdXRoMTc3NzM4NzQxNkBleGFtcGxlLmNvbSIsIm5vbmNlIjoiNjI5Njc0M2EtNmQ5YS00OTk1LTlmZTMtNzg5ZjQ0ZGFjZjdmIiwiaWF0IjoxNzc3Mzg3NDIwLCJleHAiOjE3NzczODc3MjB9.qsHlwdWJBYW3aVozXUOdT6iYJG_WIkzTuota8nA_Zpc 307 in 1521ms
+ GET /login?verified=1 200 in 293ms
+ POST /api/auth/login 200 in 656ms
+ ○ Compiling /api/habits ...
+ ✓ Compiled /api/habits in 1460ms (361 modules)
+ GET /api/habits 200 in 2409ms
+ POST /api/auth/register 201 in 850ms
+ GET /api/auth/verify?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoidmVyaWZ5LWVtYWlsIiwidXNlcklkIjoiNjlmMGM3YmFiOTk5YTgxZmM0Mjk4NWRjIiwiZW1haWwiOiJzY29wZTE3NzczODc0NTBAZXhhbXBsZS5jb20iLCJub25jZSI6ImU0Mzg0ZWQ1LTljZDktNDAyYy05MmI3LTM3YzE2MDUxZTg3OSIsImlhdCI6MTc3NzM4NzQ1MSwiZXhwIjoxNzc3Mzg3NzUxfQ.JRMSqKNBIgNVtESVnD5KaGW-tAnT8KCjW-bQ01AoyZ0 307 in 999ms
+ GET /login?verified=1 200 in 288ms
+ POST /api/auth/login 200 in 863ms
+ GET /api/habits 401 in 89ms
+ POST /api/habits 201 in 1672ms
+ GET /api/habits 200 in 910ms
+ POST /api/auth/register 201 in 976ms
+ GET /api/auth/verify?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoidmVyaWZ5LWVtYWlsIiwidXNlcklkIjoiNjlmMGM3ZGNiOTk5YTgxZmM0Mjk4NWRlIiwiZW1haWwiOiJzY29wZWNoZWNrMTc3NzM4NzQ4M0BleGFtcGxlLmNvbSIsIm5vbmNlIjoiYzQ5Yjk5N2UtMWQ3My00YTc5LThjYjktYzQxY2EyMzBkNDVmIiwiaWF0IjoxNzc3Mzg3NDg0LCJleHAiOjE3NzczODc3ODR9.s3sxGwPv3xSoDR2P_W_ToLVCACFAhiaBpiNn1EyoGi0 307 in 751ms
+ GET /login?verified=1 200 in 79ms
+ POST /api/auth/login 200 in 655ms
+ POST /api/habits 201 in 1197ms
+ GET /api/habits 200 in 942ms
+ ✓ Compiled in 66ms
+   Reload env: .env.local
+   Reload env: .env
+ ✓ Compiled in 514ms (256 modules)
+   Reload env: .env
+ ✓ Compiled in 216ms (256 modules)
+ ✓ Compiled in 138ms (256 modules)
+ ✓ Compiled in 268ms (256 modules)
+ ✓ Compiled in 171ms (256 modules)
+   Reload env: .env
+ ✓ Compiled in 143ms (256 modules)
+ ✓ Compiled in 165ms (256 modules)

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireSessionUser } from "@/app/api/auth/auth.service";
 import { connectDB } from "@/lib/mongodb";
-import { Log } from "@/models/Habit";
+import { Habit, Log } from "@/models/Habit";
+
+export const dynamic = "force-dynamic";
 
 function isTodayDate(year: number, month: number, day: number) {
   const today = new Date();
@@ -11,10 +14,17 @@ function isTodayDate(year: number, month: number, day: number) {
   );
 }
 
+function getStatusCode(error: unknown) {
+  return error instanceof Error && "statusCode" in error
+    ? Number((error as { statusCode: number }).statusCode)
+    : 500;
+}
+
 // GET /api/logs?year=2024&month=10
 // Returns all log documents for the given year+month
 export async function GET(req: NextRequest) {
   try {
+    const user = await requireSessionUser(req);
     await connectDB();
     const { searchParams } = new URL(req.url);
     const year  = parseInt(searchParams.get("year")  ?? "");
@@ -24,11 +34,14 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "year and month are required" }, { status: 400 });
     }
 
-    const logs = await Log.find({ year, month });
+    const logs = await Log.find({ userId: user.id, year, month });
     return NextResponse.json({ logs });
   } catch (err) {
     console.error("[GET /api/logs]", err);
-    return NextResponse.json({ error: "Failed to fetch logs" }, { status: 500 });
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed to fetch logs" },
+      { status: getStatusCode(err) }
+    );
   }
 }
 
@@ -36,6 +49,7 @@ export async function GET(req: NextRequest) {
 // Body: { habitId, year, month, day }
 export async function POST(req: NextRequest) {
   try {
+    const user = await requireSessionUser(req);
     const body = await req.json();
     const habitId = body.habitId;
     const year = Number(body.year);
@@ -55,8 +69,13 @@ export async function POST(req: NextRequest) {
 
     await connectDB();
 
+    const habit = await Habit.findOne({ _id: habitId, userId: user.id, active: true });
+    if (!habit) {
+      return NextResponse.json({ error: "Habit not found" }, { status: 404 });
+    }
+
     // Find existing log
-    const existing = await Log.findOne({ habitId, year, month, day });
+    const existing = await Log.findOne({ userId: user.id, habitId, year, month, day });
 
     if (existing) {
       // Toggle done field
@@ -66,10 +85,13 @@ export async function POST(req: NextRequest) {
     }
 
     // Create new log (done=true on first click)
-    const log = await Log.create({ habitId, year, month, day, done: true });
+    const log = await Log.create({ userId: user.id, habitId, year, month, day, done: true });
     return NextResponse.json({ log }, { status: 201 });
   } catch (err) {
     console.error("[POST /api/logs]", err);
-    return NextResponse.json({ error: "Failed to toggle log" }, { status: 500 });
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed to toggle log" },
+      { status: getStatusCode(err) }
+    );
   }
 }
