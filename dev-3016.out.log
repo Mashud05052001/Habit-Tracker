@@ -15,3 +15,14 @@
  ○ Compiling /login ...
  ✓ Compiled /login in 6s (730 modules)
  GET /login 200 in 36ms
+ GET / 200 in 5204ms
+ ○ Compiling /api/logs ...
+ ✓ Compiled /api/logs in 806ms (463 modules)
+ ✓ Compiled (465 modules)
+ GET /api/habits 200 in 3684ms
+ GET /api/logs?year=2026&month=3 200 in 4115ms
+ GET /api/habits 200 in 1368ms
+ GET /api/logs?year=2026&month=3 200 in 955ms
+ ✓ Compiled /api/habits/[id] in 160ms (467 modules)
+ PATCH /api/habits/69f0e79b18241993ee2f1f48 409 in 1834ms
+ GET /api/habits?status=all 200 in 662ms
