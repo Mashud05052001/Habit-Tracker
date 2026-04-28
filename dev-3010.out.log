@@ -79,3 +79,6 @@
  ✓ Compiled in 1065ms (314 modules)
  ✓ Compiled in 498ms (296 modules)
  ✓ Compiled in 404ms (296 modules)
+   Reload env: .env
+ ✓ Compiled in 10.3s (286 modules)
+ ✓ Compiled in 659ms (286 modules)

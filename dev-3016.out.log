@@ -45,3 +45,4 @@
  ✓ Compiled in 408ms (481 modules)
  ✓ Compiled in 393ms (445 modules)
  ○ Compiling /_not-found ...
+   Reload env: .env

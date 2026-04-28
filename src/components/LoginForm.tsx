@@ -101,7 +101,6 @@ export default function LoginForm({ initialNotice }: { initialNotice?: TNotice |
         tone: "error",
         message: error instanceof Error ? error.message : "Login failed",
       });
-    } finally {
       setSubmitting(false);
     }
   }
