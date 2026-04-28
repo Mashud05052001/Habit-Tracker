@@ -28,3 +28,4 @@
  GET /api/habits 200 in 624ms
  POST /api/auth/refresh 401 in 18ms
  ✓ Compiled in 98ms
+   Reload env: .env

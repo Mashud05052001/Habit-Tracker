@@ -26,3 +26,6 @@
  ✓ Compiled /api/habits/[id] in 160ms (467 modules)
  PATCH /api/habits/69f0e79b18241993ee2f1f48 409 in 1834ms
  GET /api/habits?status=all 200 in 662ms
+   Reload env: .env
+ ✓ Compiled in 3.4s (692 modules)
+ ○ Compiling /_not-found ...

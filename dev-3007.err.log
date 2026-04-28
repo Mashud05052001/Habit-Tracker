@@ -33,3 +33,4 @@
   statusCode: 401,
   code: 'ACCESS_TOKEN_EXPIRED'
 }
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
