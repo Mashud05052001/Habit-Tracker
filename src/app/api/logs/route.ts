@@ -34,7 +34,16 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "year and month are required" }, { status: 400 });
     }
 
-    const logs = await Log.find({ userId: user.id, year, month });
+    const activeHabitIds = await Habit.find({
+      userId: user.id,
+      active: true,
+    }).distinct("_id");
+    const logs = await Log.find({
+      userId: user.id,
+      year,
+      month,
+      habitId: { $in: activeHabitIds },
+    });
     return NextResponse.json({ logs });
   } catch (err) {
     console.error("[GET /api/logs]", err);

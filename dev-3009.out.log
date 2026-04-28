@@ -1,0 +1,57 @@
+
+> habitquest@1.0.0 dev
+> next dev --port 3009
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mNext.js[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3009
+  - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 3.7s
+ ○ Compiling / ...
+ ✓ Compiled / in 3.8s (678 modules)
+ GET / 307 in 4396ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 4.1s (719 modules)
+ GET /login 200 in 4260ms
+ GET / 200 in 4519ms
+ ✓ Compiled /api/logs in 450ms (457 modules)
+ ✓ Compiled (459 modules)
+ GET /api/logs?year=2026&month=3 200 in 3009ms
+ GET /api/habits 200 in 3078ms
+ GET /api/logs?year=2026&month=3 200 in 636ms
+ GET /api/habits 200 in 752ms
+ ✓ Compiled /api/habits/[id] in 200ms (461 modules)
+ DELETE /api/habits/69f0d6f557fbbc35b2ca6022 200 in 2123ms
+ POST /api/habits 201 in 985ms
+ DELETE /api/habits/69f0d84dd03a8981891382d3 200 in 989ms
+ GET /api/logs?year=2026&month=4 200 in 645ms
+ GET /api/habits 200 in 704ms
+ GET /api/logs?year=2026&month=3 200 in 638ms
+ GET /api/habits 200 in 669ms
+ ✓ Compiled in 1318ms (687 modules)
+ ✓ Compiled /api/logs in 256ms (433 modules)
+ ✓ Compiled (435 modules)
+ GET /api/logs?year=2026&month=3 200 in 1261ms
+ GET /api/habits 200 in 1266ms
+ GET /api/logs?year=2026&month=3 200 in 781ms
+ GET /api/habits 200 in 787ms
+ ✓ Compiled in 694ms (732 modules)
+ GET / 200 in 436ms
+ ✓ Compiled in 3.2s (296 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 8.7s (916 modules)
+ GET / 500 in 9743ms
+ ✓ Compiled in 2.6s (482 modules)
+ ✓ Compiled in 461ms (482 modules)
+ ✓ Compiled in 1210ms (916 modules)
+ ✓ Compiled in 3s (445 modules)
+ ✓ Compiled in 610ms (926 modules)
+ ✓ Compiled in 328ms (445 modules)
+ ✓ Compiled in 854ms (926 modules)
+ ✓ Compiled in 2.3s (471 modules)
+ ✓ Compiled in 372ms (481 modules)
+ ✓ Compiled in 14.8s (916 modules)
+ ✓ Compiled in 3.8s (916 modules)
+ ✓ Compiled in 1649ms (916 modules)

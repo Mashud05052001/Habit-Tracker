@@ -26,7 +26,14 @@ export async function GET(req: NextRequest) {
     }
 
     const habits = await Habit.find({ active: true, userId: user.id }).sort({ order: 1 });
-    const logs   = await Log.find({ userId: user.id, year, month, done: true });
+    const habitIds = habits.map((habit) => habit._id);
+    const logs   = await Log.find({
+      userId: user.id,
+      year,
+      month,
+      done: true,
+      habitId: { $in: habitIds },
+    });
 
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 

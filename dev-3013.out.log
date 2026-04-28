@@ -1,0 +1,48 @@
+
+> habitquest@1.0.0 dev
+> next dev --port 3013
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mNext.js[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3013
+  - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 3.4s
+ ○ Compiling / ...
+ ✓ Compiled / in 5.2s (689 modules)
+ GET / 307 in 5923ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 3.6s (720 modules)
+ GET /login 200 in 3766ms
+ GET / 200 in 994ms
+ ✓ Compiled in 1866ms (286 modules)
+ ✓ Compiled in 1499ms (286 modules)
+ ✓ Compiled in 1979ms (296 modules)
+ ✓ Compiled / in 423ms (406 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 657ms (918 modules)
+ GET / 500 in 1800ms
+ ✓ Compiled in 6.2s (519 modules)
+ ✓ Compiled in 2.4s (471 modules)
+ ✓ Compiled in 1112ms (471 modules)
+ ✓ Compiled in 1158ms (471 modules)
+ ✓ Compiled in 1332ms (471 modules)
+ ✓ Compiled in 1019ms (471 modules)
+ ✓ Compiled in 659ms (481 modules)
+ ✓ Compiled in 738ms (481 modules)
+ ✓ Compiled in 899ms (481 modules)
+ ✓ Compiled in 1104ms (471 modules)
+ ✓ Compiled in 23.6s (471 modules)
+ ✓ Compiled in 546ms (471 modules)
+ ✓ Compiled in 1253ms (471 modules)
+ ✓ Compiled in 6.2s (471 modules)
+ ✓ Compiled in 1601ms (471 modules)
+ ✓ Compiled in 4.1s (471 modules)
+ ✓ Compiled in 879ms (481 modules)
+ ✓ Compiled in 711ms (471 modules)
+ ✓ Compiled in 746ms (471 modules)
+ ✓ Compiled in 14.7s (471 modules)
+ ✓ Compiled in 1785ms (471 modules)
+ ✓ Compiled in 2.2s (471 modules)
+ ✓ Compiled in 1364ms (481 modules)

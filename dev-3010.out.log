@@ -1,0 +1,68 @@
+
+> habitquest@1.0.0 dev
+> next dev --port 3010
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mNext.js[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3010
+  - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 3.4s
+ ○ Compiling / ...
+ ✓ Compiled / in 3.9s (698 modules)
+ GET / 307 in 4571ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 4.3s (730 modules)
+ GET /login 200 in 4619ms
+ ✓ Compiled in 1191ms (296 modules)
+ ✓ Compiled / in 240ms (406 modules)
+ GET / 307 in 646ms
+ ✓ Compiled /login in 279ms (434 modules)
+ GET /login 500 in 584ms
+ ✓ Compiled in 6.3s (286 modules)
+ ✓ Compiled in 922ms (286 modules)
+ ✓ Compiled in 313ms (286 modules)
+ ✓ Compiled in 254ms (286 modules)
+ ✓ Compiled in 313ms (286 modules)
+ ✓ Compiled in 373ms (286 modules)
+ ✓ Compiled in 675ms (286 modules)
+ ✓ Compiled in 442ms (286 modules)
+ ✓ Compiled in 929ms (286 modules)
+ ✓ Compiled in 1001ms (286 modules)
+ ✓ Compiled in 785ms (286 modules)
+ ✓ Compiled in 160ms (286 modules)
+ ✓ Compiled in 181ms (286 modules)
+ ✓ Compiled in 190ms (286 modules)
+ ✓ Compiled in 611ms (286 modules)
+ ✓ Compiled in 531ms (286 modules)
+ ✓ Compiled in 900ms (296 modules)
+ ✓ Compiled in 2.1s (296 modules)
+ ✓ Compiled in 1106ms (286 modules)
+ ✓ Compiled in 1962ms (286 modules)
+ ✓ Compiled in 1183ms (286 modules)
+ ✓ Compiled in 1819ms (296 modules)
+ ✓ Compiled in 698ms (286 modules)
+ ✓ Compiled in 5.8s (286 modules)
+ ✓ Compiled in 1246ms (286 modules)
+ ✓ Compiled in 1174ms (286 modules)
+ ✓ Compiled in 555ms (286 modules)
+ ✓ Compiled in 1333ms (286 modules)
+ ✓ Compiled in 621ms (286 modules)
+ ✓ Compiled in 727ms (296 modules)
+ ✓ Compiled in 628ms (296 modules)
+ ✓ Compiled in 1301ms (296 modules)
+ ✓ Compiled in 1010ms (286 modules)
+ ✓ Compiled in 24s (286 modules)
+ ✓ Compiled in 470ms (286 modules)
+ ✓ Compiled in 1707ms (286 modules)
+ ✓ Compiled in 2.4s (286 modules)
+ ✓ Compiled in 450ms (286 modules)
+ ✓ Compiled in 3.5s (286 modules)
+ ✓ Compiled in 730ms (296 modules)
+ ✓ Compiled in 766ms (286 modules)
+ ✓ Compiled in 553ms (286 modules)
+ ✓ Compiled in 14.3s (286 modules)
+ ✓ Compiled in 1355ms (286 modules)
+ ✓ Compiled in 1901ms (286 modules)
+ ✓ Compiled in 1170ms (296 modules)

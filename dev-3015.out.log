@@ -1,0 +1,52 @@
+
+> habitquest@1.0.0 dev
+> next dev --port 3015
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mNext.js[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3015
+  - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 3.6s
+ ○ Compiling / ...
+ ✓ Compiled / in 1716ms (666 modules)
+ GET / 307 in 2562ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 1354ms (720 modules)
+ GET /login 200 in 1537ms
+ ✓ Compiled /api/auth/login in 284ms (201 modules)
+ POST /api/auth/login 200 in 5195ms
+ ✓ Compiled /api/habits in 254ms (204 modules)
+ POST /api/habits 201 in 3746ms
+ ✓ Compiled /api/habits/[id] in 96ms (206 modules)
+ DELETE /api/habits/69f0ea770a2cda272d905bcc 200 in 2643ms
+ GET /api/habits 200 in 644ms
+ ✓ Compiled / in 299ms (441 modules)
+ GET / 307 in 574ms
+ ✓ Compiled /login in 364ms (469 modules)
+ GET /login 200 in 549ms
+ ✓ Compiled in 73ms
+ ✓ Compiled in 1205ms (286 modules)
+ ✓ Compiled in 832ms (286 modules)
+ ✓ Compiled in 1048ms (286 modules)
+ ✓ Compiled in 914ms (286 modules)
+ ✓ Compiled in 1141ms (286 modules)
+ ✓ Compiled in 786ms (286 modules)
+ ✓ Compiled in 844ms (296 modules)
+ ✓ Compiled in 713ms (296 modules)
+ ✓ Compiled in 1500ms (296 modules)
+ ✓ Compiled in 1091ms (286 modules)
+ ✓ Compiled in 24.3s (286 modules)
+ ✓ Compiled in 506ms (286 modules)
+ ✓ Compiled in 1315ms (286 modules)
+ ✓ Compiled in 1907ms (286 modules)
+ ✓ Compiled in 1119ms (286 modules)
+ ✓ Compiled in 4.4s (286 modules)
+ ✓ Compiled in 793ms (296 modules)
+ ✓ Compiled in 772ms (286 modules)
+ ✓ Compiled in 769ms (286 modules)
+ ✓ Compiled in 14.3s (286 modules)
+ ✓ Compiled in 1485ms (286 modules)
+ ✓ Compiled in 1969ms (286 modules)
+ ✓ Compiled in 1158ms (296 modules)

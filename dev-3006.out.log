@@ -36,3 +36,12 @@
  POST /api/auth/refresh 200 in 680ms
  GET /api/habits 200 in 672ms
  ✓ Compiled in 101ms
+ ✓ Compiled in 4.3s (266 modules)
+ ✓ Compiled in 119ms (266 modules)
+ ✓ Compiled in 3.5s (267 modules)
+ ✓ Compiled in 601ms (257 modules)
+ ✓ Compiled in 1381ms (267 modules)
+ ✓ Compiled in 496ms (267 modules)
+ ✓ Compiled in 10.3s (257 modules)
+ ✓ Compiled in 266ms (267 modules)
+ ✓ Compiled in 649ms (257 modules)

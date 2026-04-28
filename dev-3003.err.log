@@ -30,3 +30,11 @@ SMTP credentials are not configured. Verification email delivery was skipped.
   statusCode: 401
 }
 SMTP credentials are not configured. Verification email delivery was skipped.
+ ⨯ ./src/app/globals.css
+Module not found: Can't resolve 'C:\Users\Asus\Downloads\hq\src\app\globals.css'
+
+https://nextjs.org/docs/messages/module-not-found
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: invalid stored block lengths
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack failed from C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development.pack.gz: Error: unexpected end of file
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: EPERM: operation not permitted, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz'

@@ -24,3 +24,14 @@ SMTP credentials are not configured. Verification email delivery was skipped.
     at async Server.requestListener (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\lib\start-server.js:143:13) {
   statusCode: 401
 }
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
+ ⨯ ./src/components/AuthForm.module.css
+Module not found: Can't resolve 'C:\Users\Asus\Downloads\hq\src\components\AuthForm.module.css'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./src/components/LoginForm.tsx
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz'

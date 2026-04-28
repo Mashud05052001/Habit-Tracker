@@ -1,0 +1,353 @@
+(node:21704) [MONGOOSE] Warning: mongoose: Duplicate schema index on {"email":1} for model "User". This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:21704) [MONGOOSE] Warning: mongoose: the `new` option for `findOneAndUpdate()` and `findOneAndReplace()` is deprecated. Use `returnDocument: 'after'` instead.
+ ⨯     at stringify (<anonymous>)
+    at stringify (<anonymous>)
+digest: "1460732708"
+ ⨯     at stringify (<anonymous>)
+    at stringify (<anonymous>)
+digest: "1832647652"
+ ⨯ Internal error: Error: Could not find the module "C:\Users\Asus\Downloads\hq\node_modules\next\dist\client\components\app-router.js#" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:268131
+    at eD (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:268326)
+    at eL (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:273210)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:267040
+    at Array.toJSON (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:267504)
+    at stringify (<anonymous>)
+    at eJ (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:275872)
+    at eV (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:276390)
+    at Timeout._onTimeout (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:266177)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+digest: "1225321256"
+ ⨯     at stringify (<anonymous>)
+    at stringify (<anonymous>)
+digest: "2380088968"
+ ⨯     at stringify (<anonymous>)
+    at stringify (<anonymous>)
+digest: "197338312"
+ ⨯ Internal error: Error: Could not find the module "C:\Users\Asus\Downloads\hq\node_modules\next\dist\client\components\error-boundary.js#" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:268131
+    at eD (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:268326)
+    at eL (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:273210)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:267040
+    at Object.toJSON (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:267504)
+    at stringify (<anonymous>)
+    at eJ (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:275872)
+    at eV (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:276390)
+    at Timeout._onTimeout (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:266177)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+digest: "1437767812"
+ ⨯ Internal error: Error: Could not find the module "C:\Users\Asus\Downloads\hq\node_modules\next\dist\client\components\app-router.js#" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:268131
+    at eD (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:268326)
+    at eL (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:273210)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:267040
+    at Array.toJSON (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:267504)
+    at stringify (<anonymous>)
+    at eJ (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:275872)
+    at eV (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:276390)
+    at Timeout._onTimeout (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:266177)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+digest: "1225321256"
+ ⨯ Internal error: Error: Could not find the module "C:\Users\Asus\Downloads\hq\node_modules\next\dist\client\components\app-router.js#" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:268131
+    at eD (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:268326)
+    at eL (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:273210)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:267040
+    at Array.toJSON (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:267504)
+    at stringify (<anonymous>)
+    at eJ (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:275872)
+    at eV (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:276390)
+    at Timeout._onTimeout (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:266177)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+digest: "1225321256"
+ ⨯ Internal error: Error: Could not find the module "C:\Users\Asus\Downloads\hq\node_modules\next\dist\client\components\error-boundary.js#" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:268131
+    at eD (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:268326)
+    at eL (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:273210)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:267040
+    at Object.toJSON (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:267504)
+    at stringify (<anonymous>)
+    at eJ (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:275872)
+    at eV (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:276390)
+    at Timeout._onTimeout (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:266177)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+digest: "1437767812"
+Error: Could not find the module "C:\Users\Asus\Downloads\hq\node_modules\next\dist\client\components\app-router.js#" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:268131
+    at eD (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:268326)
+    at eL (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:273210)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:267040
+    at Array.toJSON (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:267504)
+    at stringify (<anonymous>)
+    at eJ (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:275872)
+    at eV (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:276390)
+    at Timeout._onTimeout (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:266177)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1225321256'
+}
+ ⨯ Error: Could not find the module "C:\Users\Asus\Downloads\hq\node_modules\next\dist\client\components\app-router.js#" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:268131
+    at eD (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:268326)
+    at eL (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:273210)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:267040
+    at Array.toJSON (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:267504)
+    at stringify (<anonymous>)
+    at eJ (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:275872)
+    at eV (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:276390)
+    at Timeout._onTimeout (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:266177)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7) {
+  digest: '1225321256',
+  page: '/'
+}
+ ⨯ TypeError: __webpack_modules__[moduleId] is not a function
+    at Object.__webpack_require__ [as require] (C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js:33:42)
+    at JSON.parse (<anonymous>)
+digest: "1856170808"
+TypeError: __webpack_modules__[moduleId] is not a function
+    at Object.__webpack_require__ [as require] (C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js:33:42)
+    at require (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:40:20064)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:108376
+    at ea (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:108583)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:110813
+    at Object._fromJSON (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:111370)
+    at JSON.parse (<anonymous>)
+    at ec (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:109078)
+    at eo (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:108123)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115291
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115308
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115341
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115358
+    at t (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115581)
+ ⨯ TypeError: __webpack_modules__[moduleId] is not a function
+    at Object.__webpack_require__ [as require] (C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js:33:42)
+    at require (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:40:20064)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:108376
+    at ea (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:108583)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:110813
+    at Object._fromJSON (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:111370)
+    at JSON.parse (<anonymous>)
+    at ec (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:109078)
+    at eo (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:108123)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115291
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115308
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115341
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115358
+    at t (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115581) {
+  page: '/login'
+}
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js
+- C:\Users\Asus\Downloads\hq\.next\server\app\login\page.js
+- C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require.js
+- C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\load-components.js
+- C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\utils.js
+- C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\dev\hot-middleware.js
+- C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\lib\router-server.js
+- C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\lib\start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js:203:28)
+    at C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js:116:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js:115:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js:167:22)
+    at C:\Users\Asus\Downloads\hq\.next\server\pages\_document.js:1:335
+    at Object.<anonymous> (C:\Users\Asus\Downloads\hq\.next\server\pages\_document.js:1:376)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require.js:109:84)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'C:\\Users\\Asus\\Downloads\\hq\\.next\\server\\webpack-runtime.js',
+    'C:\\Users\\Asus\\Downloads\\hq\\.next\\server\\app\\login\\page.js',
+    'C:\\Users\\Asus\\Downloads\\hq\\node_modules\\next\\dist\\server\\require.js',
+    'C:\\Users\\Asus\\Downloads\\hq\\node_modules\\next\\dist\\server\\load-components.js',
+    'C:\\Users\\Asus\\Downloads\\hq\\node_modules\\next\\dist\\build\\utils.js',
+    'C:\\Users\\Asus\\Downloads\\hq\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'C:\\Users\\Asus\\Downloads\\hq\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'C:\\Users\\Asus\\Downloads\\hq\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'C:\\Users\\Asus\\Downloads\\hq\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'C:\\Users\\Asus\\Downloads\\hq\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'C:\Users\Asus\Downloads\hq\.next\server\vendor-chunks\buffer-equal-constant-time.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/buffer-equal-constant-time' in C:\Users\Asus\Downloads\hq\.next\server for build dependencies doesn't lead to expected result 'C:\Users\Asus\Downloads\hq\.next\server\vendor-chunks\buffer-equal-constant-time.js', but to 'Error: Can't resolve './vendor-chunks/buffer-equal-constant-time' in 'C:\Users\Asus\Downloads\hq\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/buffer-equal-constant-time (expected C:\Users\Asus\Downloads\hq\.next\server\vendor-chunks\buffer-equal-constant-time.js)
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js
+<w>  at file C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\.next\server\pages\_app.js
+<w>  at file C:\Users\Asus\Downloads\hq\.next\server\pages\_app.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\load-components.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\utils.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\utils.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\swc\index.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\swc\index.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/safe-buffer' in C:\Users\Asus\Downloads\hq\.next\server for build dependencies doesn't lead to expected result 'C:\Users\Asus\Downloads\hq\.next\server\vendor-chunks\safe-buffer.js', but to 'Error: Can't resolve './vendor-chunks/safe-buffer' in 'C:\Users\Asus\Downloads\hq\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/safe-buffer (expected C:\Users\Asus\Downloads\hq\.next\server\vendor-chunks\safe-buffer.js)
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js
+<w>  at file C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\.next\server\pages\_app.js
+<w>  at file C:\Users\Asus\Downloads\hq\.next\server\pages\_app.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\load-components.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\utils.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\utils.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\swc\index.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\swc\index.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/lodash.isboolean' in C:\Users\Asus\Downloads\hq\.next\server for build dependencies doesn't lead to expected result 'C:\Users\Asus\Downloads\hq\.next\server\vendor-chunks\lodash.isboolean.js', but to 'Error: Can't resolve './vendor-chunks/lodash.isboolean' in 'C:\Users\Asus\Downloads\hq\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/lodash.isboolean (expected C:\Users\Asus\Downloads\hq\.next\server\vendor-chunks\lodash.isboolean.js)
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js
+<w>  at file C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\.next\server\pages\_app.js
+<w>  at file C:\Users\Asus\Downloads\hq\.next\server\pages\_app.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\load-components.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\utils.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\utils.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\swc\index.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\swc\index.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/lodash.isnumber' in C:\Users\Asus\Downloads\hq\.next\server for build dependencies doesn't lead to expected result 'C:\Users\Asus\Downloads\hq\.next\server\vendor-chunks\lodash.isnumber.js', but to 'Error: Can't resolve './vendor-chunks/lodash.isnumber' in 'C:\Users\Asus\Downloads\hq\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/lodash.isnumber (expected C:\Users\Asus\Downloads\hq\.next\server\vendor-chunks\lodash.isnumber.js)
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js
+<w>  at file C:\Users\Asus\Downloads\hq\.next\server\webpack-runtime.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\.next\server\pages\_app.js
+<w>  at file C:\Users\Asus\Downloads\hq\.next\server\pages\_app.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\load-components.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\utils.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\utils.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\swc\index.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\swc\index.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'C:\Users\Asus\Downloads\hq\.next\server\pages'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/pages/_app' in C:\Users\Asus\Downloads\hq\node_modules\next\dist\server for build dependencies doesn't lead to expected result 'C:\Users\Asus\Downloads\hq\.next\server\pages\_app.js', but to 'Error: Can't resolve '../../../../.next/server/pages/_app' in 'C:\Users\Asus\Downloads\hq\node_modules\next\dist\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/pages/_app (expected C:\Users\Asus\Downloads\hq\.next\server\pages\_app.js)
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\load-components.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\utils.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\utils.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/app/api/habits/[id]/route' in C:\Users\Asus\Downloads\hq\node_modules\next\dist\server for build dependencies doesn't lead to expected result 'C:\Users\Asus\Downloads\hq\.next\server\app\api\habits\[id]\route.js', but to 'Error: Can't resolve '../../../../.next/server/app/api/habits/[id]/route' in 'C:\Users\Asus\Downloads\hq\node_modules\next\dist\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/app/api/habits/[id]/route (expected C:\Users\Asus\Downloads\hq\.next\server\app\api\habits\[id]\route.js)
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\require.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\load-components.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\utils.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\utils.js
+<w>  at file dependencies C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs C:\Users\Asus\Downloads\hq\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+ ⨯ ./src/app/globals.css
+Error: ENOENT: no such file or directory, open 'C:\Users\Asus\Downloads\hq\src\app\globals.css'
+
+Import trace for requested module:
+./src/app/globals.css
+./src/app/layout.tsx
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\1.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\1.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
+ ⨯ ./src/components/AuthForm.module.css
+Module not found: Can't resolve 'C:\Users\Asus\Downloads\hq\src\components\AuthForm.module.css'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./src/components/LoginForm.tsx
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\server-development\0.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\server-development\0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\Asus\Downloads\hq\.next\cache\webpack\server-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\Asus\Downloads\hq\.next\cache\webpack\server-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')

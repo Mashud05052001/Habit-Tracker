@@ -1,0 +1,90 @@
+.toggle {
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 6px 8px 6px 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 12px 28px var(--shadow-color);
+  transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+  backdrop-filter: blur(14px);
+}
+
+.toggle:hover {
+  transform: translateY(-1px);
+  border-color: rgba(var(--accent-rgb), 0.38);
+  box-shadow: 0 16px 34px var(--shadow-color);
+}
+
+.toggleLight {
+}
+
+.track {
+  width: 48px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.98), rgba(var(--accent-strong-rgb), 0.98));
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(0);
+  transition: transform .18s ease;
+  box-shadow: 0 6px 14px rgba(var(--accent-rgb), 0.28);
+  flex-shrink: 0;
+}
+
+.toggleLight .thumb {
+  transform: translateX(20px);
+}
+
+.glyph {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.copy {
+  display: grid;
+  gap: 1px;
+  text-align: left;
+}
+
+.eyebrow {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .copy {
+    display: none;
+  }
+
+  .toggle {
+    padding-right: 6px;
+    gap: 0;
+  }
+}
