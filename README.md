@@ -1,5 +1,7 @@
 # Habitee
 
+[![Live Demo](https://img.shields.io/badge/Visit-Live%20Site-blue?style=for-the-badge&logo=vercel)](https://habit-tracker-xi-sable.vercel.app)
+
 Habitee is a full-stack habit tracker for daily check-ins, monthly progress,
 streaks, deleted-habit recovery, and account-based personal workspaces. It is
 built with Next.js App Router, MongoDB, and a custom CSS Modules interface.
@@ -22,14 +24,14 @@ built with Next.js App Router, MongoDB, and a custom CSS Modules interface.
 
 ## Tech Stack
 
-| Area | Technology |
-| --- | --- |
-| Framework | Next.js 14 App Router |
-| UI | React 18, CSS Modules |
-| Database | MongoDB with Mongoose |
-| Auth | JWT access and refresh cookies |
-| Email | Nodemailer SMTP |
-| Language | TypeScript |
+| Area      | Technology                     |
+| --------- | ------------------------------ |
+| Framework | Next.js 14 App Router          |
+| UI        | React 18, CSS Modules          |
+| Database  | MongoDB with Mongoose          |
+| Auth      | JWT access and refresh cookies |
+| Email     | Nodemailer SMTP                |
+| Language  | TypeScript                     |
 
 ## Project Structure
 
@@ -104,22 +106,22 @@ npm start
 The real `.env` and `.env.local` files are ignored by git. Use
 `.env.example` as the safe template.
 
-| Variable | Required | Purpose |
-| --- | --- | --- |
-| `MONGODB_URI` | Yes | MongoDB connection string |
-| `APP_BASE_URL` | Recommended | Base URL used for email verification links |
-| `SMTP_HOST` | Optional | SMTP host for verification emails |
-| `SMTP_PORT` | Optional | SMTP port, usually `587` or `465` |
-| `SMTP_SECURE` | Optional | `true` for SSL/TLS SMTP, usually with port `465` |
-| `SMTP_USER` | Optional | SMTP account username |
-| `SMTP_PASS` | Optional | SMTP account password or app password |
-| `EMAIL_FROM` | Optional | Sender address for verification emails |
-| `JWT_ACCESS_SECRET` | Recommended | Secret for access tokens |
-| `JWT_REFRESH_SECRET` | Recommended | Secret for refresh tokens |
-| `JWT_ACCESS_EXPIRES_IN` | Optional | Access-token duration, default `15m` |
-| `JWT_REFRESH_EXPIRES_IN` | Optional | Refresh-token duration, default `7d` |
-| `EMAIL_VERIFICATION_TOKEN_SECRET` | Optional | Separate secret for email verification tokens |
-| `BCRYPT_SALT_ROUNDS` | Optional | Legacy/local env key; current password hashing uses Node `scrypt` |
+| Variable                          | Required    | Purpose                                                           |
+| --------------------------------- | ----------- | ----------------------------------------------------------------- |
+| `MONGODB_URI`                     | Yes         | MongoDB connection string                                         |
+| `APP_BASE_URL`                    | Recommended | Base URL used for email verification links                        |
+| `SMTP_HOST`                       | Optional    | SMTP host for verification emails                                 |
+| `SMTP_PORT`                       | Optional    | SMTP port, usually `587` or `465`                                 |
+| `SMTP_SECURE`                     | Optional    | `true` for SSL/TLS SMTP, usually with port `465`                  |
+| `SMTP_USER`                       | Optional    | SMTP account username                                             |
+| `SMTP_PASS`                       | Optional    | SMTP account password or app password                             |
+| `EMAIL_FROM`                      | Optional    | Sender address for verification emails                            |
+| `JWT_ACCESS_SECRET`               | Recommended | Secret for access tokens                                          |
+| `JWT_REFRESH_SECRET`              | Recommended | Secret for refresh tokens                                         |
+| `JWT_ACCESS_EXPIRES_IN`           | Optional    | Access-token duration, default `15m`                              |
+| `JWT_REFRESH_EXPIRES_IN`          | Optional    | Refresh-token duration, default `7d`                              |
+| `EMAIL_VERIFICATION_TOKEN_SECRET` | Optional    | Separate secret for email verification tokens                     |
+| `BCRYPT_SALT_ROUNDS`              | Optional    | Legacy/local env key; current password hashing uses Node `scrypt` |
 
 If SMTP is not configured, registration still returns a verification URL in
 the API response for local development.
@@ -140,34 +142,34 @@ habits exist.
 
 ### Auth
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| `POST` | `/api/auth/register` | Create account and send verification email |
-| `GET` | `/api/auth/verify?token=` | Verify email address |
-| `POST` | `/api/auth/login` | Log in and set auth cookies |
-| `POST` | `/api/auth/refresh` | Refresh auth cookies |
-| `GET` | `/api/auth/session` | Get current session user |
-| `POST` | `/api/auth/logout` | Log out and clear cookies |
+| Method | Endpoint                  | Description                                |
+| ------ | ------------------------- | ------------------------------------------ |
+| `POST` | `/api/auth/register`      | Create account and send verification email |
+| `GET`  | `/api/auth/verify?token=` | Verify email address                       |
+| `POST` | `/api/auth/login`         | Log in and set auth cookies                |
+| `POST` | `/api/auth/refresh`       | Refresh auth cookies                       |
+| `GET`  | `/api/auth/session`       | Get current session user                   |
+| `POST` | `/api/auth/logout`        | Log out and clear cookies                  |
 
 ### Habits
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| `GET` | `/api/habits` | List active habits |
-| `GET` | `/api/habits?status=all` | List active and deleted habits |
-| `GET` | `/api/habits?status=deleted` | List deleted habits |
-| `POST` | `/api/habits` | Create habit, with duplicate-name checks |
-| `PATCH` | `/api/habits/:id` | Rename, edit icon/order, or restore habit |
-| `DELETE` | `/api/habits/:id` | Soft-delete habit |
-| `DELETE` | `/api/habits/:id?permanent=true` | Permanently delete habit and logs |
+| Method   | Endpoint                         | Description                               |
+| -------- | -------------------------------- | ----------------------------------------- |
+| `GET`    | `/api/habits`                    | List active habits                        |
+| `GET`    | `/api/habits?status=all`         | List active and deleted habits            |
+| `GET`    | `/api/habits?status=deleted`     | List deleted habits                       |
+| `POST`   | `/api/habits`                    | Create habit, with duplicate-name checks  |
+| `PATCH`  | `/api/habits/:id`                | Rename, edit icon/order, or restore habit |
+| `DELETE` | `/api/habits/:id`                | Soft-delete habit                         |
+| `DELETE` | `/api/habits/:id?permanent=true` | Permanently delete habit and logs         |
 
 ### Logs and Stats
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| `GET` | `/api/logs?year=&month=` | Get active-habit logs for a month |
-| `POST` | `/api/logs` | Toggle today's habit log |
-| `GET` | `/api/stats?year=&month=` | Monthly analytics summary |
+| Method | Endpoint                  | Description                       |
+| ------ | ------------------------- | --------------------------------- |
+| `GET`  | `/api/logs?year=&month=`  | Get active-habit logs for a month |
+| `POST` | `/api/logs`               | Toggle today's habit log          |
+| `GET`  | `/api/stats?year=&month=` | Monthly analytics summary         |
 
 ## Habit Name Rules
 

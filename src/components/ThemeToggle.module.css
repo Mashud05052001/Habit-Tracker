@@ -64,9 +64,9 @@
 }
 
 .eyebrow {
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-sans);
   font-size: 10px;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.2px;
   text-transform: uppercase;
   color: var(--muted);
 }

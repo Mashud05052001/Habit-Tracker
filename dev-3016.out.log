@@ -29,3 +29,19 @@
    Reload env: .env
  ✓ Compiled in 3.4s (692 modules)
  ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 1856ms (695 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 2.6s (921 modules)
+ GET / 200 in 381ms
+ GET /_next/static/css/app/layout.css?v=1777399809669 404 in 56ms
+ GET /_next/static/css/app/page.css?v=1777399809669 404 in 54ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 35ms
+ GET /_next/static/chunks/app/page.js 404 in 58ms
+ GET /_next/static/chunks/app/layout.js 404 in 57ms
+ ✓ Compiled in 2.2s (930 modules)
+ ✓ Compiled in 1693ms (944 modules)
+ ✓ Compiled in 1207ms (944 modules)
+ ✓ Compiled in 831ms (926 modules)
+ ✓ Compiled in 408ms (481 modules)
+ ✓ Compiled in 393ms (445 modules)
+ ○ Compiling /_not-found ...
