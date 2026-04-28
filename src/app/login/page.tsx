@@ -6,6 +6,7 @@ import LoginForm from "@/components/LoginForm";
 type TSearchParams = {
   verified?: string | string[];
   message?: string | string[];
+  expired?: string | string[];
 };
 
 function readSearchParam(value?: string | string[]) {
@@ -24,6 +25,7 @@ export default async function LoginPage({
 
   const verified = readSearchParam(searchParams?.verified);
   const message = readSearchParam(searchParams?.message);
+  const expired = readSearchParam(searchParams?.expired);
 
   let initialNotice: { tone: "success" | "error" | "info"; message: string } | null = null;
   if (verified === "1") {
@@ -35,6 +37,11 @@ export default async function LoginPage({
     initialNotice = {
       tone: "error",
       message: message || "Verification failed. Try registering again.",
+    };
+  } else if (expired === "1") {
+    initialNotice = {
+      tone: "info",
+      message: "Your session ended. Log in again to continue.",
     };
   }
 

@@ -9,6 +9,7 @@ type TRegisterNotice = {
   tone: "success" | "error";
   message: string;
   verificationUrl?: string;
+  emailPreviewUrl?: string;
 };
 
 export default function RegisterForm() {
@@ -48,6 +49,7 @@ export default function RegisterForm() {
           ? "Registration complete. Check your email and verify the account within 5 minutes."
           : "Registration complete. SMTP is not configured locally, so use the temporary verification link below.",
         verificationUrl: data.verificationUrl,
+        emailPreviewUrl: data.emailPreviewUrl,
       });
       setForm({
         name: "",
@@ -85,6 +87,13 @@ export default function RegisterForm() {
               <div className={styles.devLink}>
                 <a className={styles.link} href={notice.verificationUrl}>
                   {notice.verificationUrl}
+                </a>
+              </div>
+            ) : null}
+            {notice.emailPreviewUrl ? (
+              <div className={styles.devLink}>
+                <a className={styles.link} href={notice.emailPreviewUrl} target="_blank" rel="noreferrer">
+                  Open sent email preview
                 </a>
               </div>
             ) : null}

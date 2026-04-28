@@ -2,37 +2,89 @@ import { randomUUID } from "crypto";
 import { cookies } from "next/headers";
 import type { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
-import { User } from "@/models/User";
+import { type IUser, User } from "@/models/User";
 import sendEmail from "../components/sendEmail";
 import {
-  AUTH_COOKIE_NAME,
-  EMAIL_VERIFICATION_DURATION_MS,
-  SESSION_DURATION_MS,
+  ACCESS_TOKEN_COOKIE_NAME,
+  ACCESS_TOKEN_EXPIRES_IN,
+  EMAIL_VERIFICATION_EXPIRES_IN,
+  REFRESH_TOKEN_COOKIE_NAME,
+  REFRESH_TOKEN_EXPIRES_IN,
   VERIFICATION_EMAIL_SUBJECT,
   verificationEmailHtml,
   verificationEmailText,
 } from "./auth.constant";
-import type { TLoginUser, TRegisterResult, TRegisterUser, TSessionUser } from "./auth.interface";
+import type {
+  TAuthTokenResult,
+  TLoginUser,
+  TRegisterResult,
+  TRegisterUser,
+  TSessionUser,
+} from "./auth.interface";
 import {
   AuthError,
   buildVerificationUrl,
-  createSessionToken,
+  createAccessToken,
+  createRefreshToken,
   createVerificationToken,
+  getAccessTokenExpiryMs,
+  getRefreshTokenExpiryMs,
   hashPassword,
   normalizeEmail,
+  parseDurationToMs,
   toPublicUser,
+  verifyAccessToken,
   verifyPassword,
-  verifySessionToken,
+  verifyRefreshToken,
   verifyVerificationToken,
 } from "./auth.utils";
 
-function getCookieConfig() {
+function getCookieConfig(maxAgeMs: number) {
   return {
     httpOnly: true,
     sameSite: "lax" as const,
     secure: process.env.NODE_ENV === "production",
     path: "/",
-    maxAge: Math.floor(SESSION_DURATION_MS / 1000),
+    maxAge: Math.floor(maxAgeMs / 1000),
+  };
+}
+
+async function loadVerifiedUserById(userId: string) {
+  await connectDB();
+
+  const user = await User.findById(userId);
+  if (!user || !user.isVerified) {
+    return null;
+  }
+
+  return user;
+}
+
+async function createAuthTokensForUser(user: IUser): Promise<TAuthTokenResult> {
+  const sessionNonce = randomUUID();
+  user.refreshTokenNonce = sessionNonce;
+  await user.save();
+
+  const accessToken = createAccessToken({
+    type: "access",
+    userId: user._id.toString(),
+    email: user.email,
+    name: user.name,
+    sessionNonce,
+  });
+
+  const refreshToken = createRefreshToken({
+    type: "refresh",
+    userId: user._id.toString(),
+    sessionNonce,
+  });
+
+  return {
+    accessToken,
+    refreshToken,
+    accessTokenExpiresIn: ACCESS_TOKEN_EXPIRES_IN,
+    refreshTokenExpiresIn: REFRESH_TOKEN_EXPIRES_IN,
+    user: toPublicUser(user),
   };
 }
 
@@ -46,7 +98,7 @@ export async function registerUser(
   const existingUser = await User.findOne({ email });
   const passwordHash = await hashPassword(payload.password);
   const verificationNonce = randomUUID();
-  const verificationExpiresAt = new Date(Date.now() + EMAIL_VERIFICATION_DURATION_MS);
+  const verificationExpiresAt = new Date(Date.now() + parseDurationToMs(EMAIL_VERIFICATION_EXPIRES_IN));
 
   if (existingUser?.isVerified) {
     throw new AuthError(409, "An account with this email already exists");
@@ -75,8 +127,7 @@ export async function registerUser(
       userId: user._id.toString(),
       email: user.email,
       nonce: verificationNonce,
-    },
-    EMAIL_VERIFICATION_DURATION_MS
+    }
   );
 
   const verificationUrl = buildVerificationUrl(verificationToken, origin);
@@ -130,7 +181,7 @@ export async function verifyUserEmail(token: string) {
   return toPublicUser(user);
 }
 
-export async function loginUser(payload: TLoginUser) {
+export async function loginUser(payload: TLoginUser): Promise<TAuthTokenResult> {
   await connectDB();
 
   const email = normalizeEmail(payload.email);
@@ -144,72 +195,136 @@ export async function loginUser(payload: TLoginUser) {
     throw new AuthError(403, "Verify your email before logging in");
   }
 
-  const sessionToken = createSessionToken(
-    {
-      type: "session",
-      userId: user._id.toString(),
-      email: user.email,
-      name: user.name,
-    },
-    SESSION_DURATION_MS
-  );
+  return createAuthTokensForUser(user);
+}
+
+async function getSessionUserFromAccessToken(token?: string | null): Promise<TSessionUser | null> {
+  if (!token) return null;
+
+  const decoded = verifyAccessToken(token);
+  const user = await loadVerifiedUserById(decoded.userId);
+  if (!user || user.refreshTokenNonce !== decoded.sessionNonce) {
+    throw new AuthError(401, "Invalid session", "INVALID_SESSION");
+  }
 
   return {
-    sessionToken,
-    user: toPublicUser(user),
+    id: user._id.toString(),
+    name: user.name,
+    email: user.email,
+    isVerified: true,
   };
 }
 
-async function resolveSessionUser(token?: string | null): Promise<TSessionUser | null> {
-  if (!token) {
+async function getSessionUserFromRefreshToken(token?: string | null): Promise<TSessionUser | null> {
+  if (!token) return null;
+
+  const decoded = verifyRefreshToken(token);
+  const user = await loadVerifiedUserById(decoded.userId);
+  if (!user || user.refreshTokenNonce !== decoded.sessionNonce) {
     return null;
   }
 
-  try {
-    const decoded = verifySessionToken(token);
-    await connectDB();
-
-    const user = await User.findById(decoded.userId);
-    if (!user || !user.isVerified) {
-      return null;
-    }
-
-    return {
-      id: user._id.toString(),
-      name: user.name,
-      email: user.email,
-      isVerified: true,
-    };
-  } catch {
-    return null;
-  }
+  return {
+    id: user._id.toString(),
+    name: user.name,
+    email: user.email,
+    isVerified: true,
+  };
 }
 
 export async function getSessionUserFromRequest(request: NextRequest) {
-  return resolveSessionUser(request.cookies.get(AUTH_COOKIE_NAME)?.value ?? null);
+  const accessToken = request.cookies.get(ACCESS_TOKEN_COOKIE_NAME)?.value ?? null;
+  return getSessionUserFromAccessToken(accessToken);
 }
 
 export async function getSessionUserFromCookieStore() {
-  return resolveSessionUser(cookies().get(AUTH_COOKIE_NAME)?.value ?? null);
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value ?? null;
+  const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE_NAME)?.value ?? null;
+
+  try {
+    const accessUser = await getSessionUserFromAccessToken(accessToken);
+    if (accessUser) return accessUser;
+  } catch (error) {
+    if (!(error instanceof AuthError) || error.code !== "ACCESS_TOKEN_EXPIRED") {
+      return null;
+    }
+  }
+
+  return getSessionUserFromRefreshToken(refreshToken);
 }
 
 export async function requireSessionUser(request: NextRequest) {
-  const user = await getSessionUserFromRequest(request);
+  const accessToken = request.cookies.get(ACCESS_TOKEN_COOKIE_NAME)?.value ?? null;
+  if (!accessToken) {
+    throw new AuthError(401, "Please log in to continue", "AUTH_REQUIRED");
+  }
+
+  const user = await getSessionUserFromAccessToken(accessToken);
 
   if (!user) {
-    throw new AuthError(401, "Please log in to continue");
+    throw new AuthError(401, "Please log in to continue", "AUTH_REQUIRED");
   }
 
   return user;
 }
 
-export function applySessionCookie(response: NextResponse, token: string) {
-  response.cookies.set(AUTH_COOKIE_NAME, token, getCookieConfig());
+export async function refreshAuthTokens(request: NextRequest): Promise<TAuthTokenResult> {
+  const refreshToken = request.cookies.get(REFRESH_TOKEN_COOKIE_NAME)?.value ?? null;
+  if (!refreshToken) {
+    throw new AuthError(401, "Refresh token missing", "REFRESH_TOKEN_MISSING");
+  }
+
+  const decoded = verifyRefreshToken(refreshToken);
+  const user = await loadVerifiedUserById(decoded.userId);
+  if (!user || user.refreshTokenNonce !== decoded.sessionNonce) {
+    throw new AuthError(401, "Session expired. Please log in again.", "INVALID_REFRESH_TOKEN");
+  }
+
+  return createAuthTokensForUser(user);
 }
 
-export function clearSessionCookie(response: NextResponse) {
-  response.cookies.set(AUTH_COOKIE_NAME, "", {
-    ...getCookieConfig(),
+export async function logoutUser(request: NextRequest) {
+  const refreshToken = request.cookies.get(REFRESH_TOKEN_COOKIE_NAME)?.value ?? null;
+  if (!refreshToken) return;
+
+  try {
+    const decoded = verifyRefreshToken(refreshToken);
+    const user = await loadVerifiedUserById(decoded.userId);
+    if (!user) return;
+
+    if (user.refreshTokenNonce === decoded.sessionNonce) {
+      user.refreshTokenNonce = null;
+      await user.save();
+    }
+  } catch {
+    return;
+  }
+}
+
+export function applyAuthCookies(
+  response: NextResponse,
+  authResult: Pick<TAuthTokenResult, "accessToken" | "refreshToken">
+) {
+  response.cookies.set(
+    ACCESS_TOKEN_COOKIE_NAME,
+    authResult.accessToken,
+    getCookieConfig(getAccessTokenExpiryMs())
+  );
+  response.cookies.set(
+    REFRESH_TOKEN_COOKIE_NAME,
+    authResult.refreshToken,
+    getCookieConfig(getRefreshTokenExpiryMs())
+  );
+}
+
+export function clearAuthCookies(response: NextResponse) {
+  response.cookies.set(ACCESS_TOKEN_COOKIE_NAME, "", {
+    ...getCookieConfig(getAccessTokenExpiryMs()),
+    maxAge: 0,
+  });
+  response.cookies.set(REFRESH_TOKEN_COOKIE_NAME, "", {
+    ...getCookieConfig(getRefreshTokenExpiryMs()),
     maxAge: 0,
   });
 }

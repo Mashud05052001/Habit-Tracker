@@ -21,11 +21,18 @@ export type TSessionUser = TPublicUser & {
   isVerified: true;
 };
 
-export type TSessionTokenPayload = {
-  type: "session";
+export type TAccessTokenPayload = {
+  type: "access";
   userId: string;
   email: string;
   name: string;
+  sessionNonce: string;
+};
+
+export type TRefreshTokenPayload = {
+  type: "refresh";
+  userId: string;
+  sessionNonce: string;
 };
 
 export type TVerificationTokenPayload = {
@@ -41,4 +48,12 @@ export type TRegisterResult = {
   verificationExpiresAt: string;
   verificationUrl?: string;
   emailPreviewUrl?: string;
+};
+
+export type TAuthTokenResult = {
+  accessToken: string;
+  refreshToken: string;
+  accessTokenExpiresIn: string;
+  refreshTokenExpiresIn: string;
+  user: TPublicUser;
 };

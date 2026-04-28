@@ -41,7 +41,30 @@ function useToast() {
 }
 
 // ── API helpers ──────────────────────────────────────────────────────────
-async function apiFetch(url: string, opts?: RequestInit) {
+let refreshPromise: Promise<boolean> | null = null;
+
+async function refreshAccessToken() {
+  if (!refreshPromise) {
+    refreshPromise = (async () => {
+      const response = await fetch("/api/auth/refresh", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) {
+        return false;
+      }
+
+      return true;
+    })().finally(() => {
+      refreshPromise = null;
+    });
+  }
+
+  return refreshPromise;
+}
+
+async function apiFetch(url: string, opts?: RequestInit, allowRetry = true) {
   const res = await fetch(url, { ...opts, headers: { "Content-Type": "application/json", ...opts?.headers } });
   const text = await res.text();
   let data: any = null;
@@ -55,6 +78,17 @@ async function apiFetch(url: string, opts?: RequestInit) {
   }
 
   if (!res.ok) {
+    if (res.status === 401 && allowRetry) {
+      const refreshed = await refreshAccessToken();
+      if (refreshed) {
+        return apiFetch(url, opts, false);
+      }
+
+      if (typeof window !== "undefined") {
+        window.location.assign("/login?expired=1");
+      }
+    }
+
     throw new Error(data?.error || "Request failed");
   }
 

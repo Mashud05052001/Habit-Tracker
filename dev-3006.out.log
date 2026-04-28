@@ -1,0 +1,38 @@
+
+> habitquest@1.0.0 dev
+> next dev --hostname 127.0.0.1 --port 3006
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mNext.js[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+  ▲ Next.js 14.2.35
+  - Local:        http://127.0.0.1:3006
+  - Network:      http://127.0.0.1:3006
+  - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 2.6s
+ ○ Compiling /register ...
+ ✓ Compiled /register in 4s (666 modules)
+ GET /register 200 in 4814ms
+ ✓ Compiled /api/auth/register in 254ms (424 modules)
+ POST /api/auth/register 201 in 25260ms
+ POST /api/auth/register 201 in 3965ms
+ ✓ Compiled /api/auth/login in 168ms (203 modules)
+ POST /api/auth/login 403 in 672ms
+ ✓ Compiled /api/auth/verify in 76ms (205 modules)
+ GET /api/auth/verify?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoidmVyaWZ5LWVtYWlsIiwidXNlcklkIjoiNjlmMGNkYTEwY2FhMGNjMTBkNGUyYmQ0IiwiZW1haWwiOiJtYXN1ZG1haGkwNTA1K3JlZnJlc2h0ZXN0MTc3NzM4ODk2MEBnbWFpbC5jb20iLCJub25jZSI6ImFiNmQ0YzhkLTMwMWMtNDk0MS04NmIyLTk3NGIyOTBmOGRhZSIsImlhdCI6MTc3NzM4ODk2OCwiZXhwIjoxNzc3Mzg5MjY4fQ.n4rSl-KGN-IqEHeMY5JxaCNnV04bs5f6juaRcVySq2A 307 in 781ms
+ ✓ Compiled /login in 416ms (681 modules)
+ GET /login?verified=1 200 in 642ms
+ POST /api/auth/login 200 in 730ms
+ ✓ Compiled /api/habits in 461ms (432 modules)
+ GET /api/habits 401 in 591ms
+ ✓ Compiled /api/auth/refresh in 193ms (434 modules)
+ POST /api/auth/refresh 200 in 2603ms
+ GET /api/habits 401 in 19ms
+ POST /api/auth/refresh 401 in 13ms
+ POST /api/auth/register 201 in 4483ms
+ GET /api/auth/verify?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoidmVyaWZ5LWVtYWlsIiwidXNlcklkIjoiNjlmMGNkY2QwY2FhMGNjMTBkNGUyYmQ1IiwiZW1haWwiOiJtYXN1ZG1haGkwNTA1K3JlZnJlc2h0ZXN0YjE3NzczODkwMDRAZ21haWwuY29tIiwibm9uY2UiOiIwZjI0OTcxOC02MGFjLTQ3ZjQtYmVmNy02MDk4OGE5MWEyY2UiLCJpYXQiOjE3NzczODkwMTIsImV4cCI6MTc3NzM4OTMxMn0.Ajs6sTdmpQd1lamceeRg7aWMC58rNk2ejflm4d8NNQk 307 in 678ms
+ GET /login?verified=1 200 in 119ms
+ POST /api/auth/login 200 in 744ms
+ POST /api/auth/refresh 200 in 680ms
+ GET /api/habits 200 in 672ms
+ ✓ Compiled in 101ms

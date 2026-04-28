@@ -1,0 +1,35 @@
+(node:8152) [MONGOOSE] Warning: mongoose: Duplicate schema index on {"email":1} for model "User". This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[GET /api/habits] AuthError: Access token expired
+    at verifyJwtToken (webpack-internal:///(rsc)/./src/app/api/auth/auth.utils.ts:100:19)
+    at verifyAccessToken (webpack-internal:///(rsc)/./src/app/api/auth/auth.utils.ts:118:21)
+    at getSessionUserFromAccessToken (webpack-internal:///(rsc)/./src/app/api/auth/auth.service.ts:158:83)
+    at requireSessionUser (webpack-internal:///(rsc)/./src/app/api/auth/auth.service.ts:207:24)
+    at GET (webpack-internal:///(rsc)/./src/app/api/habits/route.ts:22:106)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:57234
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:7062)
+    at ContextAPI.with (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:518)
+    at NoopTracer.startActiveSpan (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18093)
+    at ProxyTracer.startActiveSpan (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18854)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\lib\trace\tracer.js:122:103
+    at NoopContextManager.with (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:7062)
+    at ContextAPI.with (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:518)
+    at NextTracerImpl.trace (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\lib\trace\tracer.js:122:28)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:48896
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:63:14)
+    at Object.wrap (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:40958)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:47472
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:63:14)
+    at Object.wrap (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:38293)
+    at C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:47434
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:63:14)
+    at eT.execute (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:46881)
+    at eT.handle (C:\Users\Asus\Downloads\hq\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:58771)
+    at doRender (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\base-server.js:1366:60)
+    at cacheEntry.responseCache.get.routeKind (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\base-server.js:1588:34)
+    at ResponseCache.get (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\response-cache\index.js:49:26)
+    at DevServer.renderToResponseWithComponentsImpl (C:\Users\Asus\Downloads\hq\node_modules\next\dist\server\base-server.js:1496:53) {
+  statusCode: 401,
+  code: 'ACCESS_TOKEN_EXPIRED'
+}

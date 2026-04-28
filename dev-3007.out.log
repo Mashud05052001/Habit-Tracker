@@ -1,0 +1,30 @@
+
+> habitquest@1.0.0 dev
+> next dev --hostname 127.0.0.1 --port 3007
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mNext.js[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+  ▲ Next.js 14.2.35
+  - Local:        http://127.0.0.1:3007
+  - Network:      http://127.0.0.1:3007
+  - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 3.4s
+ ○ Compiling /api/auth/register ...
+ ✓ Compiled /api/auth/register in 1378ms (201 modules)
+ POST /api/auth/register 201 in 10058ms
+ ✓ Compiled /api/auth/login in 134ms (203 modules)
+ POST /api/auth/login 403 in 576ms
+ POST /api/auth/register 201 in 3934ms
+ POST /api/auth/login 403 in 367ms
+ ✓ Compiled /api/auth/verify in 94ms (205 modules)
+ GET /api/auth/verify?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoidmVyaWZ5LWVtYWlsIiwidXNlcklkIjoiNjlmMGNlZjRkODExNmQ4YWRlZjg3ODZhIiwiZW1haWwiOiJtYXN1ZG1haGkwNTA1K2hxMTc3NzM4OTI5OTkyMkBnbWFpbC5jb20iLCJub25jZSI6IjFhZGFmNWJhLTk5YjYtNGYxNC05MDQ0LTY4MTUyNDYzMThjNCIsImlhdCI6MTc3NzM4OTMwNywiZXhwIjoxNzc3Mzg5NjA3fQ.ixEsGKDSJip3PQK5PNPUnD_JwCMZnlepwgSu5osUQHs 307 in 777ms
+ POST /api/auth/login 200 in 691ms
+ ✓ Compiled /api/habits in 250ms (208 modules)
+ GET /api/habits 200 in 3622ms
+ GET /api/habits 401 in 27ms
+ ✓ Compiled /api/auth/refresh in 102ms (210 modules)
+ POST /api/auth/refresh 200 in 760ms
+ GET /api/habits 200 in 624ms
+ POST /api/auth/refresh 401 in 18ms
+ ✓ Compiled in 98ms

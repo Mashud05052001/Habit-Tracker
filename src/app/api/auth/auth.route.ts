@@ -4,6 +4,7 @@ export const AuthRoutes = {
   registerPage: "/register",
   registerApi: "/api/auth/register",
   loginApi: "/api/auth/login",
+  refreshApi: "/api/auth/refresh",
   logoutApi: "/api/auth/logout",
   verifyApi: "/api/auth/verify",
   sessionApi: "/api/auth/session",

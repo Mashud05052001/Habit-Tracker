@@ -294,3 +294,439 @@ Require stack:
 <w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\Asus\Downloads\hq\.next\cache\webpack\server-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
 <w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
 <w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\Asus\Downloads\hq\.next\cache\webpack\server-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\Asus\Downloads\hq\.next\cache\webpack\server-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
+ ⚠ ./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'EMAIL_VERIFICATION_EXPIRES_IN' is not exported from './auth.constant' (imported as 'EMAIL_VERIFICATION_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'VERIFICATION_EMAIL_SUBJECT' is not exported from './auth.constant' (imported as 'VERIFICATION_EMAIL_SUBJECT').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'verificationEmailText' is not exported from './auth.constant' (imported as 'verificationEmailText').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.utils.ts
+Attempted import error: 'ACCESS_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.utils.ts
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.utils.ts
+Attempted import error: 'REFRESH_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.utils.ts
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.utils.ts
+Attempted import error: 'ACCESS_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.utils.ts
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.utils.ts
+Attempted import error: 'REFRESH_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.utils.ts
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.utils.ts
+Attempted import error: 'EMAIL_VERIFICATION_EXPIRES_IN' is not exported from './auth.constant' (imported as 'EMAIL_VERIFICATION_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.utils.ts
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+ ⚠ ./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'EMAIL_VERIFICATION_EXPIRES_IN' is not exported from './auth.constant' (imported as 'EMAIL_VERIFICATION_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'VERIFICATION_EMAIL_SUBJECT' is not exported from './auth.constant' (imported as 'VERIFICATION_EMAIL_SUBJECT').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'verificationEmailText' is not exported from './auth.constant' (imported as 'verificationEmailText').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.utils.ts
+Attempted import error: 'ACCESS_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.utils.ts
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.utils.ts
+Attempted import error: 'REFRESH_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.utils.ts
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.utils.ts
+Attempted import error: 'ACCESS_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.utils.ts
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.utils.ts
+Attempted import error: 'REFRESH_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.utils.ts
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.utils.ts
+Attempted import error: 'EMAIL_VERIFICATION_EXPIRES_IN' is not exported from './auth.constant' (imported as 'EMAIL_VERIFICATION_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.utils.ts
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+ ⚠ ./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'EMAIL_VERIFICATION_EXPIRES_IN' is not exported from './auth.constant' (imported as 'EMAIL_VERIFICATION_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'VERIFICATION_EMAIL_SUBJECT' is not exported from './auth.constant' (imported as 'VERIFICATION_EMAIL_SUBJECT').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'verificationEmailText' is not exported from './auth.constant' (imported as 'verificationEmailText').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'ACCESS_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.service.ts
+Attempted import error: 'REFRESH_TOKEN_COOKIE_NAME' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_COOKIE_NAME').
+
+Import trace for requested module:
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.utils.ts
+Attempted import error: 'ACCESS_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.utils.ts
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.utils.ts
+Attempted import error: 'REFRESH_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.utils.ts
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.utils.ts
+Attempted import error: 'ACCESS_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'ACCESS_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.utils.ts
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.utils.ts
+Attempted import error: 'REFRESH_TOKEN_EXPIRES_IN' is not exported from './auth.constant' (imported as 'REFRESH_TOKEN_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.utils.ts
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
+
+./src/app/api/auth/auth.utils.ts
+Attempted import error: 'EMAIL_VERIFICATION_EXPIRES_IN' is not exported from './auth.constant' (imported as 'EMAIL_VERIFICATION_EXPIRES_IN').
+
+Import trace for requested module:
+./src/app/api/auth/auth.utils.ts
+./src/app/api/auth/auth.service.ts
+./src/app/page.tsx
