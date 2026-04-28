@@ -1,0 +1,72 @@
+
+> habitquest@1.0.0 dev
+> next dev --hostname 127.0.0.1 --port 3001
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mNext.js[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+  ▲ Next.js 14.2.35
+  - Local:        http://127.0.0.1:3001
+  - Network:      http://127.0.0.1:3001
+  - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 5.6s
+ ○ Compiling /api/habits ...
+ ✓ Compiled /api/habits in 594ms (59 modules)
+ GET /api/habits 200 in 5791ms
+ ○ Compiling / ...
+ ✓ Compiled / in 4.3s (508 modules)
+ GET / 200 in 4529ms
+ ✓ Compiled /api/logs in 311ms (260 modules)
+ GET /api/habits 200 in 956ms
+ GET /api/logs?year=2026&month=3 200 in 980ms
+ GET /api/habits 200 in 386ms
+ GET /api/logs?year=2026&month=3 200 in 716ms
+ ✓ Compiled /api/habits/[id] in 114ms (262 modules)
+ DELETE /api/habits/69f0bc123540865f992b1778 200 in 1529ms
+ DELETE /api/habits/69f0bc123540865f992b1779 200 in 640ms
+ DELETE /api/habits/69f0bc123540865f992b177a 200 in 633ms
+ DELETE /api/habits/69f0bc123540865f992b177b 200 in 629ms
+ DELETE /api/habits/69f0bc123540865f992b177c 200 in 630ms
+ DELETE /api/habits/69f0bc123540865f992b177d 200 in 629ms
+ DELETE /api/habits/69f0bc123540865f992b177e 200 in 629ms
+ DELETE /api/habits/69f0bc123540865f992b177f 200 in 628ms
+ DELETE /api/habits/69f0bc123540865f992b1780 200 in 637ms
+ GET / 200 in 99ms
+ GET /api/logs?year=2026&month=3 200 in 379ms
+ GET /api/habits 200 in 386ms
+ GET /api/habits 200 in 361ms
+ GET /api/logs?year=2026&month=3 200 in 369ms
+ POST /api/habits 201 in 645ms
+ POST /api/habits 201 in 622ms
+ POST /api/habits 201 in 623ms
+ POST /api/habits 201 in 624ms
+ POST /api/logs 201 in 621ms
+ POST /api/logs 201 in 617ms
+ POST /api/logs 201 in 624ms
+ POST /api/logs 201 in 612ms
+ POST /api/logs 200 in 615ms
+ POST /api/logs 200 in 677ms
+ POST /api/logs 200 in 622ms
+ POST /api/logs 200 in 645ms
+ POST /api/logs 200 in 649ms
+ POST /api/logs 201 in 638ms
+ POST /api/logs 201 in 682ms
+ POST /api/logs 201 in 621ms
+ ✓ Compiled /api/logs in 1152ms (462 modules)
+ ✓ Compiled in 1ms (260 modules)
+ GET /api/logs?year=2026&month=3 200 in 976ms
+ GET /api/habits 200 in 982ms
+ GET /api/habits 200 in 321ms
+ GET /api/habits 200 in 310ms
+ POST /api/logs 400 in 12ms
+ POST /api/logs 201 in 630ms
+ ✓ Compiled in 254ms (487 modules)
+ ✓ Compiled /_not-found in 171ms (490 modules)
+ GET /api/habits 404 in 271ms
+ GET /api/logs?year=2026&month=3 404 in 273ms
+ GET /api/habits 404 in 60ms
+ POST /api/logs 404 in 78ms
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1982ms (717 modules)
+ POST /api/logs 500 in 2533ms
+ GET / 500 in 42ms

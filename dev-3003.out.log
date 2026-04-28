@@ -1,0 +1,12 @@
+
+> habitquest@1.0.0 dev
+> next dev --hostname 127.0.0.1 --port 3003
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mNext.js[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+  ▲ Next.js 14.2.35
+  - Local:        http://127.0.0.1:3003
+  - Network:      http://127.0.0.1:3003
+  - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 3.5s
