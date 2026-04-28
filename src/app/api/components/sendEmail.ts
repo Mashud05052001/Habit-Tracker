@@ -22,18 +22,29 @@ const sendEmail = async ({
   const host = process.env.SMTP_HOST;
   const user = process.env.SMTP_USER;
   const rawPass = process.env.SMTP_PASS;
-  const pass = host === "smtp.gmail.com" ? rawPass?.replace(/\s+/g, "") : rawPass;
+  const pass =
+    host === "smtp.gmail.com" ? rawPass?.replace(/\s+/g, "") : rawPass;
 
   if (!host || !user || !pass) {
-    console.warn("SMTP credentials are not configured. Verification email delivery was skipped.");
+    console.warn(
+      "SMTP credentials are not configured. Verification email delivery was skipped.",
+    );
     return { delivered: false };
   }
 
   const port = Number(process.env.SMTP_PORT || 587);
+  const secure = process.env.SMTP_SECURE === "true" || port === 465;
+
   const transporter = nodemailer.createTransport({
     host,
     port,
-    secure: process.env.SMTP_SECURE === "true" || port === 465,
+    secure,
+    requireTLS: true,
+    ...(secure === false && {
+      tls: {
+        rejectUnauthorized: false,
+      },
+    }),
     auth: {
       user,
       pass,
@@ -56,7 +67,7 @@ const sendEmail = async ({
   } catch (error) {
     throw new AuthError(
       500,
-      error instanceof Error ? error.message : "Failed to send email"
+      error instanceof Error ? error.message : "Failed to send email",
     );
   }
 };
