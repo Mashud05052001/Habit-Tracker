@@ -173,6 +173,8 @@ export default function HabitTracker({
   const [editingHabitId, setEditingHabitId] = useState("");
   const [editingHabitName, setEditingHabitName] = useState("");
   const [renamingHabitId, setRenamingHabitId] = useState("");
+  const [renameHadDuplicateError, setRenameHadDuplicateError] = useState(false);
+  const renameControlRef = useRef<HTMLDivElement | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{
     id: string;
     name: string;
@@ -263,6 +265,22 @@ export default function HabitTracker({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [deletedDuplicate, duplicateAction]);
+
+  useEffect(() => {
+    if (!editingHabitId || !renameHadDuplicateError) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (renamingHabitId) return;
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (renameControlRef.current?.contains(target)) return;
+
+      cancelRenameHabit();
+    };
+
+    window.addEventListener("pointerdown", handlePointerDown);
+    return () => window.removeEventListener("pointerdown", handlePointerDown);
+  }, [editingHabitId, renameHadDuplicateError, renamingHabitId]);
 
   // ── Derived state ────────────────────────────────────────────────────
   const days = daysInMonth(viewYear, viewMonth);
@@ -461,12 +479,14 @@ export default function HabitTracker({
     if (renamingHabitId) return;
     setEditingHabitId(habit._id);
     setEditingHabitName(habit.name);
+    setRenameHadDuplicateError(false);
   }
 
   function cancelRenameHabit() {
     if (renamingHabitId) return;
     setEditingHabitId("");
     setEditingHabitName("");
+    setRenameHadDuplicateError(false);
   }
 
   async function saveEditedHabitName(id: string) {
@@ -499,12 +519,14 @@ export default function HabitTracker({
       );
       setEditingHabitId("");
       setEditingHabitName("");
+      setRenameHadDuplicateError(false);
       showToast(`✅ Renamed to "${updatedHabit.name}"`);
     } catch (error) {
       if (
         error instanceof ApiRequestError &&
         error.data?.duplicateType === "active"
       ) {
+        setRenameHadDuplicateError(true);
         showToast("❌ That habit name already exists. Can't change name.");
         return;
       }
@@ -513,6 +535,7 @@ export default function HabitTracker({
         error instanceof ApiRequestError &&
         error.data?.duplicateType === "deleted"
       ) {
+        setRenameHadDuplicateError(true);
         showToast(
           "❌ Can't change name. It already exists in Deleted Habits; restore it from there.",
         );
@@ -1028,13 +1051,17 @@ export default function HabitTracker({
                 >
                   <span className={styles.habitIcon}>{h.icon}</span>
                   {editingHabitId === h._id ? (
-                    <div className={styles.habitRenameControl}>
+                    <div
+                      ref={renameControlRef}
+                      className={styles.habitRenameControl}
+                    >
                       <input
                         className={styles.habitRenameInput}
                         value={editingHabitName}
-                        onChange={(event) =>
-                          setEditingHabitName(event.target.value)
-                        }
+                        onChange={(event) => {
+                          setEditingHabitName(event.target.value);
+                          setRenameHadDuplicateError(false);
+                        }}
                         onBlur={() => {
                           void saveEditedHabitName(h._id);
                         }}

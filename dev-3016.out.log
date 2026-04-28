@@ -8,23 +8,10 @@
   - Environments: .env.local, .env
 
  ✓ Starting...
- ✓ Ready in 3.7s
+ ✓ Ready in 3.3s
  ○ Compiling / ...
- ✓ Compiled / in 5.2s (698 modules)
- GET / 307 in 6176ms
+ ✓ Compiled / in 5.7s (698 modules)
+ GET / 307 in 6458ms
  ○ Compiling /login ...
- ✓ Compiled /login in 5.2s (730 modules)
- GET /login 200 in 5362ms
- GET / 200 in 4752ms
- ✓ Compiled /api/logs in 418ms (435 modules)
- ✓ Compiled (437 modules)
- GET /api/habits 200 in 2982ms
- GET /api/logs?year=2026&month=3 200 in 3452ms
- GET /api/habits 200 in 785ms
- GET /api/logs?year=2026&month=3 200 in 1030ms
- ✓ Compiled /api/habits/[id] in 162ms (439 modules)
- PATCH /api/habits/69f0e79b18241993ee2f1f48 409 in 1868ms
- PATCH /api/habits/69f0e79b18241993ee2f1f48 409 in 1003ms
- GET /api/habits?status=all 200 in 709ms
- GET /api/habits?status=all 200 in 668ms
- PATCH /api/habits/69f0e79b18241993ee2f1f48 409 in 1684ms
+ ✓ Compiled /login in 6s (730 modules)
+ GET /login 200 in 36ms
