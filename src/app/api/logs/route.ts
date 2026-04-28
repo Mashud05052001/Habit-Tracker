@@ -5,12 +5,43 @@ import { Habit, Log } from "@/models/Habit";
 
 export const dynamic = "force-dynamic";
 
+const APP_TIME_ZONE = process.env.APP_TIME_ZONE || "Asia/Dhaka";
+
+function getTodayInAppTimeZone() {
+  try {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: APP_TIME_ZONE,
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    }).formatToParts(new Date());
+    const values = Object.fromEntries(
+      parts
+        .filter((part) => part.type !== "literal")
+        .map((part) => [part.type, Number(part.value)])
+    );
+
+    return {
+      year: values.year,
+      month: values.month - 1,
+      day: values.day,
+    };
+  } catch {
+    const today = new Date();
+    return {
+      year: today.getFullYear(),
+      month: today.getMonth(),
+      day: today.getDate(),
+    };
+  }
+}
+
 function isTodayDate(year: number, month: number, day: number) {
-  const today = new Date();
+  const today = getTodayInAppTimeZone();
   return (
-    year === today.getFullYear() &&
-    month === today.getMonth() &&
-    day === today.getDate()
+    year === today.year &&
+    month === today.month &&
+    day === today.day
   );
 }
 

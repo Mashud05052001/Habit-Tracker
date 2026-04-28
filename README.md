@@ -110,6 +110,7 @@ The real `.env` and `.env.local` files are ignored by git. Use
 | --------------------------------- | ----------- | ----------------------------------------------------------------- |
 | `MONGODB_URI`                     | Yes         | MongoDB connection string                                         |
 | `APP_BASE_URL`                    | Recommended | Base URL used for email verification links                        |
+| `APP_TIME_ZONE`                   | Recommended | Timezone used to decide which habit box is today, e.g. `Asia/Dhaka` |
 | `SMTP_HOST`                       | Optional    | SMTP host for verification emails                                 |
 | `SMTP_PORT`                       | Optional    | SMTP port, usually `587` or `465`                                 |
 | `SMTP_SECURE`                     | Optional    | `true` for SSL/TLS SMTP, usually with port `465`                  |
