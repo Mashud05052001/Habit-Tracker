@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireSessionUser } from "@/app/api/auth/auth.service";
 import { connectDB } from "@/lib/mongodb";
-import { Habit, Log } from "@/models/Habit";
+import {
+  HABIT_NAME_MAX_LENGTH,
+  HABIT_NAME_MIN_LENGTH,
+  Habit,
+  Log,
+} from "@/models/Habit";
 
 interface Params { params: { id: string } }
 
@@ -24,6 +29,21 @@ function normalizeHabitName(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
 
+function validateHabitName(name: string) {
+  if (!name) {
+    return "name is required";
+  }
+
+  if (
+    name.length < HABIT_NAME_MIN_LENGTH ||
+    name.length > HABIT_NAME_MAX_LENGTH
+  ) {
+    return `Habit name must be ${HABIT_NAME_MIN_LENGTH}-${HABIT_NAME_MAX_LENGTH} characters.`;
+  }
+
+  return null;
+}
+
 // PATCH /api/habits/[id] — update habit fields
 export async function PATCH(req: NextRequest, { params }: Params) {
   try {
@@ -43,8 +63,9 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     }> = {};
     if (body.name !== undefined) {
       const name = normalizeHabitName(body.name);
-      if (!name) {
-        return NextResponse.json({ error: "name is required" }, { status: 400 });
+      const nameError = validateHabitName(name);
+      if (nameError) {
+        return NextResponse.json({ error: nameError }, { status: 400 });
       }
 
       updates.name = name;

@@ -86,7 +86,7 @@ export async function GET(req: NextRequest) {
 }
 
 // POST /api/logs — toggle a habit for a specific day
-// Body: { habitId, year, month, day }
+// Body: { habitId, year, month, day, done? }
 export async function POST(req: NextRequest) {
   try {
     const user = await requireSessionUser(req);
@@ -95,6 +95,7 @@ export async function POST(req: NextRequest) {
     const year = Number(body.year);
     const month = Number(body.month);
     const day = Number(body.day);
+    const hasExplicitDone = typeof body.done === "boolean";
 
     if (!habitId || isNaN(year) || isNaN(month) || isNaN(day)) {
       return NextResponse.json({ error: "habitId, year, month, day required" }, { status: 400 });
@@ -114,8 +115,48 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Habit not found" }, { status: 404 });
     }
 
+    const logFilter = { userId: user.id, habitId, year, month, day };
+
+    if (hasExplicitDone) {
+      if (body.done === false) {
+        const log = await Log.findOneAndUpdate(
+          logFilter,
+          {
+            $setOnInsert: {
+              userId: user.id,
+              habitId,
+              year,
+              month,
+              day,
+              done: false,
+            },
+          },
+          { new: true, upsert: true, setDefaultsOnInsert: true }
+        );
+
+        return NextResponse.json({ log });
+      }
+
+      const log = await Log.findOneAndUpdate(
+        logFilter,
+        {
+          $set: { done: true },
+          $setOnInsert: {
+            userId: user.id,
+            habitId,
+            year,
+            month,
+            day,
+          },
+        },
+        { new: true, upsert: true, setDefaultsOnInsert: true }
+      );
+
+      return NextResponse.json({ log });
+    }
+
     // Find existing log
-    const existing = await Log.findOne({ userId: user.id, habitId, year, month, day });
+    const existing = await Log.findOne(logFilter);
 
     if (existing) {
       // Toggle done field

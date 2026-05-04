@@ -21,8 +21,9 @@ export default function ThemeToggle() {
         </span>
       </span>
       <span className={styles.copy}>
-        <span className={styles.eyebrow}>Theme</span>
-        <span className={styles.label}>{theme === "dark" ? "Deep Blue" : "Pure Light"}</span>
+        <span className={styles.label}>
+          {theme === "dark" ? "Dark" : "Light"}
+        </span>
       </span>
     </button>
   );

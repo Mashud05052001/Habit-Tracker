@@ -26,13 +26,13 @@ export type TAccessTokenPayload = {
   userId: string;
   email: string;
   name: string;
-  sessionNonce: string;
 };
 
 export type TRefreshTokenPayload = {
   type: "refresh";
   userId: string;
-  sessionNonce: string;
+  email: string;
+  name: string;
 };
 
 export type TVerificationTokenPayload = {

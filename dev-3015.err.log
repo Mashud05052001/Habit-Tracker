@@ -34,3 +34,304 @@
 <w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
 <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz'
 <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\1.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\1.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\2.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\2.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\1.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\1.pack.gz'
+ ⨯ ./src/components/HabitTracker.tsx
+Error: 
+  [31mx[0m the name `getNotificationPermissionState` is defined multiple times
+     ,-[[36;1;4mC:\Users\Asus\Downloads\hq\src\components\HabitTracker.tsx[0m:7:1]
+ [2m  7[0m | import styles from "./HabitTracker.module.css";
+ [2m  8[0m | import { useTheme } from "./ThemeProvider";
+ [2m  9[0m | import {
+ [2m 10[0m |   getNotificationPermissionState,
+     : [31;1m  ^^^^^^^^^^^^^^^|^^^^^^^^^^^^^^[0m
+     :                  [31;1m`-- [31;1mprevious definition of `getNotificationPermissionState` here[0m[0m
+ [2m 11[0m |   showBrowserNotification,
+ [2m 12[0m |   playNotificationSound,
+ [2m 13[0m |   showComprehensiveNotification,
+ [2m 14[0m | } from "@/lib/notificationUtils";
+ [2m 15[0m | import type { NotificationPermissionState } from "@/lib/notificationUtils";
+ [2m 16[0m | 
+ [2m 17[0m | const MONTHS = [
+ [2m 18[0m |   "January",
+ [2m 19[0m |   "February",
+ [2m 20[0m |   "March",
+ [2m 21[0m |   "April",
+ [2m 22[0m |   "May",
+ [2m 23[0m |   "June",
+ [2m 24[0m |   "July",
+ [2m 25[0m |   "August",
+ [2m 26[0m |   "September",
+ [2m 27[0m |   "October",
+ [2m 28[0m |   "November",
+ [2m 29[0m |   "December",
+ [2m 30[0m | ];
+ [2m 31[0m | 
+ [2m 32[0m | const DEFAULT_SEEDS = [
+ [2m 33[0m |   { name: "Wake up at 05:00", icon: "⏰" },
+ [2m 34[0m |   { name: "Gym", icon: "💪" },
+ [2m 35[0m |   { name: "Reading / Learning", icon: "📚" },
+ [2m 36[0m |   { name: "Budget Tracking", icon: "💰" },
+ [2m 37[0m |   { name: "Project Work", icon: "🎯" },
+ [2m 38[0m |   { name: "No Alcohol", icon: "🍃" },
+ [2m 39[0m |   { name: "Social Media Detox", icon: "🌿" },
+ [2m 40[0m |   { name: "Goal Journaling", icon: "📝" },
+ [2m 41[0m |   { name: "Cold Shower", icon: "🚿" },
+ [2m 42[0m | ];
+ [2m 43[0m | 
+ [2m 44[0m | const DEFAULT_NOTIFICATION_TIME = "20:00";
+ [2m 45[0m | const NOTIFICATION_STORAGE_PREFIX = "habitee.dailyNotification.";
+ [2m 46[0m | const NOTIFICATION_SW_PATH = "/habitee-notification-sw.js";
+ [2m 47[0m | const REMINDER_CHECK_INTERVAL_MS = 15_000;
+ [2m 48[0m | 
+ [2m 49[0m | type NotificationPermissionState =
+ [2m 50[0m |   | NotificationPermission
+ [2m 51[0m |   | "unsupported"
+ [2m 52[0m |   | "insecure";
+ [2m 53[0m | 
+ [2m 54[0m | function daysInMonth(y: number, m: number) {
+ [2m 55[0m |   return new Date(y, m + 1, 0).getDate();
+ [2m 56[0m | }
+ [2m 57[0m | 
+ [2m 58[0m | function isValidReminderTime(value: string) {
+ [2m 59[0m |   return /^([01]\d|2[0-3]):[0-5]\d$/.test(value);
+ [2m 60[0m | }
+ [2m 61[0m | 
+ [2m 62[0m | function notificationStorageKey(userId: string) {
+ [2m 63[0m |   return `${NOTIFICATION_STORAGE_PREFIX}${userId}`;
+ [2m 64[0m | }
+ [2m 65[0m | 
+ [2m 66[0m | function getDateKey(date = new Date()) {
+ [2m 67[0m |   const year = date.getFullYear();
+ [2m 68[0m |   const month = String(date.getMonth() + 1).padStart(2, "0");
+ [2m 69[0m |   const day = String(date.getDate()).padStart(2, "0");
+ [2m 70[0m | 
+ [2m 71[0m |   return `${year}-${month}-${day}`;
+ [2m 72[0m | }
+ [2m 73[0m | 
+ [2m 74[0m | function getNextReminderDate(time: string, from = new Date()) {
+ [2m 75[0m |   const [hours, minutes] = time.split(":").map(Number);
+ [2m 76[0m |   const target = new Date(from);
+ [2m 77[0m |   target.setHours(hours, minutes, 0, 0);
+ [2m 78[0m | 
+ [2m 79[0m |   if (target.getTime() <= from.getTime()) {
+ [2m 80[0m |     target.setDate(target.getDate() + 1);
+ [2m 81[0m |   }
+ [2m 82[0m | 
+ [2m 83[0m |   return target;
+ [2m 84[0m | }
+ [2m 85[0m | 
+ [2m 86[0m | function isReminderDue(time: string, date = new Date()) {
+ [2m 87[0m |   if (!isValidReminderTime(time)) {
+ [2m 88[0m |     return false;
+ [2m 89[0m |   }
+ [2m 90[0m | 
+ [2m 91[0m |   const [hours, minutes] = time.split(":").map(Number);
+ [2m 92[0m | 
+ [2m 93[0m |   return date.getHours() === hours && date.getMinutes() === minutes;
+ [2m 94[0m | }
+ [2m 95[0m | 
+ [2m 96[0m | function formatReminderTime(time: string) {
+ [2m 97[0m |   if (!isValidReminderTime(time)) {
+ [2m 98[0m |     return "Choose a time";
+ [2m 99[0m |   }
+ [2m100[0m | 
+ [2m101[0m |   const [hours, minutes] = time.split(":").map(Number);
+ [2m102[0m |   const date = new Date();
+ [2m103[0m |   date.setHours(hours, minutes, 0, 0);
+ [2m104[0m | 
+ [2m105[0m |   return new Intl.DateTimeFormat(undefined, {
+ [2m106[0m |     hour: "numeric",
+ [2m107[0m |     minute: "2-digit",
+ [2m108[0m |   }).format(date);
+ [2m109[0m | }
+ [2m110[0m | 
+ [2m111[0m | function formatNextReminderDate(time: string) {
+ [2m112[0m |   if (!isValidReminderTime(time)) {
+ [2m113[0m |     return "Choose a valid time";
+ [2m114[0m |   }
+ [2m115[0m | 
+ [2m116[0m |   const now = new Date();
+ [2m117[0m |   const nextReminder = getNextReminderDate(time, now);
+ [2m118[0m |   const tomorrow = new Date(now);
+ [2m119[0m |   tomorrow.setDate(tomorrow.getDate() + 1);
+ [2m120[0m | 
+ [2m121[0m |   const dayLabel =
+ [2m122[0m |     getDateKey(nextReminder) === getDateKey(now)
+ [2m123[0m |       ? "Today"
+ [2m124[0m |       : getDateKey(nextReminder) === getDateKey(tomorrow)
+ [2m125[0m |         ? "Tomorrow"
+ [2m126[0m |         : new Intl.DateTimeFormat(undefined, {
+ [2m127[0m |             month: "short",
+ [2m128[0m |             day: "numeric",
+ [2m129[0m |           }).format(nextReminder);
+ [2m130[0m | 
+ [2m131[0m |   return `${dayLabel} at ${formatReminderTime(time)}`;
+ [2m132[0m | }
+ [2m133[0m | 
+ [2m134[0m | function getNotificationPermissionState(): NotificationPermissionState {
+     : [33;1m         ^^^^^^^^^^^^^^^|^^^^^^^^^^^^^^[0m
+     :                         [33;1m`-- [33;1m`getNotificationPermissionState` redefined here[0m[0m
+ [2m135[0m |   if (typeof window === "undefined" || !("Notification" in window)) {
+ [2m136[0m |     return "unsupported";
+ [2m137[0m |   }
+     `----
+
+  [31mx[0m the name `showBrowserNotification` is defined multiple times
+     ,-[[36;1;4mC:\Users\Asus\Downloads\hq\src\components\HabitTracker.tsx[0m:8:1]
+ [2m  8[0m | import { useTheme } from "./ThemeProvider";
+ [2m  9[0m | import {
+ [2m 10[0m |   getNotificationPermissionState,
+ [2m 11[0m |   showBrowserNotification,
+     : [31;1m  ^^^^^^^^^^^|^^^^^^^^^^^[0m
+     :              [31;1m`-- [31;1mprevious definition of `showBrowserNotification` here[0m[0m
+ [2m 12[0m |   playNotificationSound,
+ [2m 13[0m |   showComprehensiveNotification,
+ [2m 14[0m | } from "@/lib/notificationUtils";
+ [2m 15[0m | import type { NotificationPermissionState } from "@/lib/notificationUtils";
+ [2m 16[0m | 
+ [2m 17[0m | const MONTHS = [
+ [2m 18[0m |   "January",
+ [2m 19[0m |   "February",
+ [2m 20[0m |   "March",
+ [2m 21[0m |   "April",
+ [2m 22[0m |   "May",
+ [2m 23[0m |   "June",
+ [2m 24[0m |   "July",
+ [2m 25[0m |   "August",
+ [2m 26[0m |   "September",
+ [2m 27[0m |   "October",
+ [2m 28[0m |   "November",
+ [2m 29[0m |   "December",
+ [2m 30[0m | ];
+ [2m 31[0m | 
+ [2m 32[0m | const DEFAULT_SEEDS = [
+ [2m 33[0m |   { name: "Wake up at 05:00", icon: "⏰" },
+ [2m 34[0m |   { name: "Gym", icon: "💪" },
+ [2m 35[0m |   { name: "Reading / Learning", icon: "📚" },
+ [2m 36[0m |   { name: "Budget Tracking", icon: "💰" },
+ [2m 37[0m |   { name: "Project Work", icon: "🎯" },
+ [2m 38[0m |   { name: "No Alcohol", icon: "🍃" },
+ [2m 39[0m |   { name: "Social Media Detox", icon: "🌿" },
+ [2m 40[0m |   { name: "Goal Journaling", icon: "📝" },
+ [2m 41[0m |   { name: "Cold Shower", icon: "🚿" },
+ [2m 42[0m | ];
+ [2m 43[0m | 
+ [2m 44[0m | const DEFAULT_NOTIFICATION_TIME = "20:00";
+ [2m 45[0m | const NOTIFICATION_STORAGE_PREFIX = "habitee.dailyNotification.";
+ [2m 46[0m | const NOTIFICATION_SW_PATH = "/habitee-notification-sw.js";
+ [2m 47[0m | const REMINDER_CHECK_INTERVAL_MS = 15_000;
+ [2m 48[0m | 
+ [2m 49[0m | type NotificationPermissionState =
+ [2m 50[0m |   | NotificationPermission
+ [2m 51[0m |   | "unsupported"
+ [2m 52[0m |   | "insecure";
+ [2m 53[0m | 
+ [2m 54[0m | function daysInMonth(y: number, m: number) {
+ [2m 55[0m |   return new Date(y, m + 1, 0).getDate();
+ [2m 56[0m | }
+ [2m 57[0m | 
+ [2m 58[0m | function isValidReminderTime(value: string) {
+ [2m 59[0m |   return /^([01]\d|2[0-3]):[0-5]\d$/.test(value);
+ [2m 60[0m | }
+ [2m 61[0m | 
+ [2m 62[0m | function notificationStorageKey(userId: string) {
+ [2m 63[0m |   return `${NOTIFICATION_STORAGE_PREFIX}${userId}`;
+ [2m 64[0m | }
+ [2m 65[0m | 
+ [2m 66[0m | function getDateKey(date = new Date()) {
+ [2m 67[0m |   const year = date.getFullYear();
+ [2m 68[0m |   const month = String(date.getMonth() + 1).padStart(2, "0");
+ [2m 69[0m |   const day = String(date.getDate()).padStart(2, "0");
+ [2m 70[0m | 
+ [2m 71[0m |   return `${year}-${month}-${day}`;
+ [2m 72[0m | }
+ [2m 73[0m | 
+ [2m 74[0m | function getNextReminderDate(time: string, from = new Date()) {
+ [2m 75[0m |   const [hours, minutes] = time.split(":").map(Number);
+ [2m 76[0m |   const target = new Date(from);
+ [2m 77[0m |   target.setHours(hours, minutes, 0, 0);
+ [2m 78[0m | 
+ [2m 79[0m |   if (target.getTime() <= from.getTime()) {
+ [2m 80[0m |     target.setDate(target.getDate() + 1);
+ [2m 81[0m |   }
+ [2m 82[0m | 
+ [2m 83[0m |   return target;
+ [2m 84[0m | }
+ [2m 85[0m | 
+ [2m 86[0m | function isReminderDue(time: string, date = new Date()) {
+ [2m 87[0m |   if (!isValidReminderTime(time)) {
+ [2m 88[0m |     return false;
+ [2m 89[0m |   }
+ [2m 90[0m | 
+ [2m 91[0m |   const [hours, minutes] = time.split(":").map(Number);
+ [2m 92[0m | 
+ [2m 93[0m |   return date.getHours() === hours && date.getMinutes() === minutes;
+ [2m 94[0m | }
+ [2m 95[0m | 
+ [2m 96[0m | function formatReminderTime(time: string) {
+ [2m 97[0m |   if (!isValidReminderTime(time)) {
+ [2m 98[0m |     return "Choose a time";
+ [2m 99[0m |   }
+ [2m100[0m | 
+ [2m101[0m |   const [hours, minutes] = time.split(":").map(Number);
+ [2m102[0m |   const date = new Date();
+ [2m103[0m |   date.setHours(hours, minutes, 0, 0);
+ [2m104[0m | 
+ [2m105[0m |   return new Intl.DateTimeFormat(undefined, {
+ [2m106[0m |     hour: "numeric",
+ [2m107[0m |     minute: "2-digit",
+ [2m108[0m |   }).format(date);
+ [2m109[0m | }
+ [2m110[0m | 
+ [2m111[0m | function formatNextReminderDate(time: string) {
+ [2m112[0m |   if (!isValidReminderTime(time)) {
+ [2m113[0m |     return "Choose a valid time";
+ [2m114[0m |   }
+ [2m115[0m | 
+ [2m116[0m |   const now = new Date();
+ [2m117[0m |   const nextReminder = getNextReminderDate(time, now);
+ [2m118[0m |   const tomorrow = new Date(now);
+ [2m119[0m |   tomorrow.setDate(tomorrow.getDate() + 1);
+ [2m120[0m | 
+ [2m121[0m |   const dayLabel =
+ [2m122[0m |     getDateKey(nextReminder) === getDateKey(now)
+ [2m123[0m |       ? "Today"
+ [2m124[0m |       : getDateKey(nextReminder) === getDateKey(tomorrow)
+ [2m125[0m |         ? "Tomorrow"
+ [2m126[0m |         : new Intl.DateTimeFormat(undefined, {
+ [2m127[0m |             month: "short",
+ [2m128[0m |             day: "numeric",
+ [2m129[0m |           }).format(nextReminder);
+ [2m130[0m | 
+ [2m131[0m |   return `${dayLabel} at ${formatReminderTime(time)}`;
+ [2m132[0m | }
+ [2m133[0m | 
+ [2m134[0m | function getNotificationPermissionState(): NotificationPermissionState {
+ [2m135[0m |   if (typeof window === "undefined" || !("Notification" in window)) {
+ [2m136[0m |     return "unsupported";
+ [2m137[0m |   }
+ [2m138[0m | 
+ [2m139[0m |   if (!window.isSecureContext) {
+ [2m140[0m |     return "insecure";
+ [2m141[0m |   }
+ [2m142[0m | 
+ [2m143[0m |   return window.Notification.permission;
+ [2m144[0m | }
+ [2m145[0m | 
+ [2m146[0m | async function showBrowserNotification({
+     : [33;1m               ^^^^^^^^^^^|^^^^^^^^^^^[0m
+     :                           [33;1m`-- [33;1m`showBrowserNotification` redefined here[0m[0m
+ [2m147[0m |   body,
+ [2m148[0m |   tag,
+ [2m149[0m |   title,
+     `----
+
+Import trace for requested module:
+./src/components/HabitTracker.tsx
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: EPERM: operation not permitted, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\1.pack.gz_' -> 'C:\Users\Asus\Downloads\hq\.next\cache\webpack\client-development\1.pack.gz'

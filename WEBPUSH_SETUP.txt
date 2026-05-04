@@ -1,0 +1,265 @@
+# Web Push Notifications Setup Guide
+
+## Overview
+This application uses Web Push (Push API) to send system notifications even when the tab is closed. Notifications appear in the Windows notification panel (just like Telegram, email, etc.).
+
+---
+
+## Step 1: Environment Variables
+
+The VAPID keys have been generated for you. Add these to your `.env.local` file:
+
+```env
+# Web Push VAPID Keys (Generated - do not regenerate unless needed)
+NEXT_PUBLIC_VAPID_PUBLIC_KEY=BA26cpPxFTuzE097nT6FK4BexnxBBk7OIoPBX5-4XOk7RC2owk8_XdRW5Ih5ACFbcwy8aEI4ph2O9PJL5T08BCQ
+VAPID_PRIVATE_KEY=fsqAR2vUcaHxURbmKrhJpJHxmXlXavD5vCggs3iKPpM
+VAPID_EMAIL=mailto:your-email@example.com
+```
+
+**⚠️ Important:**
+- Keep `VAPID_PRIVATE_KEY` secret (never commit to git)
+- `NEXT_PUBLIC_VAPID_PUBLIC_KEY` is safe to expose (used by client)
+- Replace `your-email@example.com` with your email
+
+---
+
+## Step 2: Setup Instructions
+
+### For First Time Users:
+
+1. **Add Environment Variables**
+   - Create or edit `.env.local` in the project root
+   - Copy the keys from above
+
+2. **Restart Development Server**
+   ```bash
+   npm run dev
+   ```
+
+3. **Allow Notifications**
+   - Open app at http://localhost:3001
+   - Go to Settings (click your avatar)
+   - Enable "Notifications"
+   - Set a reminder time
+   - Click "Update reminder"
+   - Browser will ask for permission - **ALLOW** it
+
+4. **Subscribe to Push Notifications**
+   - When you click "Update reminder", the app automatically subscribes to push notifications
+   - You should see a notification showing the subscription was successful
+
+5. **Test the Notification**
+   - Click "Test now" button
+   - You should see:
+     - A system notification in the Windows notification panel
+     - A sound alert
+     - A toast message in the app
+
+---
+
+## Step 3: How It Works
+
+### Browser Notifications (Test Now)
+- Shows immediately in-app and system notification panel
+- Requires browser to be active
+
+### Scheduled Daily Reminders (Web Push)
+- Works **even when tab is closed**
+- Uses Service Worker + Web Push API
+- Subscription is stored on server
+
+### Notification Flow
+```
+1. User sets reminder time and clicks "Update reminder"
+   ↓
+2. App subscribes to push notifications (endpoint + keys stored)
+   ↓
+3. Server schedules a check at the set time
+   ↓
+4. When time arrives, server sends push notification
+   ↓
+5. Browser receives push via Service Worker (even if tab closed)
+   ↓
+6. Service Worker displays system notification
+   ↓
+7. System notification appears in Windows notification panel
+```
+
+---
+
+## Step 4: Regenerating VAPID Keys (Optional)
+
+If you want to generate new keys:
+
+```bash
+node generate-vapid-keys.js
+```
+
+Then update the environment variables and restart the server.
+
+**Note:** Regenerating keys will invalidate existing subscriptions (users will need to allow notifications again).
+
+---
+
+## Troubleshooting
+
+### Notifications Not Showing?
+
+1. **Check if HTTPS/localhost**
+   - Push notifications only work on HTTPS or localhost
+   - Development: http://localhost:3001 ✅
+   - Deployment: must be HTTPS ✅
+
+2. **Check Browser Permissions**
+   - Settings → Privacy → Notifications
+   - Make sure this site is allowed
+
+3. **Check if Service Worker is Registered**
+   - Open DevTools (F12) → Application → Service Workers
+   - Should show registered service worker
+
+4. **Check if Subscribed**
+   - Open DevTools → Console
+   - Look for "Push subscription successful" message
+
+5. **Server Logs**
+   - Check terminal for any errors
+   - Subscription endpoint should be in server logs
+
+### Sound Not Playing?
+
+- Sound works for "Test now" (immediate notification)
+- For scheduled reminders, sound plays on the device at reminder time
+- Volume controlled by browser notification settings
+
+### Reminder Not Triggering?
+
+- Tab does NOT need to be open for push notifications
+- Server will send notification at scheduled time
+- Service Worker will show it
+- If reminder doesn't trigger:
+  - Check if subscription was successful
+  - Check browser notification permissions
+  - Check DevTools for errors
+
+---
+
+## Production Deployment
+
+### For Production (Vercel, Docker, etc.):
+
+1. **Generate New VAPID Keys**
+   - Run `node generate-vapid-keys.js`
+   - Get new keys
+
+2. **Add Environment Variables**
+   - Add to `.env.local` or environment config:
+     ```env
+     NEXT_PUBLIC_VAPID_PUBLIC_KEY=<your-public-key>
+     VAPID_PRIVATE_KEY=<your-private-key>
+     VAPID_EMAIL=mailto:your-email@example.com
+     ```
+
+3. **Use HTTPS**
+   - Production must use HTTPS
+   - Push notifications won't work over HTTP
+
+4. **Test Reminder**
+   - Set a reminder for 1-2 minutes from now
+   - Wait and check if notification appears
+   - Close the tab and check if notification still works
+
+---
+
+## Technical Details
+
+### VAPID Keys
+- **VAPID** = Voluntary Application Server Identification
+- Public key: Shared with client, identifies your server
+- Private key: Secret, signs push messages
+
+### Service Worker
+- Runs in background even when tab closed
+- Receives push events from server
+- Displays notifications to user
+- Located at: `/public/habitee-notification-sw.js`
+
+### Push API
+- Browser API for receiving server-sent push notifications
+- Requires Service Worker
+- Requires HTTPS or localhost
+- Subscription endpoint: user-specific URL for sending notifications
+
+### web-push npm Package
+- Server-side library
+- Sends encrypted notifications to browser
+- Handles all cryptographic operations
+- Manages subscription endpoints
+
+---
+
+## API Endpoints
+
+### POST `/api/notifications/subscribe`
+**Subscribe device to push notifications**
+
+Request:
+```json
+{
+  "subscription": {
+    "endpoint": "https://...",
+    "keys": {
+      "p256dh": "...",
+      "auth": "..."
+    }
+  }
+}
+```
+
+Response:
+```json
+{
+  "success": true,
+  "message": "Subscription stored"
+}
+```
+
+---
+
+## Files Modified/Created
+
+- `generate-vapid-keys.js` - Generate VAPID keys
+- `src/api/notifications/subscribe.ts` - Store push subscriptions
+- `public/habitee-notification-sw.js` - Updated with push event handler
+- `src/lib/notificationUtils.ts` - Push notification functions
+- `src/components/HabitTracker.tsx` - Subscribe to push + schedule reminders
+- `.env.local` - **You must create/update this**
+
+---
+
+## Quick Start Checklist
+
+- [ ] Create `.env.local` with VAPID keys
+- [ ] Restart `npm run dev`
+- [ ] Go to Settings in app
+- [ ] Enable Notifications
+- [ ] Set reminder time
+- [ ] Click "Update reminder"
+- [ ] Allow browser notifications when prompted
+- [ ] Click "Test now"
+- [ ] See notification in Windows notification panel ✓
+
+---
+
+## Support
+
+For issues with Web Push:
+1. Check browser console (F12) for errors
+2. Check `/api/notifications/subscribe` response
+3. Verify Service Worker is running
+4. Verify VAPID keys are correct in `.env.local`
+
+For scheduling issues:
+1. Check server logs for subscription
+2. Verify reminder time is set correctly
+3. Check if page was open at some point (server needs to register reminder)

@@ -1,5 +1,8 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
+export const HABIT_NAME_MIN_LENGTH = 3;
+export const HABIT_NAME_MAX_LENGTH = 25;
+
 // ── Habit definition (stored once, referenced by logs) ───────────────────
 export interface IHabit extends Document {
   userId: mongoose.Types.ObjectId;
@@ -14,7 +17,13 @@ export interface IHabit extends Document {
 const HabitSchema = new Schema<IHabit>(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", index: true },
-    name:   { type: String, required: true, trim: true, maxlength: 80 },
+    name:   {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: HABIT_NAME_MIN_LENGTH,
+      maxlength: HABIT_NAME_MAX_LENGTH,
+    },
     icon:   { type: String, default: "✅", maxlength: 4 },
     order:  { type: Number, default: 0 },
     active: { type: Boolean, default: true },

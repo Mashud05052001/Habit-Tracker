@@ -60,24 +60,30 @@ async function loadVerifiedUserById(userId: string) {
   return user;
 }
 
-async function createAuthTokensForUser(user: IUser): Promise<TAuthTokenResult> {
-  const sessionNonce = randomUUID();
-  user.refreshTokenNonce = sessionNonce;
-  await user.save();
-
-  const accessToken = createAccessToken({
+function createAccessTokenForUser(user: IUser) {
+  return createAccessToken({
     type: "access",
     userId: user._id.toString(),
     email: user.email,
     name: user.name,
-    sessionNonce,
   });
+}
 
-  const refreshToken = createRefreshToken({
+function createRefreshTokenForUser(user: IUser) {
+  return createRefreshToken({
     type: "refresh",
     userId: user._id.toString(),
-    sessionNonce,
+    email: user.email,
+    name: user.name,
   });
+}
+
+async function createAuthTokensForUser(user: IUser): Promise<TAuthTokenResult> {
+  const accessToken = createAccessTokenForUser(user);
+  const refreshToken = createRefreshTokenForUser(user);
+
+  user.refreshToken = refreshToken;
+  await user.save();
 
   return {
     accessToken,
@@ -203,7 +209,7 @@ async function getSessionUserFromAccessToken(token?: string | null): Promise<TSe
 
   const decoded = verifyAccessToken(token);
   const user = await loadVerifiedUserById(decoded.userId);
-  if (!user || user.refreshTokenNonce !== decoded.sessionNonce) {
+  if (!user) {
     throw new AuthError(401, "Invalid session", "INVALID_SESSION");
   }
 
@@ -220,7 +226,7 @@ async function getSessionUserFromRefreshToken(token?: string | null): Promise<TS
 
   const decoded = verifyRefreshToken(token);
   const user = await loadVerifiedUserById(decoded.userId);
-  if (!user || user.refreshTokenNonce !== decoded.sessionNonce) {
+  if (!user || user.refreshToken !== token) {
     return null;
   }
 
@@ -251,7 +257,11 @@ export async function getSessionUserFromCookieStore() {
     }
   }
 
-  return getSessionUserFromRefreshToken(refreshToken);
+  try {
+    return await getSessionUserFromRefreshToken(refreshToken);
+  } catch {
+    return null;
+  }
 }
 
 export async function requireSessionUser(request: NextRequest) {
@@ -277,11 +287,17 @@ export async function refreshAuthTokens(request: NextRequest): Promise<TAuthToke
 
   const decoded = verifyRefreshToken(refreshToken);
   const user = await loadVerifiedUserById(decoded.userId);
-  if (!user || user.refreshTokenNonce !== decoded.sessionNonce) {
+  if (!user || user.refreshToken !== refreshToken) {
     throw new AuthError(401, "Session expired. Please log in again.", "INVALID_REFRESH_TOKEN");
   }
 
-  return createAuthTokensForUser(user);
+  return {
+    accessToken: createAccessTokenForUser(user),
+    refreshToken,
+    accessTokenExpiresIn: ACCESS_TOKEN_EXPIRES_IN,
+    refreshTokenExpiresIn: REFRESH_TOKEN_EXPIRES_IN,
+    user: toPublicUser(user),
+  };
 }
 
 export async function logoutUser(request: NextRequest) {
@@ -293,8 +309,8 @@ export async function logoutUser(request: NextRequest) {
     const user = await loadVerifiedUserById(decoded.userId);
     if (!user) return;
 
-    if (user.refreshTokenNonce === decoded.sessionNonce) {
-      user.refreshTokenNonce = null;
+    if (user.refreshToken === refreshToken) {
+      user.refreshToken = null;
       await user.save();
     }
   } catch {
@@ -302,15 +318,22 @@ export async function logoutUser(request: NextRequest) {
   }
 }
 
-export function applyAuthCookies(
+export function applyAccessTokenCookie(
   response: NextResponse,
-  authResult: Pick<TAuthTokenResult, "accessToken" | "refreshToken">
+  authResult: Pick<TAuthTokenResult, "accessToken">
 ) {
   response.cookies.set(
     ACCESS_TOKEN_COOKIE_NAME,
     authResult.accessToken,
     getCookieConfig(getAccessTokenExpiryMs())
   );
+}
+
+export function applyAuthCookies(
+  response: NextResponse,
+  authResult: Pick<TAuthTokenResult, "accessToken" | "refreshToken">
+) {
+  applyAccessTokenCookie(response, authResult);
   response.cookies.set(
     REFRESH_TOKEN_COOKIE_NAME,
     authResult.refreshToken,

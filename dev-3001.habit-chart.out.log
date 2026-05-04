@@ -1,0 +1,138 @@
+
+> habitquest@1.0.0 dev
+> next dev --port 3001
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mNext.js[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3001
+  - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 4s
+ ○ Compiling / ...
+ ✓ Compiled / in 4.4s (678 modules)
+ GET / 200 in 9802ms
+ ✓ Compiled /api/logs in 351ms (436 modules)
+ ✓ Compiled (438 modules)
+ GET /api/habits 200 in 2753ms
+ GET /api/logs?year=2026&month=4 200 in 3353ms
+ GET /api/habits 200 in 690ms
+ GET /api/logs?year=2026&month=4 200 in 1038ms
+ ✓ Compiled in 838ms (678 modules)
+ ✓ Compiled /api/logs in 182ms (436 modules)
+ ✓ Compiled (438 modules)
+ GET /api/habits 200 in 1130ms
+ GET /api/logs?year=2026&month=4 200 in 1659ms
+ ✓ Compiled in 929ms (699 modules)
+ GET /api/habits 200 in 1164ms
+ GET /api/logs?year=2026&month=4 200 in 1799ms
+ ✓ Compiled in 709ms (668 modules)
+ ✓ Compiled /api/logs in 170ms (436 modules)
+ ✓ Compiled (438 modules)
+ GET /api/habits 200 in 1075ms
+ GET /api/logs?year=2026&month=4 200 in 1340ms
+ ✓ Compiled in 960ms (877 modules)
+ GET /api/habits 200 in 707ms
+ GET /api/logs?year=2026&month=4 200 in 1062ms
+ ✓ Compiled in 560ms (877 modules)
+ GET /api/habits 200 in 663ms
+ GET /api/logs?year=2026&month=4 200 in 978ms
+ GET /api/habits 200 in 768ms
+ GET /api/logs?year=2026&month=4 200 in 1044ms
+ ✓ Compiled in 591ms (877 modules)
+ GET /api/habits 200 in 646ms
+ GET /api/logs?year=2026&month=4 200 in 974ms
+ ✓ Compiled in 373ms (877 modules)
+ GET /api/habits 200 in 680ms
+ GET /api/logs?year=2026&month=4 200 in 1013ms
+ ✓ Compiled in 381ms (877 modules)
+ GET / 200 in 501ms
+ GET /api/habits 200 in 650ms
+ GET /api/logs?year=2026&month=4 200 in 923ms
+ GET /api/habits 200 in 657ms
+ GET /api/logs?year=2026&month=4 200 in 1068ms
+ ✓ Compiled in 352ms (877 modules)
+ GET / 200 in 417ms
+ GET /api/habits 200 in 613ms
+ GET /api/logs?year=2026&month=4 200 in 936ms
+ GET /api/habits 200 in 603ms
+ GET /api/logs?year=2026&month=4 200 in 951ms
+ ✓ Compiled in 778ms (905 modules)
+ GET / 200 in 517ms
+ GET /api/habits 200 in 628ms
+ GET /api/habits 200 in 896ms
+ GET /api/logs?year=2026&month=4 200 in 1724ms
+ ✓ Compiled in 1872ms (915 modules)
+ ✓ Compiled in 0ms (540 modules)
+ ✓ Compiled in 0ms (540 modules)
+ ✓ Compiled in 0ms (540 modules)
+ GET /api/logs?year=2026&month=4 200 in 2517ms
+ GET /api/habits 200 in 1567ms
+ GET /api/logs?year=2026&month=4 200 in 1299ms
+ ✓ Compiled in 814ms (915 modules)
+ GET /api/habits 200 in 644ms
+ GET /api/logs?year=2026&month=4 200 in 1011ms
+ ✓ Compiled in 887ms (874 modules)
+ ✓ Compiled /api/logs in 164ms (538 modules)
+ ✓ Compiled (540 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 842ms (1131 modules)
+ GET /api/habits 500 in 1649ms
+ GET /api/logs?year=2026&month=4 500 in 1649ms
+ ✓ Compiled /_not-found in 344ms (1134 modules)
+ GET /_next/static/css/app/page.css?v=1777878527912 404 in 354ms
+ GET /_next/static/css/app/layout.css?v=1777878527912 404 in 453ms
+ GET / 500 in 2075ms
+ GET / 500 in 56ms
+ ✓ Compiled in 1269ms (1100 modules)
+ ✓ Compiled in 592ms (1100 modules)
+ ✓ Compiled in 500ms (1100 modules)
+ ✓ Compiled in 1184ms (1110 modules)
+ ✓ Compiled in 769ms (1100 modules)
+ ✓ Compiled in 566ms (1100 modules)
+ ✓ Compiled in 544ms (1100 modules)
+ ✓ Compiled in 565ms (1100 modules)
+ ✓ Compiled in 509ms (1100 modules)
+ ✓ Compiled in 676ms (1110 modules)
+ GET / 200 in 691ms
+ ○ Compiling /api/logs ...
+ ✓ Compiled /api/logs in 523ms (578 modules)
+ ✓ Compiled (580 modules)
+ GET /api/habits 200 in 1400ms
+ GET /api/logs?year=2026&month=4 200 in 1709ms
+ GET /api/habits?status=all 200 in 617ms
+ ✓ Compiled in 582ms (1100 modules)
+ ✓ Compiled in 366ms (1100 modules)
+ ✓ Compiled in 439ms (1100 modules)
+ ✓ Compiled in 512ms (1110 modules)
+ GET / 200 in 453ms
+ ○ Compiling /api/logs ...
+ ✓ Compiled /api/logs in 544ms (578 modules)
+ ✓ Compiled (580 modules)
+ GET /api/habits 200 in 1462ms
+ GET /api/logs?year=2026&month=4 200 in 1773ms
+ GET /api/habits?status=all 200 in 615ms
+ ✓ Compiled in 904ms (1100 modules)
+ ✓ Compiled in 525ms (1100 modules)
+ ✓ Compiled in 665ms (1110 modules)
+ ✓ Compiled in 569ms (1110 modules)
+ GET / 200 in 530ms
+ ✓ Compiled /api/logs in 409ms (578 modules)
+ ✓ Compiled (580 modules)
+ GET /api/habits 200 in 1301ms
+ GET /api/logs?year=2026&month=4 200 in 1595ms
+ GET /api/habits?status=all 200 in 612ms
+ ✓ Compiled in 728ms (1100 modules)
+ ✓ Compiled in 400ms (1110 modules)
+ GET / 200 in 394ms
+ ✓ Compiled /api/logs in 242ms (578 modules)
+ ✓ Compiled (580 modules)
+ GET /api/logs?year=2026&month=4 500 in 485ms
+ GET /api/habits 500 in 487ms
+ GET / 500 in 139ms
+ ✓ Compiled /_not-found in 469ms (1134 modules)
+ GET /_next/static/chunks/fallback/webpack.js 404 in 635ms
+ GET /_next/static/chunks/fallback/react-refresh.js 404 in 627ms
+ GET /_next/static/chunks/fallback/main.js 404 in 635ms
+ GET /_next/static/chunks/fallback/pages/_app.js 404 in 463ms
+ GET /_next/static/chunks/fallback/pages/_error.js 404 in 460ms

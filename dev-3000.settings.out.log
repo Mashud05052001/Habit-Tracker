@@ -1,0 +1,15 @@
+
+> habitquest@1.0.0 dev
+> next dev --port 3000
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mNext.js[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 2.3s
+ ○ Compiling /login ...
+ ✓ Compiled /login in 1189ms (656 modules)
+ GET /login 200 in 1840ms
+ ✓ Compiled in 1057ms

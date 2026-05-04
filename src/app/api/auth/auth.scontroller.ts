@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { AuthRoutes } from "./auth.route";
 import {
+  applyAccessTokenCookie,
   applyAuthCookies,
   clearAuthCookies,
   getSessionUserFromRequest,
@@ -14,12 +15,28 @@ import {
 import { validateLoginPayload, validateRegisterPayload } from "./auth.validation";
 import { AuthError } from "./auth.utils";
 
-function buildErrorResponse(error: unknown) {
+function shouldClearAuthCookies(error: unknown) {
+  return (
+    error instanceof AuthError &&
+    [
+      "REFRESH_TOKEN_EXPIRED",
+      "INVALID_REFRESH_TOKEN",
+      "REFRESH_TOKEN_MISSING",
+    ].includes(error.code ?? "")
+  );
+}
+
+function buildErrorResponse(error: unknown, clearCookies = false) {
   const statusCode = error instanceof AuthError ? error.statusCode : 500;
   const message = error instanceof Error ? error.message : "Something went wrong";
   const code = error instanceof AuthError ? error.code : undefined;
 
-  return NextResponse.json({ error: message, code }, { status: statusCode });
+  const response = NextResponse.json({ error: message, code }, { status: statusCode });
+  if (clearCookies) {
+    clearAuthCookies(response);
+  }
+
+  return response;
 }
 
 export async function registerController(request: NextRequest) {
@@ -67,10 +84,10 @@ export async function refreshController(request: NextRequest) {
       user: result.user,
     });
 
-    applyAuthCookies(response, result);
+    applyAccessTokenCookie(response, result);
     return response;
   } catch (error) {
-    return buildErrorResponse(error);
+    return buildErrorResponse(error, shouldClearAuthCookies(error));
   }
 }
 
@@ -117,10 +134,10 @@ export async function sessionController(request: NextRequest) {
           accessToken: result.accessToken,
           accessTokenExpiresIn: result.accessTokenExpiresIn,
         });
-        applyAuthCookies(response, result);
+        applyAccessTokenCookie(response, result);
         return response;
       } catch (refreshError) {
-        return buildErrorResponse(refreshError);
+        return buildErrorResponse(refreshError, shouldClearAuthCookies(refreshError));
       }
     }
 

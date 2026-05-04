@@ -3,10 +3,14 @@ export const REFRESH_TOKEN_COOKIE_NAME = "habitquest_refresh_token";
 
 export const ACCESS_TOKEN_EXPIRES_IN =
   process.env.JWT_ACCESS_EXPIRES_IN ||
+  process.env.accessTokenExpiredIn ||
+  process.env.accessTokenExpiresIn ||
   process.env.ACCESS_TOKEN_EXPIRES_IN ||
   "15m";
 export const REFRESH_TOKEN_EXPIRES_IN =
   process.env.JWT_REFRESH_EXPIRES_IN ||
+  process.env.refreshTokenExpiredIn ||
+  process.env.refreshTokenExpiresIn ||
   process.env.REFRESH_TOKEN_EXPIRES_IN ||
   "7d";
 export const EMAIL_VERIFICATION_EXPIRES_IN = "5m";

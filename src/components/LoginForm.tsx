@@ -85,6 +85,7 @@ export default function LoginForm({ initialNotice }: { initialNotice?: TNotice |
     try {
       const response = await fetch(AuthRoutes.loginApi, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });

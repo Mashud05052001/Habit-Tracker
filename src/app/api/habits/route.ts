@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireSessionUser } from "@/app/api/auth/auth.service";
 import { connectDB } from "@/lib/mongodb";
-import { Habit, Log } from "@/models/Habit";
+import {
+  HABIT_NAME_MAX_LENGTH,
+  HABIT_NAME_MIN_LENGTH,
+  Habit,
+  Log,
+} from "@/models/Habit";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +20,21 @@ const CASE_INSENSITIVE_COLLATION = { locale: "en", strength: 2 };
 
 function normalizeHabitName(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
+}
+
+function validateHabitName(name: string) {
+  if (!name) {
+    return "name is required";
+  }
+
+  if (
+    name.length < HABIT_NAME_MIN_LENGTH ||
+    name.length > HABIT_NAME_MAX_LENGTH
+  ) {
+    return `Habit name must be ${HABIT_NAME_MIN_LENGTH}-${HABIT_NAME_MAX_LENGTH} characters.`;
+  }
+
+  return null;
 }
 
 // GET /api/habits — list habits
@@ -60,8 +80,9 @@ export async function POST(req: NextRequest) {
         : "✅";
     const createNew = body.createNew === true;
 
-    if (!name) {
-      return NextResponse.json({ error: "name is required" }, { status: 400 });
+    const nameError = validateHabitName(name);
+    if (nameError) {
+      return NextResponse.json({ error: nameError }, { status: 400 });
     }
 
     const activeDuplicate = await Habit.findOne({

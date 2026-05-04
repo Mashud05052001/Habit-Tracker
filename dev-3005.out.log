@@ -58,3 +58,9 @@
  ✓ Compiled in 361ms (264 modules)
    Reload env: .env
  ✓ Compiled in 8.5s (254 modules)
+ ✓ Compiled in 3.5s (254 modules)
+ ✓ Compiled in 2.6s (254 modules)
+ ✓ Compiled in 1246ms (254 modules)
+   Reload env: .env
+   Reload env: .env.local
+ ✓ Compiled in 26.8s (254 modules)

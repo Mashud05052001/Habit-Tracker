@@ -83,6 +83,7 @@ export function parseDurationToMs(value: string) {
 function getAccessTokenSecret() {
   return (
     process.env.JWT_ACCESS_SECRET ||
+    process.env.accessTokenSecret ||
     process.env.ACCESS_TOKEN_SECRET ||
     process.env.AUTH_JWT_SECRET ||
     "local-dev-access-secret"
@@ -92,6 +93,7 @@ function getAccessTokenSecret() {
 function getRefreshTokenSecret() {
   return (
     process.env.JWT_REFRESH_SECRET ||
+    process.env.refreshTokenSecret ||
     process.env.REFRESH_TOKEN_SECRET ||
     process.env.AUTH_JWT_SECRET ||
     "local-dev-refresh-secret"
