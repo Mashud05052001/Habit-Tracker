@@ -6,6 +6,8 @@ import { Habit, Log } from "@/models/Habit";
 export const dynamic = "force-dynamic";
 
 const APP_TIME_ZONE = process.env.APP_TIME_ZONE || "Asia/Dhaka";
+const LOG_EDIT_WINDOW_DAYS = 2;
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 function getTodayInAppTimeZone() {
   try {
@@ -36,13 +38,32 @@ function getTodayInAppTimeZone() {
   }
 }
 
-function isTodayDate(year: number, month: number, day: number) {
+function getUtcDayNumber(year: number, month: number, day: number) {
+  const timestamp = Date.UTC(year, month, day);
+  const date = new Date(timestamp);
+
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month ||
+    date.getUTCDate() !== day
+  ) {
+    return null;
+  }
+
+  return Math.floor(timestamp / MS_PER_DAY);
+}
+
+function canUpdateLogDate(year: number, month: number, day: number) {
   const today = getTodayInAppTimeZone();
-  return (
-    year === today.year &&
-    month === today.month &&
-    day === today.day
-  );
+  const targetDay = getUtcDayNumber(year, month, day);
+  const todayDay = getUtcDayNumber(today.year, today.month, today.day);
+
+  if (targetDay === null || todayDay === null) {
+    return false;
+  }
+
+  const ageInDays = todayDay - targetDay;
+  return ageInDays >= 0 && ageInDays < LOG_EDIT_WINDOW_DAYS;
 }
 
 function getStatusCode(error: unknown) {
@@ -101,9 +122,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "habitId, year, month, day required" }, { status: 400 });
     }
 
-    if (!isTodayDate(year, month, day)) {
+    if (!canUpdateLogDate(year, month, day)) {
       return NextResponse.json(
-        { error: "Only today's box can be marked" },
+        { error: "Only today or yesterday can be marked" },
         { status: 400 }
       );
     }

@@ -58,9 +58,26 @@ const NOTIFICATION_STORAGE_PREFIX = "habitee.dailyNotification.";
 const NOTIFICATION_SW_PATH = "/habitee-notification-sw.js";
 const REMINDER_CHECK_INTERVAL_MS = 5_000;
 const HABIT_DND_TYPE = "habit-row";
+const LOG_EDIT_WINDOW_DAYS = 2;
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 function daysInMonth(y: number, m: number) {
   return new Date(y, m + 1, 0).getDate();
+}
+
+function getCalendarDayNumber(year: number, month: number, day: number) {
+  const timestamp = Date.UTC(year, month, day);
+  const date = new Date(timestamp);
+
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month ||
+    date.getUTCDate() !== day
+  ) {
+    return null;
+  }
+
+  return Math.floor(timestamp / MS_PER_DAY);
 }
 
 function isValidReminderTime(value: string) {
@@ -502,7 +519,19 @@ export default function HabitTracker({
   }
 
   function canToggleDay(day: number) {
-    return isCurrentMonth && day === todayDay;
+    const targetDay = getCalendarDayNumber(viewYear, viewMonth, day);
+    const currentDay = getCalendarDayNumber(
+      now.getFullYear(),
+      now.getMonth(),
+      todayDay,
+    );
+
+    if (targetDay === null || currentDay === null) {
+      return false;
+    }
+
+    const ageInDays = currentDay - targetDay;
+    return ageInDays >= 0 && ageInDays < LOG_EDIT_WINDOW_DAYS;
   }
 
   function getHabitTrackingStartDay(habit: Habit) {
@@ -936,7 +965,7 @@ export default function HabitTracker({
   // ── Toggle a day ─────────────────────────────────────────────────────
   async function toggle(habitId: string, day: number) {
     if (!canToggleDay(day)) {
-      showToast("Only today's box can be marked");
+      showToast("Only today or yesterday can be marked");
       return;
     }
 
@@ -1997,7 +2026,7 @@ export default function HabitTracker({
         title={
           canToggleDay(d)
             ? `${h.name} - ${missed ? "mark complete" : "mark today"}`
-            : `${h.name} - only today's box can be marked`
+            : `${h.name} - only today or yesterday can be marked`
         }
       />
     );

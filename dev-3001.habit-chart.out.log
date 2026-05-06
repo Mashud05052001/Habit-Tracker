@@ -136,3 +136,4 @@
  GET /_next/static/chunks/fallback/main.js 404 in 635ms
  GET /_next/static/chunks/fallback/pages/_app.js 404 in 463ms
  GET /_next/static/chunks/fallback/pages/_error.js 404 in 460ms
+ ✓ Compiled in 1130ms (1100 modules)
