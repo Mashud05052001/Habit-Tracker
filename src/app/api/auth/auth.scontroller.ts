@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { ACCESS_TOKEN_COOKIE_NAME } from "./auth.constant";
 import { AuthRoutes } from "./auth.route";
 import {
   applyAccessTokenCookie,
@@ -118,6 +119,18 @@ export async function verifyEmailController(request: NextRequest) {
 
 export async function sessionController(request: NextRequest) {
   try {
+    const accessToken = request.cookies.get(ACCESS_TOKEN_COOKIE_NAME)?.value ?? null;
+    if (!accessToken) {
+      const result = await refreshAuthTokens(request);
+      const response = NextResponse.json({
+        user: result.user,
+        accessToken: result.accessToken,
+        accessTokenExpiresIn: result.accessTokenExpiresIn,
+      });
+      applyAccessTokenCookie(response, result);
+      return response;
+    }
+
     const user = await getSessionUserFromRequest(request);
 
     if (!user) {
@@ -141,6 +154,6 @@ export async function sessionController(request: NextRequest) {
       }
     }
 
-    return buildErrorResponse(error);
+    return buildErrorResponse(error, shouldClearAuthCookies(error));
   }
 }

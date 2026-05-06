@@ -266,10 +266,6 @@ export async function getSessionUserFromCookieStore() {
 
 export async function requireSessionUser(request: NextRequest) {
   const accessToken = request.cookies.get(ACCESS_TOKEN_COOKIE_NAME)?.value ?? null;
-  if (!accessToken) {
-    throw new AuthError(401, "Please log in to continue", "AUTH_REQUIRED");
-  }
-
   const user = await getSessionUserFromAccessToken(accessToken);
 
   if (!user) {

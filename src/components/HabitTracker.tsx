@@ -60,9 +60,44 @@ const REMINDER_CHECK_INTERVAL_MS = 5_000;
 const HABIT_DND_TYPE = "habit-row";
 const LOG_EDIT_WINDOW_DAYS = 2;
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
+const MIN_AUTH_REFRESH_DELAY_MS = 5_000;
+const MAX_AUTH_REFRESH_DELAY_MS = 5 * 60 * 1000;
 
 function daysInMonth(y: number, m: number) {
   return new Date(y, m + 1, 0).getDate();
+}
+
+function parseDurationToMs(value: string) {
+  const match = value.trim().match(/^(\d+)(ms|s|m|h|d)?$/i);
+  if (!match) return 15 * 60 * 1000;
+
+  const amount = Number(match[1]);
+  const unit = (match[2] || "ms").toLowerCase();
+
+  switch (unit) {
+    case "ms":
+      return amount;
+    case "s":
+      return amount * 1000;
+    case "m":
+      return amount * 60 * 1000;
+    case "h":
+      return amount * 60 * 60 * 1000;
+    case "d":
+      return amount * 24 * 60 * 60 * 1000;
+    default:
+      return 15 * 60 * 1000;
+  }
+}
+
+function getAuthRefreshDelayMs(accessTokenExpiresIn: string) {
+  const expiresMs = parseDurationToMs(accessTokenExpiresIn);
+  const refreshMs = Math.floor(expiresMs * 0.8);
+
+  return Math.min(
+    Math.max(refreshMs, MIN_AUTH_REFRESH_DELAY_MS),
+    MAX_AUTH_REFRESH_DELAY_MS,
+  );
 }
 
 function getCalendarDayNumber(year: number, month: number, day: number) {
@@ -417,8 +452,10 @@ function HabitNameCell({
 
 export default function HabitTracker({
   currentUser,
+  accessTokenExpiresIn,
 }: {
   currentUser: SessionUser;
+  accessTokenExpiresIn: string;
 }) {
   const now = new Date();
   const router = useRouter();
@@ -493,6 +530,44 @@ export default function HabitTracker({
   const { toast, showToast } = useToast();
   const showToastRef = useRef(showToast);
   showToastRef.current = showToast;
+
+  useEffect(() => {
+    let cancelled = false;
+    let refreshTimer: ReturnType<typeof setTimeout> | null = null;
+    const refreshDelay = getAuthRefreshDelayMs(accessTokenExpiresIn);
+
+    const scheduleRefresh = () => {
+      refreshTimer = setTimeout(async () => {
+        const refreshed = await refreshAccessToken();
+        if (!refreshed) {
+          window.location.assign("/login?expired=1");
+          return;
+        }
+
+        if (!cancelled) {
+          scheduleRefresh();
+        }
+      }, refreshDelay);
+    };
+
+    void refreshAccessToken().then((refreshed) => {
+      if (cancelled) return;
+
+      if (!refreshed) {
+        window.location.assign("/login?expired=1");
+        return;
+      }
+
+      scheduleRefresh();
+    });
+
+    return () => {
+      cancelled = true;
+      if (refreshTimer) {
+        clearTimeout(refreshTimer);
+      }
+    };
+  }, [accessTokenExpiresIn]);
 
   useEffect(() => {
     latestHabitsRef.current = habits;
@@ -2154,6 +2229,139 @@ export default function HabitTracker({
     );
   }
 
+  function renderStreaksSkeleton() {
+    return (
+      <>
+        <div className={styles.sectionTitle} style={{ marginTop: 28 }}>
+          Current Streaks
+        </div>
+        <div
+          className={`${styles.streaksRow} ${styles.streaksSkeleton}`}
+          role="status"
+          aria-label="Loading current streaks"
+        >
+          {Array.from({ length: 4 }, (_, i) => (
+            <div key={`streak-skeleton-${i}`} className={styles.streakCard}>
+              <div
+                className={`${styles.skeletonBlock} ${styles.skeletonStreakName}`}
+              />
+              <div
+                className={`${styles.skeletonBlock} ${styles.skeletonStreakValue}`}
+              />
+              <div className={styles.streakBar}>
+                <div
+                  className={`${styles.skeletonBlock} ${styles.skeletonStreakFill}`}
+                  style={{ width: `${[64, 42, 78, 56][i]}%` }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </>
+    );
+  }
+
+  function renderInsightsSkeleton() {
+    const chartTicks = Array.from({ length: 5 }, (_, i) => i);
+    const xLabels = Array.from({ length: Math.min(days, 12) }, (_, i) => i);
+
+    return (
+      <>
+        <div className={styles.sectionTitle}>Insights</div>
+        <div
+          className={`${styles.chartGrid} ${styles.insightsSkeleton}`}
+          role="status"
+          aria-label="Loading insights"
+        >
+          <div className={`${styles.chartSection} ${styles.dailyChartSection}`}>
+            <div className={styles.chartHeader}>
+              <div className={styles.chartTitle}>
+                Daily Completion Rate — {MONTHS[viewMonth]} {viewYear}
+              </div>
+              <div className={styles.chartStats}>
+                <div className={`${styles.chartStat} ${styles.skeletonChartStat}`} />
+                <div className={`${styles.chartStat} ${styles.skeletonChartStat}`} />
+              </div>
+            </div>
+
+            <div className={styles.chartPlot}>
+              <div className={styles.chartPlotInner}>
+                <div className={styles.chartYAxis}>
+                  {chartTicks.map((tick) => (
+                    <span
+                      key={`chart-y-skeleton-${tick}`}
+                      className={`${styles.skeletonBlock} ${styles.skeletonAxisLabel}`}
+                    />
+                  ))}
+                </div>
+                <div className={`${styles.chartCanvas} ${styles.skeletonChartCanvas}`}>
+                  <div className={`${styles.skeletonBlock} ${styles.skeletonChartArea}`} />
+                  <div className={`${styles.skeletonBlock} ${styles.skeletonChartLine}`} />
+                  <div className={`${styles.skeletonBlock} ${styles.skeletonChartPoint}`} />
+                </div>
+                <div className={styles.chartXAxis}>
+                  {xLabels.map((label) => (
+                    <span
+                      key={`chart-x-skeleton-${label}`}
+                      className={`${styles.skeletonBlock} ${styles.skeletonXAxisLabel}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.chartSection}>
+            <div className={styles.chartHeader}>
+              <div className={styles.chartTitle}>
+                Habit Success Rate — {MONTHS[viewMonth]} {viewYear}
+              </div>
+              <div className={styles.chartStats}>
+                <div className={`${styles.chartStat} ${styles.skeletonChartStat}`} />
+                <div className={`${styles.chartStat} ${styles.skeletonChartStat}`} />
+              </div>
+            </div>
+
+            <div className={styles.habitBars}>
+              {Array.from({ length: 5 }, (_, i) => (
+                <div key={`habit-bar-skeleton-${i}`} className={styles.habitBarRow}>
+                  <div className={styles.habitBarHeader}>
+                    <div className={styles.habitBarName}>
+                      <span
+                        className={`${styles.skeletonBlock} ${styles.skeletonHabitBarIcon}`}
+                      />
+                      <span
+                        className={`${styles.skeletonBlock} ${styles.skeletonHabitBarLabel}`}
+                        style={{ width: `${[58, 46, 66, 52, 62][i]}%` }}
+                      />
+                    </div>
+                    <div
+                      className={`${styles.skeletonBlock} ${styles.skeletonHabitBarValue}`}
+                    />
+                  </div>
+                  <div className={styles.habitBarTrack}>
+                    <div
+                      className={`${styles.skeletonBlock} ${styles.skeletonHabitBarFill}`}
+                      style={{ width: `${[72, 48, 86, 60, 54][i]}%` }}
+                    />
+                  </div>
+                  <div className={styles.habitBarMeta}>
+                    <span
+                      className={`${styles.skeletonBlock} ${styles.skeletonHabitBarMeta}`}
+                    />
+                    <span
+                      className={`${styles.skeletonBlock} ${styles.skeletonHabitBarMeta}`}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   const notificationStatus =
     notificationPermission === "insecure"
       ? "Notifications need HTTPS or localhost."
@@ -2563,7 +2771,9 @@ export default function HabitTracker({
       </div>
 
       {/* STREAKS */}
-      {habits.length > 0 && (
+      {loading ? (
+        renderStreaksSkeleton()
+      ) : habits.length > 0 && (
         <>
           <div className={styles.sectionTitle} style={{ marginTop: 28 }}>
             Current Streaks
@@ -2595,7 +2805,9 @@ export default function HabitTracker({
       )}
 
       {/* CHARTS */}
-      {habits.length > 0 && (
+      {loading ? (
+        renderInsightsSkeleton()
+      ) : habits.length > 0 && (
         <>
           <div className={styles.sectionTitle}>Insights</div>
           <div className={styles.chartGrid}>

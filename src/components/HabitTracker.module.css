@@ -851,6 +851,43 @@ html[data-theme="light"] .skeletonSumCell::after {
   }
 }
 
+.skeletonBlock {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: rgba(var(--accent-rgb), 0.12);
+  pointer-events: none;
+}
+
+.skeletonBlock::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: skeletonShimmer 1.35s ease-in-out infinite;
+}
+
+html[data-theme="light"] .skeletonBlock::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.72),
+    transparent
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeletonBlock::after {
+    animation: none;
+  }
+}
+
 .loader {
   display: flex;
   align-items: center;
@@ -947,6 +984,33 @@ html[data-theme="light"] .skeletonSumCell::after {
     rgba(var(--success-rgb), 1)
   );
   transition: width 0.4s ease;
+}
+
+.streaksSkeleton .streakCard {
+  cursor: progress;
+}
+
+.streaksSkeleton .streakCard:hover {
+  border-color: var(--border);
+  transform: none;
+}
+
+.skeletonStreakName {
+  width: 68%;
+  height: 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.skeletonStreakValue {
+  width: 84px;
+  height: 28px;
+  border-radius: 10px;
+}
+
+.skeletonStreakFill {
+  height: 100%;
+  border-radius: 999px;
 }
 
 .chartGrid {
@@ -1355,6 +1419,16 @@ html[data-theme="light"] .skeletonSumCell::after {
   color: var(--muted);
 }
 
+.insightsSkeleton {
+  cursor: progress;
+}
+
+.skeletonChartStat {
+  width: 74px;
+  height: 29px;
+  padding: 0;
+}
+
 .chartPlot {
   flex: 1;
   display: flex;
@@ -1402,6 +1476,57 @@ html[data-theme="light"] .skeletonSumCell::after {
     rgba(var(--accent-rgb), 0.05),
     rgba(var(--accent-rgb), 0.01)
   );
+}
+
+.skeletonAxisLabel {
+  width: 28px;
+  height: 10px;
+  border-radius: 999px;
+  margin-left: auto;
+}
+
+.skeletonXAxisLabel {
+  width: 12px;
+  height: 8px;
+  border-radius: 999px;
+  margin: 0 auto;
+}
+
+.skeletonChartCanvas {
+  overflow: hidden;
+}
+
+.skeletonChartArea {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 12%;
+  height: 48%;
+  border-radius: 20px 20px 12px 12px;
+  background: rgba(var(--accent-rgb), 0.08);
+  clip-path: polygon(0 62%, 18% 42%, 34% 58%, 52% 28%, 70% 44%, 86% 20%, 100% 34%, 100% 100%, 0 100%);
+}
+
+.skeletonChartLine {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 42%;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(var(--accent-rgb), 0.2);
+  transform: rotate(-6deg);
+  transform-origin: center;
+}
+
+.skeletonChartPoint {
+  position: absolute;
+  right: 18%;
+  top: 28%;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: rgba(var(--success-rgb), 0.24);
 }
 
 .chartTooltip {
@@ -1533,6 +1658,37 @@ html[data-theme="light"] .skeletonSumCell::after {
     rgba(var(--accent-rgb), 1),
     rgba(var(--success-rgb), 1)
   );
+}
+
+.skeletonHabitBarIcon {
+  width: 18px;
+  height: 18px;
+  border-radius: 7px;
+  flex-shrink: 0;
+}
+
+.skeletonHabitBarLabel {
+  height: 12px;
+  max-width: 170px;
+  border-radius: 999px;
+}
+
+.skeletonHabitBarValue {
+  width: 38px;
+  height: 14px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.skeletonHabitBarFill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.skeletonHabitBarMeta {
+  width: 86px;
+  height: 11px;
+  border-radius: 999px;
 }
 
 .habitBarMeta {

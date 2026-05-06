@@ -97,3 +97,18 @@
  GET /_next/static/chunks/app-pages-internals.js 500 in 34ms
  GET /_next/static/chunks/app/layout.js 500 in 33ms
  GET /_next/static/chunks/app/page.js 500 in 34ms
+ ✓ Compiled in 669ms (1152 modules)
+ ✓ Compiled in 206ms (1152 modules)
+ ✓ Compiled in 391ms (576 modules)
+ ✓ Compiled in 195ms (576 modules)
+ ✓ Compiled in 1149ms (1152 modules)
+ ✓ Compiled in 588ms (1152 modules)
+ ✓ Compiled in 720ms (1162 modules)
+   Reload env: .env
+ ✓ Compiled in 489ms (1152 modules)
+   Reload env: .env
+ ✓ Compiled in 335ms (1152 modules)
+ ✓ Compiled in 478ms (576 modules)
+ ✓ Compiled in 1576ms (1152 modules)
+ ✓ Compiled in 661ms (1152 modules)
+ ✓ Compiled in 169ms (576 modules)
