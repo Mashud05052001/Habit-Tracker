@@ -751,6 +751,106 @@ html[data-theme="light"] .stickyFirstCol::after {
   font-weight: 600;
 }
 
+.trackerSkeleton {
+  cursor: progress;
+}
+
+.skeletonHabitName,
+.skeletonDayCell,
+.skeletonSumCell {
+  position: relative;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.skeletonHabitName {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  min-height: 0;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 12px 5px 5px 12px;
+  background: var(--surface);
+  box-shadow: 0 10px 24px var(--shadow-soft);
+}
+
+.skeletonDayCell {
+  height: 100%;
+  min-height: 0;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--surface-muted);
+}
+
+.skeletonSumCell {
+  height: 100%;
+  min-height: 0;
+  border-radius: 5px;
+  background: rgba(var(--accent-rgb), 0.08);
+}
+
+.skeletonHabitIcon,
+.skeletonHabitLabel {
+  display: block;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: rgba(var(--accent-rgb), 0.12);
+}
+
+.skeletonHabitIcon {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+}
+
+.skeletonHabitLabel {
+  height: 10px;
+  min-width: 76px;
+}
+
+.skeletonHabitName::after,
+.skeletonDayCell::after,
+.skeletonSumCell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: skeletonShimmer 1.35s ease-in-out infinite;
+}
+
+html[data-theme="light"] .skeletonHabitName::after,
+html[data-theme="light"] .skeletonDayCell::after,
+html[data-theme="light"] .skeletonSumCell::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.72),
+    transparent
+  );
+}
+
+@keyframes skeletonShimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeletonHabitName::after,
+  .skeletonDayCell::after,
+  .skeletonSumCell::after {
+    animation: none;
+  }
+}
+
 .loader {
   display: flex;
   align-items: center;

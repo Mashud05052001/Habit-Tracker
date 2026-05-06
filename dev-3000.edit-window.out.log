@@ -9,3 +9,91 @@
 
  ✓ Starting...
  ✓ Ready in 2.5s
+ ○ Compiling / ...
+ ✓ Compiled / in 1953ms (874 modules)
+ GET / 307 in 2879ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 1821ms (928 modules)
+ GET /login 200 in 2019ms
+ GET / 307 in 6599ms
+ GET /login 200 in 383ms
+ GET / 307 in 438ms
+ GET /login 200 in 372ms
+ ✓ Compiled /api/auth/login in 296ms (567 modules)
+ POST /api/auth/login 200 in 1097ms
+ ✓ Compiled /api/logs in 456ms (570 modules)
+ ✓ Compiled (572 modules)
+ GET /api/habits 200 in 2995ms
+ GET /api/logs?year=2026&month=4 200 in 3421ms
+ GET /api/habits 200 in 805ms
+ GET /api/logs?year=2026&month=4 200 in 1019ms
+ POST /api/logs 201 in 1349ms
+ POST /api/logs 201 in 1272ms
+ POST /api/logs 201 in 1805ms
+ POST /api/logs 200 in 1823ms
+ POST /api/logs 201 in 1273ms
+ POST /api/logs 200 in 1277ms
+ ○ Compiling /api/habits ...
+ ✓ Compiled /api/habits in 1513ms (957 modules)
+ ✓ Compiled in 0ms (568 modules)
+ ✓ Compiled in 0ms (568 modules)
+ ✓ Compiled in 0ms (568 modules)
+ GET /api/habits 200 in 2310ms
+ GET /api/logs?year=2026&month=4 200 in 2750ms
+ GET / 200 in 542ms
+ GET /api/habits 200 in 662ms
+ GET /api/logs?year=2026&month=4 200 in 1009ms
+ GET /api/habits 200 in 648ms
+ GET /api/logs?year=2026&month=4 200 in 1002ms
+ ✓ Compiled in 3s (928 modules)
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 901ms (931 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1056ms (1157 modules)
+ GET / 404 in 2165ms
+ GET / 200 in 2231ms
+ GET /_next/static/css/app/layout.css?v=1778080909408 404 in 25ms
+ GET /_next/static/css/app/page.css?v=1778080909408 404 in 22ms
+ GET /_next/static/chunks/main-app.js?v=1778080909408 404 in 52ms
+ GET /_next/static/chunks/app/layout.js 404 in 42ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 38ms
+ GET /_next/static/chunks/app/page.js 404 in 38ms
+ GET / 200 in 380ms
+ GET /_next/static/css/app/page.css?v=1778080916464 404 in 47ms
+ GET /_next/static/css/app/layout.css?v=1778080916464 404 in 48ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 49ms
+ GET /_next/static/chunks/main-app.js?v=1778080916464 404 in 55ms
+ GET /_next/static/chunks/app/layout.js 404 in 52ms
+ GET /_next/static/chunks/app/page.js 404 in 50ms
+ GET / 200 in 373ms
+ ✓ Compiled /api/logs in 386ms (607 modules)
+ ✓ Compiled in 1ms (609 modules)
+ ✓ Compiled in 0ms (609 modules)
+ ✓ Compiled in 1ms (609 modules)
+ GET /api/habits 200 in 1882ms
+ GET /api/habits 200 in 801ms
+ GET /api/logs?year=2026&month=4 200 in 4210ms
+ GET /api/logs?year=2026&month=4 200 in 1196ms
+ ✓ Compiled in 1056ms (1152 modules)
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 520ms (1186 modules)
+ GET /_next/static/webpack/3ba69071b4ed04a1.webpack.hot-update.json 404 in 723ms
+ GET / 200 in 401ms
+ GET /api/habits 200 in 1217ms
+ GET /api/logs?year=2026&month=4 200 in 1223ms
+ GET /api/habits 200 in 642ms
+ GET /api/logs?year=2026&month=4 200 in 1024ms
+ GET /api/habits 200 in 831ms
+ GET /api/logs?year=2026&month=4 200 in 1050ms
+ ✓ Compiled in 981ms (1196 modules)
+ GET /api/habits 200 in 655ms
+ GET /api/logs?year=2026&month=4 200 in 1062ms
+ GET / 200 in 459ms
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 540ms (1157 modules)
+ GET /_next/static/css/app/layout.css?v=1778088548109 500 in 4528ms
+ GET /_next/static/css/app/page.css?v=1778088548109 500 in 4530ms
+ GET /_next/static/chunks/main-app.js?v=1778088548109 500 in 34ms
+ GET /_next/static/chunks/app-pages-internals.js 500 in 34ms
+ GET /_next/static/chunks/app/layout.js 500 in 33ms
+ GET /_next/static/chunks/app/page.js 500 in 34ms

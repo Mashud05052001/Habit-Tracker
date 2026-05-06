@@ -2032,6 +2032,128 @@ export default function HabitTracker({
     );
   }
 
+  function renderTrackerSkeleton() {
+    const skeletonRows = 5;
+    const rowIndexes = Array.from({ length: skeletonRows }, (_, i) => i);
+    const dayIndexes = Array.from({ length: days }, (_, i) => i + 1);
+
+    if (pinTaskColumn) {
+      return (
+        <div
+          className={`${styles.pinnedGridShell} ${styles.trackerSkeleton}`}
+          role="status"
+          aria-label="Loading habits"
+        >
+          <div
+            className={styles.pinnedTaskColumn}
+            style={{
+              gridTemplateRows: `var(--tracker-header-row) repeat(${skeletonRows}, var(--tracker-habit-row)) var(--tracker-summary-row)`,
+            }}
+          >
+            <div className={[styles.ghLabel, styles.habitHeaderCell].join(" ")}>
+              Habit
+            </div>
+            {rowIndexes.map((row) => (
+              <div key={`skeleton-habit-${row}`} className={styles.skeletonHabitName}>
+                <span className={styles.skeletonHabitIcon} />
+                <span
+                  className={styles.skeletonHabitLabel}
+                  style={{ width: `${row % 2 === 0 ? 68 : 52}%` }}
+                />
+              </div>
+            ))}
+            <div className={styles.sumLabel}>Daily %</div>
+          </div>
+
+          <div className={styles.dateGridScroll}>
+            <div
+              className={styles.dateGrid}
+              style={{
+                gridTemplateColumns: `repeat(${days}, minmax(28px,1fr))`,
+                gridTemplateRows: `var(--tracker-header-row) repeat(${skeletonRows}, var(--tracker-habit-row)) var(--tracker-summary-row)`,
+              }}
+            >
+              {dayIndexes.map((d) => (
+                <div
+                  key={`skeleton-day-${d}`}
+                  className={`${styles.ghLabel} ${isCurrentMonth && d === now.getDate() ? styles.todayLabel : ""}`}
+                >
+                  {d}
+                </div>
+              ))}
+              {rowIndexes.map((row) =>
+                dayIndexes.map((d) => (
+                  <div
+                    key={`skeleton-cell-${row}-${d}`}
+                    className={styles.skeletonDayCell}
+                  />
+                )),
+              )}
+              {dayIndexes.map((d) => (
+                <div key={`skeleton-sum-${d}`} className={styles.skeletonSumCell} />
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div
+        className={`${styles.innerGrid} ${styles.trackerSkeleton}`}
+        role="status"
+        aria-label="Loading habits"
+        style={{
+          gridTemplateColumns: `220px repeat(${days}, minmax(28px,1fr))`,
+          gridTemplateRows: `var(--tracker-header-row) repeat(${skeletonRows}, var(--tracker-habit-row)) var(--tracker-summary-row)`,
+        }}
+      >
+        <div
+          className={[
+            styles.ghLabel,
+            styles.habitHeaderCell,
+            pinTaskColumn ? styles.stickyFirstCol : "",
+          ].join(" ")}
+        >
+          Habit
+        </div>
+        {dayIndexes.map((d) => (
+          <div
+            key={`skeleton-day-${d}`}
+            className={`${styles.ghLabel} ${isCurrentMonth && d === now.getDate() ? styles.todayLabel : ""}`}
+          >
+            {d}
+          </div>
+        ))}
+        {rowIndexes.map((row) => (
+          <div key={`skeleton-row-${row}`} className={styles.rowGroup}>
+            <div className={styles.skeletonHabitName}>
+              <span className={styles.skeletonHabitIcon} />
+              <span
+                className={styles.skeletonHabitLabel}
+                style={{ width: `${row % 2 === 0 ? 68 : 52}%` }}
+              />
+            </div>
+            {dayIndexes.map((d) => (
+              <div
+                key={`skeleton-cell-${row}-${d}`}
+                className={styles.skeletonDayCell}
+              />
+            ))}
+          </div>
+        ))}
+        <div
+          className={`${styles.sumLabel} ${pinTaskColumn ? styles.stickyFirstCol : ""}`}
+        >
+          Daily %
+        </div>
+        {dayIndexes.map((d) => (
+          <div key={`skeleton-sum-${d}`} className={styles.skeletonSumCell} />
+        ))}
+      </div>
+    );
+  }
+
   const notificationStatus =
     notificationPermission === "insecure"
       ? "Notifications need HTTPS or localhost."
@@ -2273,13 +2395,7 @@ export default function HabitTracker({
       </div>
       <div className={styles.gridScroll}>
         {loading ? (
-          <div
-            className={styles.loader}
-            role="status"
-            aria-label="Loading habits"
-          >
-            <ClipLoader size={34} color={loaderColor} loading />
-          </div>
+          renderTrackerSkeleton()
         ) : habits.length === 0 ? (
           <div className={styles.emptyState}>
             <div className={styles.emptyIcon}>🌱</div>
