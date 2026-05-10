@@ -526,6 +526,10 @@ export default function HabitTracker({
   const notificationLastSentDateRef = useRef("");
   const habitOrderBeforeDragRef = useRef<Habit[] | null>(null);
   const latestHabitsRef = useRef<Habit[]>([]);
+  const trackerScrollRef = useRef<HTMLDivElement | null>(null);
+  const dateGridScrollRef = useRef<HTMLDivElement | null>(null);
+  const dateGridRef = useRef<HTMLDivElement | null>(null);
+  const innerGridRef = useRef<HTMLDivElement | null>(null);
 
   const { toast, showToast } = useToast();
   const showToastRef = useRef(showToast);
@@ -658,6 +662,78 @@ export default function HabitTracker({
 
     return habitExistsOnDay(habit, day) && isPastDay(day);
   }
+
+  function alignTodayColumn(
+    scrollEl: HTMLDivElement | null,
+    gridEl: HTMLDivElement | null,
+    firstDayChildIndex: number,
+  ) {
+    if (!scrollEl || !gridEl || !isCurrentMonth) {
+      return;
+    }
+
+    const firstDay = gridEl.children[firstDayChildIndex] as
+      | HTMLElement
+      | undefined;
+    const secondDay = gridEl.children[firstDayChildIndex + 1] as
+      | HTMLElement
+      | undefined;
+    const todayCell = gridEl.children[firstDayChildIndex + todayDay - 1] as
+      | HTMLElement
+      | undefined;
+
+    if (!firstDay || !todayCell) {
+      return;
+    }
+
+    const columnPitch =
+      secondDay && secondDay.offsetLeft > firstDay.offsetLeft
+        ? secondDay.offsetLeft - firstDay.offsetLeft
+        : firstDay.offsetWidth;
+
+    if (columnPitch <= 0) {
+      return;
+    }
+
+    const visibleColumns = Math.max(
+      1,
+      Math.floor(scrollEl.clientWidth / columnPitch),
+    );
+    const preferredSlot = visibleColumns >= 4 ? 3 : 2;
+    const todayLeft = todayCell.offsetLeft - gridEl.offsetLeft;
+    const targetScrollLeft = Math.min(
+      todayLeft - (preferredSlot - 1) * columnPitch,
+      scrollEl.scrollWidth - scrollEl.clientWidth,
+    );
+
+    scrollEl.scrollLeft = Math.max(0, targetScrollLeft);
+  }
+
+  useEffect(() => {
+    if (!isCurrentMonth || loading) {
+      return;
+    }
+
+    const align = () => {
+      if (pinTaskColumn) {
+        alignTodayColumn(dateGridScrollRef.current, dateGridRef.current, 0);
+        return;
+      }
+
+      alignTodayColumn(trackerScrollRef.current, innerGridRef.current, 1);
+    };
+
+    const frame = window.requestAnimationFrame(() => {
+      align();
+      window.requestAnimationFrame(align);
+    });
+    window.addEventListener("resize", align);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", align);
+    };
+  }, [days, habits.length, isCurrentMonth, loading, pinTaskColumn, todayDay]);
 
   // ── Fetch habits + logs ──────────────────────────────────────────────
   const fetchData = useCallback(async () => {
@@ -1494,7 +1570,9 @@ export default function HabitTracker({
 
     const orderChanged =
       originalHabits.length !== orderedHabits.length ||
-      originalHabits.some((habit, index) => habit._id !== orderedHabits[index]?._id);
+      originalHabits.some(
+        (habit, index) => habit._id !== orderedHabits[index]?._id,
+      );
 
     if (!orderChanged) return;
 
@@ -1742,7 +1820,14 @@ export default function HabitTracker({
   }
   function currentStreak(habitId: string) {
     let streak = 0;
-    const startDay = isCurrentMonth ? now.getDate() : days;
+    const todayLog = isCurrentMonth ? getLogForDay(habitId, todayDay) : null;
+    const startDay =
+      isCurrentMonth && !todayLog && !autoMarkedToday
+        ? todayDay - 1
+        : isCurrentMonth
+          ? todayDay
+          : days;
+
     for (let d = startDay; d >= 1; d--) {
       if (isDone(habitId, d)) streak++;
       else break;
@@ -2129,7 +2214,10 @@ export default function HabitTracker({
               Habit
             </div>
             {rowIndexes.map((row) => (
-              <div key={`skeleton-habit-${row}`} className={styles.skeletonHabitName}>
+              <div
+                key={`skeleton-habit-${row}`}
+                className={styles.skeletonHabitName}
+              >
                 <span className={styles.skeletonHabitIcon} />
                 <span
                   className={styles.skeletonHabitLabel}
@@ -2165,7 +2253,10 @@ export default function HabitTracker({
                 )),
               )}
               {dayIndexes.map((d) => (
-                <div key={`skeleton-sum-${d}`} className={styles.skeletonSumCell} />
+                <div
+                  key={`skeleton-sum-${d}`}
+                  className={styles.skeletonSumCell}
+                />
               ))}
             </div>
           </div>
@@ -2279,8 +2370,12 @@ export default function HabitTracker({
                 Daily Completion Rate — {MONTHS[viewMonth]} {viewYear}
               </div>
               <div className={styles.chartStats}>
-                <div className={`${styles.chartStat} ${styles.skeletonChartStat}`} />
-                <div className={`${styles.chartStat} ${styles.skeletonChartStat}`} />
+                <div
+                  className={`${styles.chartStat} ${styles.skeletonChartStat}`}
+                />
+                <div
+                  className={`${styles.chartStat} ${styles.skeletonChartStat}`}
+                />
               </div>
             </div>
 
@@ -2294,10 +2389,18 @@ export default function HabitTracker({
                     />
                   ))}
                 </div>
-                <div className={`${styles.chartCanvas} ${styles.skeletonChartCanvas}`}>
-                  <div className={`${styles.skeletonBlock} ${styles.skeletonChartArea}`} />
-                  <div className={`${styles.skeletonBlock} ${styles.skeletonChartLine}`} />
-                  <div className={`${styles.skeletonBlock} ${styles.skeletonChartPoint}`} />
+                <div
+                  className={`${styles.chartCanvas} ${styles.skeletonChartCanvas}`}
+                >
+                  <div
+                    className={`${styles.skeletonBlock} ${styles.skeletonChartArea}`}
+                  />
+                  <div
+                    className={`${styles.skeletonBlock} ${styles.skeletonChartLine}`}
+                  />
+                  <div
+                    className={`${styles.skeletonBlock} ${styles.skeletonChartPoint}`}
+                  />
                 </div>
                 <div className={styles.chartXAxis}>
                   {xLabels.map((label) => (
@@ -2317,14 +2420,21 @@ export default function HabitTracker({
                 Habit Success Rate — {MONTHS[viewMonth]} {viewYear}
               </div>
               <div className={styles.chartStats}>
-                <div className={`${styles.chartStat} ${styles.skeletonChartStat}`} />
-                <div className={`${styles.chartStat} ${styles.skeletonChartStat}`} />
+                <div
+                  className={`${styles.chartStat} ${styles.skeletonChartStat}`}
+                />
+                <div
+                  className={`${styles.chartStat} ${styles.skeletonChartStat}`}
+                />
               </div>
             </div>
 
             <div className={styles.habitBars}>
               {Array.from({ length: 5 }, (_, i) => (
-                <div key={`habit-bar-skeleton-${i}`} className={styles.habitBarRow}>
+                <div
+                  key={`habit-bar-skeleton-${i}`}
+                  className={styles.habitBarRow}
+                >
                   <div className={styles.habitBarHeader}>
                     <div className={styles.habitBarName}>
                       <span
@@ -2377,401 +2487,409 @@ export default function HabitTracker({
   return (
     <DndProvider backend={HTML5Backend}>
       <div className={styles.wrapper}>
-      {/* HEADER */}
-      <header className={styles.header}>
-        <div className={styles.brandBlock}>
-          <div className={styles.logoIcon}>H</div>
-          <div className={styles.brandCopy}>
-            <div className={styles.logoEyebrow}>Habitee Dashboard</div>
-            <h1 className={styles.logoText}>Habitee</h1>
-            <p className={styles.logoSubtext}>
-              A beautiful daily workspace for habits, streaks, and steadier
-              momentum.
-            </p>
-          </div>
-        </div>
-        <div className={styles.headerRight}>
-          <div className={styles.headerStats}>
-            <div className={styles.statPill}>
-              <div className={styles.dot} />
-              {habits.length} active habits
-            </div>
-            <div className={styles.statPill}>
-              <div className={styles.dot} />
-              {totalDoneMonth()} check-in's this month
+        {/* HEADER */}
+        <header className={styles.header}>
+          <div className={styles.brandBlock}>
+            <div className={styles.logoIcon}>H</div>
+            <div className={styles.brandCopy}>
+              <div className={styles.logoEyebrow}>Habitee Dashboard</div>
+              <h1 className={styles.logoText}>Habitee</h1>
+              <p className={styles.logoSubtext}>
+                A beautiful daily workspace for habits, streaks, and steadier
+                momentum.
+              </p>
             </div>
           </div>
-          <div className={styles.headerActions}>
-            <button
-              type="button"
-              className={`${styles.avatarButton} ${
-                settingsOpen ? styles.avatarButtonActive : ""
-              }`}
-              onClick={() => setSettingsOpen((open) => !open)}
-              aria-haspopup="dialog"
-              aria-expanded={settingsOpen}
-              aria-label="Open settings"
-              title="Open settings"
-            >
-              <span className={styles.avatarInitial}>{userInitial}</span>
-            </button>
+          <div className={styles.headerRight}>
+            <div className={styles.headerStats}>
+              <div className={styles.statPill}>
+                <div className={styles.dot} />
+                {habits.length} active habits
+              </div>
+              <div className={styles.statPill}>
+                <div className={styles.dot} />
+                {totalDoneMonth()} check-in's this month
+              </div>
+            </div>
+            <div className={styles.headerActions}>
+              <button
+                type="button"
+                className={`${styles.avatarButton} ${
+                  settingsOpen ? styles.avatarButtonActive : ""
+                }`}
+                onClick={() => setSettingsOpen((open) => !open)}
+                aria-haspopup="dialog"
+                aria-expanded={settingsOpen}
+                aria-label="Open settings"
+                title="Open settings"
+              >
+                <span className={styles.avatarInitial}>{userInitial}</span>
+              </button>
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {settingsOpen && (
-        <div
-          className={styles.modalBackdrop}
-          onClick={() => setSettingsOpen(false)}
-        >
+        {settingsOpen && (
           <div
-            className={styles.settingsModal}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="settings-title"
-            onClick={(event) => event.stopPropagation()}
+            className={styles.modalBackdrop}
+            onClick={() => setSettingsOpen(false)}
           >
-            <div className={styles.settingsHeader}>
-              <div className={styles.settingsIdentity}>
-                <div className={styles.settingsAvatar}>{userInitial}</div>
-                <div className={styles.settingsUserText}>
-                  {/* <h3 id="settings-title" className={styles.settingsTitle}>
+            <div
+              className={styles.settingsModal}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="settings-title"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className={styles.settingsHeader}>
+                <div className={styles.settingsIdentity}>
+                  <div className={styles.settingsAvatar}>{userInitial}</div>
+                  <div className={styles.settingsUserText}>
+                    {/* <h3 id="settings-title" className={styles.settingsTitle}>
                     Settings
                   </h3> */}
-                  <div className={styles.settingsName}>{currentUser.name}</div>
-                  <div className={styles.settingsEmail}>
-                    {currentUser.email}
-                  </div>
-                </div>
-              </div>
-              <button
-                type="button"
-                className={styles.settingsClose}
-                onClick={() => setSettingsOpen(false)}
-                aria-label="Close settings"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className={styles.settingsBody}>
-              <section className={styles.settingsSection}>
-                <div className={styles.themeHeader}>
-                  <div>
-                    <div className={styles.settingsSectionTitle}>Theme</div>
-                    <p className={styles.settingsHint}>
-                      Choose how Habitee looks on this device.
-                    </p>
-                  </div>
-                  <ThemeToggle />
-                </div>
-              </section>
-
-              <section className={styles.settingsSection}>
-                <div className={styles.notificationHeader}>
-                  <div>
-                    <div className={styles.settingsSectionTitle}>
-                      Notifications
+                    <div className={styles.settingsName}>
+                      {currentUser.name}
                     </div>
-                    <p className={styles.settingsHint}>
-                      Set a daily time to update your activities.
-                    </p>
+                    <div className={styles.settingsEmail}>
+                      {currentUser.email}
+                    </div>
                   </div>
-                  <button
-                    type="button"
-                    className={`${styles.switchButton} ${
-                      notificationEnabled ? styles.switchButtonOn : ""
-                    }`}
-                    role="switch"
-                    aria-checked={notificationEnabled}
-                    onClick={toggleDailyReminder}
-                  >
-                    <span className={styles.switchThumb} />
-                  </button>
                 </div>
+                <button
+                  type="button"
+                  className={styles.settingsClose}
+                  onClick={() => setSettingsOpen(false)}
+                  aria-label="Close settings"
+                >
+                  ×
+                </button>
+              </div>
 
-                <label className={styles.timeField}>
-                  <span>Reminder time</span>
-                  <input
-                    type="time"
-                    value={notificationTime}
-                    onChange={(event) => {
-                      setNotificationTime(event.target.value);
-                      setNotificationLastSentDate("");
-                      notificationLastSentDateRef.current = "";
-                    }}
-                  />
-                </label>
+              <div className={styles.settingsBody}>
+                <section className={styles.settingsSection}>
+                  <div className={styles.themeHeader}>
+                    <div>
+                      <div className={styles.settingsSectionTitle}>Theme</div>
+                      <p className={styles.settingsHint}>
+                        Choose how Habitee looks on this device.
+                      </p>
+                    </div>
+                    <ThemeToggle />
+                  </div>
+                </section>
 
-                <div className={styles.notificationStatus}>
-                  {notificationStatus}
-                </div>
+                <section className={styles.settingsSection}>
+                  <div className={styles.notificationHeader}>
+                    <div>
+                      <div className={styles.settingsSectionTitle}>
+                        Notifications
+                      </div>
+                      <p className={styles.settingsHint}>
+                        Set a daily time to update your activities.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      className={`${styles.switchButton} ${
+                        notificationEnabled ? styles.switchButtonOn : ""
+                      }`}
+                      role="switch"
+                      aria-checked={notificationEnabled}
+                      onClick={toggleDailyReminder}
+                    >
+                      <span className={styles.switchThumb} />
+                    </button>
+                  </div>
 
-                <div className={styles.notificationActions}>
-                  <button
-                    type="button"
-                    className={styles.settingsAction}
-                    onClick={enableDailyReminder}
-                  >
-                    {notificationEnabled ? "Update reminder" : "Set reminder"}
-                  </button>
-                  <button
-                    type="button"
-                    className={`${styles.settingsAction} ${styles.settingsActionSecondary}`}
-                    onClick={previewDailyReminder}
-                  >
-                    Test now
-                  </button>
-                </div>
-              </section>
+                  <label className={styles.timeField}>
+                    <span>Reminder time</span>
+                    <input
+                      type="time"
+                      value={notificationTime}
+                      onChange={(event) => {
+                        setNotificationTime(event.target.value);
+                        setNotificationLastSentDate("");
+                        notificationLastSentDateRef.current = "";
+                      }}
+                    />
+                  </label>
 
-              <button
-                type="button"
-                className={styles.settingsLogout}
-                onClick={logout}
-                disabled={loggingOut}
-              >
-                {loggingOut ? "Logging out..." : "Log out"}
-              </button>
+                  <div className={styles.notificationStatus}>
+                    {notificationStatus}
+                  </div>
+
+                  <div className={styles.notificationActions}>
+                    <button
+                      type="button"
+                      className={styles.settingsAction}
+                      onClick={enableDailyReminder}
+                    >
+                      {notificationEnabled ? "Update reminder" : "Set reminder"}
+                    </button>
+                    <button
+                      type="button"
+                      className={`${styles.settingsAction} ${styles.settingsActionSecondary}`}
+                      onClick={previewDailyReminder}
+                    >
+                      Test now
+                    </button>
+                  </div>
+                </section>
+
+                <button
+                  type="button"
+                  className={styles.settingsLogout}
+                  onClick={logout}
+                  disabled={loggingOut}
+                >
+                  {loggingOut ? "Logging out..." : "Log out"}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* MONTH NAV */}
-      <div className={styles.monthNav}>
-        <div className={styles.monthLeft}>
-          <button className={styles.monthBtn} onClick={() => changeMonth(-1)}>
-            ‹
-          </button>
-          <h2 className={styles.monthTitle}>
-            {MONTHS[viewMonth]} <span>{viewYear}</span>
-          </h2>
-          <button className={styles.monthBtn} onClick={() => changeMonth(1)}>
-            ›
-          </button>
-        </div>
-        <div className={styles.progressRow}>
-          <span className={styles.overallLabel}>Month completion</span>
-          <div className={styles.overallBar}>
-            <div
-              className={styles.overallFill}
-              style={{ width: `${overallPct()}%` }}
-            />
-          </div>
-          <span className={styles.overallPct}>{overallPct()}%</span>
-        </div>
-      </div>
-
-      {/* ANALYSIS CARDS */}
-      <div className={styles.analysisGrid}>
-        {[
-          { icon: "🏆", value: `${overallPct()}%`, label: "Monthly Progress" },
-          { icon: "🔥", value: totalDoneMonth(), label: "Habits Completed" },
-          { icon: "⭐", value: perfectDays(), label: "Perfect Days" },
-          {
-            icon: "📅",
-            value: isCurrentMonth ? now.getDate() : days,
-            label: "Days Tracked",
-          },
-          { icon: "🎯", value: habits.length, label: "Total Habits" },
-          {
-            icon: "📈",
-            value: `${Math.round(overallPct() / 10)}/10`,
-            label: "Consistency Score",
-          },
-        ].map((c, i) => (
-          <div key={i} className={styles.card}>
-            <div className={styles.cardIcon}>{c.icon}</div>
-            <div className={styles.cardValue}>{c.value}</div>
-            <div className={styles.cardLabel}>{c.label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* HABIT GRID */}
-      <div className={styles.sectionHeader}>
-        <div className={styles.sectionTitle}>Daily Tracker</div>
-        <button
-          type="button"
-          className={`${styles.pinToggle} ${pinTaskColumn ? styles.pinToggleActive : ""}`}
-          aria-pressed={pinTaskColumn}
-          onClick={() => setPinTaskColumn((prev) => !prev)}
-        >
-          {pinTaskColumn ? "Pinned Left" : "Scroll With Grid"}
-        </button>
-      </div>
-      <div className={styles.gridScroll}>
-        {loading ? (
-          renderTrackerSkeleton()
-        ) : habits.length === 0 ? (
-          <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>🌱</div>
-            <p>
-              No habits yet. Create your first one below or load the starter
-              set.
-            </p>
-            <button
-              className={styles.seedBtn}
-              onClick={seedDefaults}
-              disabled={seeding}
-            >
-              {seeding ? "Loading..." : "Load Starter Habits"}
+        {/* MONTH NAV */}
+        <div className={styles.monthNav}>
+          <div className={styles.monthLeft}>
+            <button className={styles.monthBtn} onClick={() => changeMonth(-1)}>
+              ‹
+            </button>
+            <h2 className={styles.monthTitle}>
+              {MONTHS[viewMonth]} <span>{viewYear}</span>
+            </h2>
+            <button className={styles.monthBtn} onClick={() => changeMonth(1)}>
+              ›
             </button>
           </div>
-        ) : pinTaskColumn ? (
-          <div className={styles.pinnedGridShell}>
-            <div
-              className={styles.pinnedTaskColumn}
-              style={{
-                gridTemplateRows: `var(--tracker-header-row) repeat(${habits.length}, var(--tracker-habit-row)) var(--tracker-summary-row)`,
-              }}
-            >
+          <div className={styles.progressRow}>
+            <span className={styles.overallLabel}>Month completion</span>
+            <div className={styles.overallBar}>
               <div
-                className={[styles.ghLabel, styles.habitHeaderCell].join(" ")}
-              >
-                Habit
-              </div>
-
-              {habits.map((h, hi) => (
-                <HabitNameCell
-                  key={`task-${h._id}`}
-                  habit={h}
-                  index={hi}
-                  animationDelay={`${hi * 0.04}s`}
-                  dragDisabled={
-                    savingHabitOrder ||
-                    Boolean(renamingHabitId) ||
-                    editingHabitId === h._id
-                  }
-                  isDraggingHabit={draggingHabitId === h._id}
-                  onBeginRename={beginRenameHabit}
-                  onDragStart={startHabitDrag}
-                  onDragEnd={finishHabitDrag}
-                  onMoveHabit={moveHabit}
-                >
-                  {renderHabitNameContent(h)}
-                </HabitNameCell>
-              ))}
-
-              <div className={styles.sumLabel}>Daily %</div>
+                className={styles.overallFill}
+                style={{ width: `${overallPct()}%` }}
+              />
             </div>
+            <span className={styles.overallPct}>{overallPct()}%</span>
+          </div>
+        </div>
 
-            <div className={styles.dateGridScroll}>
+        {/* ANALYSIS CARDS */}
+        <div className={styles.analysisGrid}>
+          {[
+            {
+              icon: "🏆",
+              value: `${overallPct()}%`,
+              label: "Monthly Progress",
+            },
+            { icon: "🔥", value: totalDoneMonth(), label: "Habits Completed" },
+            { icon: "⭐", value: perfectDays(), label: "Perfect Days" },
+            {
+              icon: "📅",
+              value: isCurrentMonth ? now.getDate() : days,
+              label: "Days Tracked",
+            },
+            { icon: "🎯", value: habits.length, label: "Total Habits" },
+            {
+              icon: "📈",
+              value: `${Math.round(overallPct() / 10)}/10`,
+              label: "Consistency Score",
+            },
+          ].map((c, i) => (
+            <div key={i} className={styles.card}>
+              <div className={styles.cardIcon}>{c.icon}</div>
+              <div className={styles.cardValue}>{c.value}</div>
+              <div className={styles.cardLabel}>{c.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* HABIT GRID */}
+        <div className={styles.sectionHeader}>
+          <div className={styles.sectionTitle}>Daily Tracker</div>
+          <button
+            type="button"
+            className={`${styles.pinToggle} ${pinTaskColumn ? styles.pinToggleActive : ""}`}
+            aria-pressed={pinTaskColumn}
+            onClick={() => setPinTaskColumn((prev) => !prev)}
+          >
+            {pinTaskColumn ? "Pinned Left" : "Scroll With Grid"}
+          </button>
+        </div>
+        <div className={styles.gridScroll} ref={trackerScrollRef}>
+          {loading ? (
+            renderTrackerSkeleton()
+          ) : habits.length === 0 ? (
+            <div className={styles.emptyState}>
+              <div className={styles.emptyIcon}>🌱</div>
+              <p>
+                No habits yet. Create your first one below or load the starter
+                set.
+              </p>
+              <button
+                className={styles.seedBtn}
+                onClick={seedDefaults}
+                disabled={seeding}
+              >
+                {seeding ? "Loading..." : "Load Starter Habits"}
+              </button>
+            </div>
+          ) : pinTaskColumn ? (
+            <div className={styles.pinnedGridShell}>
               <div
-                className={styles.dateGrid}
+                className={styles.pinnedTaskColumn}
                 style={{
-                  gridTemplateColumns: `repeat(${days}, minmax(28px,1fr))`,
                   gridTemplateRows: `var(--tracker-header-row) repeat(${habits.length}, var(--tracker-habit-row)) var(--tracker-summary-row)`,
                 }}
               >
-                {Array.from({ length: days }, (_, i) => i + 1).map((d) => (
-                  <div
-                    key={d}
-                    className={`${styles.ghLabel} ${isCurrentMonth && d === now.getDate() ? styles.todayLabel : ""}`}
+                <div
+                  className={[styles.ghLabel, styles.habitHeaderCell].join(" ")}
+                >
+                  Habit
+                </div>
+
+                {habits.map((h, hi) => (
+                  <HabitNameCell
+                    key={`task-${h._id}`}
+                    habit={h}
+                    index={hi}
+                    animationDelay={`${hi * 0.04}s`}
+                    dragDisabled={
+                      savingHabitOrder ||
+                      Boolean(renamingHabitId) ||
+                      editingHabitId === h._id
+                    }
+                    isDraggingHabit={draggingHabitId === h._id}
+                    onBeginRename={beginRenameHabit}
+                    onDragStart={startHabitDrag}
+                    onDragEnd={finishHabitDrag}
+                    onMoveHabit={moveHabit}
                   >
-                    {d}
-                  </div>
+                    {renderHabitNameContent(h)}
+                  </HabitNameCell>
                 ))}
 
-                {habits.map((h) =>
-                  Array.from({ length: days }, (_, i) => i + 1).map((d) =>
-                    renderDayCell(h, d),
-                  ),
-                )}
-
-                {Array.from({ length: days }, (_, i) => i + 1).map((d) => {
-                  const pct = dayPct(d);
-                  return (
-                    <div
-                      key={`sum-${d}`}
-                      className={styles.sumCell}
-                      style={daySummaryStyle(pct)}
-                    >
-                      {pct > 0 ? `${Math.round(pct * 100)}%` : ""}
-                    </div>
-                  );
-                })}
+                <div className={styles.sumLabel}>Daily %</div>
               </div>
-            </div>
-          </div>
-        ) : (
-          <div
-            className={styles.innerGrid}
-            style={{
-              gridTemplateColumns: `220px repeat(${days}, minmax(28px,1fr))`,
-              gridTemplateRows: `var(--tracker-header-row) repeat(${habits.length}, var(--tracker-habit-row)) var(--tracker-summary-row)`,
-            }}
-          >
-            {/* Header */}
-            <div
-              className={[
-                styles.ghLabel,
-                styles.habitHeaderCell,
-                pinTaskColumn ? styles.stickyFirstCol : "",
-              ].join(" ")}
-            >
-              Habit
-            </div>
-            {Array.from({ length: days }, (_, i) => i + 1).map((d) => (
-              <div
-                key={d}
-                className={`${styles.ghLabel} ${isCurrentMonth && d === now.getDate() ? styles.todayLabel : ""}`}
-              >
-                {d}
-              </div>
-            ))}
 
-            {/* Habit rows */}
-            {habits.map((h, hi) => (
-              <div key={h._id} className={styles.rowGroup}>
-                <HabitNameCell
-                  habit={h}
-                  index={hi}
-                  animationDelay={`${hi * 0.04}s`}
-                  dragDisabled={
-                    savingHabitOrder ||
-                    Boolean(renamingHabitId) ||
-                    editingHabitId === h._id
-                  }
-                  isDraggingHabit={draggingHabitId === h._id}
-                  onBeginRename={beginRenameHabit}
-                  onDragStart={startHabitDrag}
-                  onDragEnd={finishHabitDrag}
-                  onMoveHabit={moveHabit}
-                >
-                  {renderHabitNameContent(h)}
-                </HabitNameCell>
-                {Array.from({ length: days }, (_, i) => i + 1).map((d) =>
-                  renderDayCell(h, d),
-                )}
-              </div>
-            ))}
-
-            {/* Summary row */}
-            <div
-              className={`${styles.sumLabel} ${pinTaskColumn ? styles.stickyFirstCol : ""}`}
-            >
-              Daily %
-            </div>
-            {Array.from({ length: days }, (_, i) => i + 1).map((d) => {
-              const pct = dayPct(d);
-              return (
+              <div className={styles.dateGridScroll} ref={dateGridScrollRef}>
                 <div
-                  key={`sum-${d}`}
-                  className={styles.sumCell}
-                  style={daySummaryStyle(pct)}
+                  className={styles.dateGrid}
+                  ref={dateGridRef}
+                  style={{
+                    gridTemplateColumns: `repeat(${days}, minmax(28px,1fr))`,
+                    gridTemplateRows: `var(--tracker-header-row) repeat(${habits.length}, var(--tracker-habit-row)) var(--tracker-summary-row)`,
+                  }}
                 >
-                  {pct > 0 ? `${Math.round(pct * 100)}%` : ""}
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+                  {Array.from({ length: days }, (_, i) => i + 1).map((d) => (
+                    <div
+                      key={d}
+                      className={`${styles.ghLabel} ${isCurrentMonth && d === now.getDate() ? styles.todayLabel : ""}`}
+                    >
+                      {d}
+                    </div>
+                  ))}
 
-      {/* STREAKS */}
-      {loading ? (
+                  {habits.map((h) =>
+                    Array.from({ length: days }, (_, i) => i + 1).map((d) =>
+                      renderDayCell(h, d),
+                    ),
+                  )}
+
+                  {Array.from({ length: days }, (_, i) => i + 1).map((d) => {
+                    const pct = dayPct(d);
+                    return (
+                      <div
+                        key={`sum-${d}`}
+                        className={styles.sumCell}
+                        style={daySummaryStyle(pct)}
+                      >
+                        {pct > 0 ? `${Math.round(pct * 100)}%` : ""}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div
+              className={styles.innerGrid}
+              ref={innerGridRef}
+              style={{
+                gridTemplateColumns: `220px repeat(${days}, minmax(28px,1fr))`,
+                gridTemplateRows: `var(--tracker-header-row) repeat(${habits.length}, var(--tracker-habit-row)) var(--tracker-summary-row)`,
+              }}
+            >
+              {/* Header */}
+              <div
+                className={[
+                  styles.ghLabel,
+                  styles.habitHeaderCell,
+                  pinTaskColumn ? styles.stickyFirstCol : "",
+                ].join(" ")}
+              >
+                Habit
+              </div>
+              {Array.from({ length: days }, (_, i) => i + 1).map((d) => (
+                <div
+                  key={d}
+                  className={`${styles.ghLabel} ${isCurrentMonth && d === now.getDate() ? styles.todayLabel : ""}`}
+                >
+                  {d}
+                </div>
+              ))}
+
+              {/* Habit rows */}
+              {habits.map((h, hi) => (
+                <div key={h._id} className={styles.rowGroup}>
+                  <HabitNameCell
+                    habit={h}
+                    index={hi}
+                    animationDelay={`${hi * 0.04}s`}
+                    dragDisabled={
+                      savingHabitOrder ||
+                      Boolean(renamingHabitId) ||
+                      editingHabitId === h._id
+                    }
+                    isDraggingHabit={draggingHabitId === h._id}
+                    onBeginRename={beginRenameHabit}
+                    onDragStart={startHabitDrag}
+                    onDragEnd={finishHabitDrag}
+                    onMoveHabit={moveHabit}
+                  >
+                    {renderHabitNameContent(h)}
+                  </HabitNameCell>
+                  {Array.from({ length: days }, (_, i) => i + 1).map((d) =>
+                    renderDayCell(h, d),
+                  )}
+                </div>
+              ))}
+
+              {/* Summary row */}
+              <div
+                className={`${styles.sumLabel} ${pinTaskColumn ? styles.stickyFirstCol : ""}`}
+              >
+                Daily %
+              </div>
+              {Array.from({ length: days }, (_, i) => i + 1).map((d) => {
+                const pct = dayPct(d);
+                return (
+                  <div
+                    key={`sum-${d}`}
+                    className={styles.sumCell}
+                    style={daySummaryStyle(pct)}
+                  >
+                    {pct > 0 ? `${Math.round(pct * 100)}%` : ""}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* STREAKS : Currently Skipped this section */}
+        {/* {loading ? (
         renderStreaksSkeleton()
       ) : habits.length > 0 && (
         <>
@@ -2802,808 +2920,819 @@ export default function HabitTracker({
             })}
           </div>
         </>
-      )}
+      )} */}
 
-      {/* CHARTS */}
-      {loading ? (
-        renderInsightsSkeleton()
-      ) : habits.length > 0 && (
-        <>
-          <div className={styles.sectionTitle}>Insights</div>
-          <div className={styles.chartGrid}>
-            <div
-              className={`${styles.chartSection} ${styles.dailyChartSection}`}
-            >
-              <div className={styles.chartHeader}>
-                <div className={styles.chartTitle}>
-                  Daily Completion Rate — {MONTHS[viewMonth]} {viewYear}
-                </div>
-                <div className={styles.chartStats}>
-                  <div className={styles.chartStat}>Avg {averageDailyPct}%</div>
-                  <div className={styles.chartStat}>Best {bestDayPct}%</div>
-                </div>
-              </div>
-              <div className={styles.chartPlot}>
-                <div className={styles.chartPlotInner}>
-                  <div className={styles.chartYAxis}>
-                    {dailyYAxisTicks.map((tick) => (
-                      <span key={tick} className={styles.chartYAxisLabel}>
-                        {tick}
-                      </span>
-                    ))}
-                  </div>
-
+        {/* CHARTS */}
+        {loading
+          ? renderInsightsSkeleton()
+          : habits.length > 0 && (
+              <>
+                <div className={styles.sectionTitle}>Insights</div>
+                <div className={styles.chartGrid}>
                   <div
-                    className={styles.chartCanvas}
-                    onMouseLeave={() => setHoveredDailyDay(null)}
+                    className={`${styles.chartSection} ${styles.dailyChartSection}`}
                   >
-                    {hoveredDailyPoint ? (
-                      <div
-                        className={styles.chartTooltip}
-                        style={{
-                          left: `${Math.min(
-                            92,
-                            Math.max(8, (hoveredDailyPoint.x / 1000) * 100),
-                          )}%`,
-                          top: `${Math.max(14, (hoveredDailyPoint.y / 150) * 100 - 6)}%`,
-                        }}
-                      >
-                        <p>Day {hoveredDailyPoint.day}</p>
-                        <p>Done {hoveredDailyPoint.pct}% </p>
+                    <div className={styles.chartHeader}>
+                      <div className={styles.chartTitle}>
+                        Daily Completion Rate — {MONTHS[viewMonth]} {viewYear}
                       </div>
-                    ) : null}
+                      <div className={styles.chartStats}>
+                        <div className={styles.chartStat}>
+                          Avg {averageDailyPct}%
+                        </div>
+                        <div className={styles.chartStat}>
+                          Best {bestDayPct}%
+                        </div>
+                      </div>
+                    </div>
+                    <div className={styles.chartPlot}>
+                      <div className={styles.chartPlotInner}>
+                        <div className={styles.chartYAxis}>
+                          {dailyYAxisTicks.map((tick) => (
+                            <span key={tick} className={styles.chartYAxisLabel}>
+                              {tick}
+                            </span>
+                          ))}
+                        </div>
 
-                    <svg
-                      viewBox="0 0 1000 150"
-                      preserveAspectRatio="none"
-                      width="100%"
-                      height="100%"
-                    >
-                      <defs>
-                        <linearGradient
-                          id="daily-completion-fill"
-                          x1="0"
-                          y1="0"
-                          x2="0"
-                          y2="1"
+                        <div
+                          className={styles.chartCanvas}
+                          onMouseLeave={() => setHoveredDailyDay(null)}
                         >
-                          <stop
-                            offset="0%"
-                            style={{
-                              stopColor: "rgb(var(--accent-rgb))",
-                              stopOpacity: 0.34,
-                            }}
-                          />
-                          <stop
-                            offset="100%"
-                            style={{
-                              stopColor: "rgb(var(--accent-rgb))",
-                              stopOpacity: 0.03,
-                            }}
-                          />
-                        </linearGradient>
-                      </defs>
+                          {hoveredDailyPoint ? (
+                            <div
+                              className={styles.chartTooltip}
+                              style={{
+                                left: `${Math.min(
+                                  92,
+                                  Math.max(
+                                    8,
+                                    (hoveredDailyPoint.x / 1000) * 100,
+                                  ),
+                                )}%`,
+                                top: `${Math.max(14, (hoveredDailyPoint.y / 150) * 100 - 6)}%`,
+                              }}
+                            >
+                              <p>Day {hoveredDailyPoint.day}</p>
+                              <p>Done {hoveredDailyPoint.pct}% </p>
+                            </div>
+                          ) : null}
 
-                      {dailyYAxisTicks.map((tick) => {
-                        const tickRatio = tick / 100;
-                        const y = 14 + (1 - tickRatio) * (150 - 28);
-
-                        return (
-                          <line
-                            key={tick}
-                            x1="14"
-                            x2="986"
-                            y1={y}
-                            y2={y}
-                            className={styles.chartGridLine}
-                          />
-                        );
-                      })}
-
-                      <path
-                        d={dailyChartGeometry.areaD}
-                        fill="url(#daily-completion-fill)"
-                      />
-                      <path
-                        d={dailyChartGeometry.pathD}
-                        fill="none"
-                        style={{ stroke: "rgb(var(--accent-rgb))" }}
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-
-                      {hoveredDailyPoint ? (
-                        <>
-                          <line
-                            x1={hoveredDailyPoint.x}
-                            x2={hoveredDailyPoint.x}
-                            y1="14"
-                            y2="136"
-                            className={styles.chartHoverLine}
-                          />
-                          <circle
-                            cx={hoveredDailyPoint.x}
-                            cy={hoveredDailyPoint.y}
-                            r={5}
-                            className={styles.chartHoverPoint}
-                          />
-                        </>
-                      ) : null}
-
-                      {dailyChartGeometry.points.map((point, index) => {
-                        const leftEdge =
-                          index === 0
-                            ? 14
-                            : (dailyChartGeometry.points[index - 1][0] +
-                                point[0]) /
-                              2;
-                        const rightEdge =
-                          index === dailyChartGeometry.points.length - 1
-                            ? 986
-                            : (point[0] +
-                                dailyChartGeometry.points[index + 1][0]) /
-                              2;
-
-                        return (
-                          <rect
-                            key={`hover-zone-${index + 1}`}
-                            x={leftEdge}
-                            y="14"
-                            width={rightEdge - leftEdge}
-                            height="122"
-                            className={styles.chartHoverZone}
-                            onMouseEnter={() => setHoveredDailyDay(index + 1)}
-                          />
-                        );
-                      })}
-                    </svg>
-                  </div>
-
-                  <div />
-                  <div
-                    className={styles.chartXAxis}
-                    style={{
-                      gridTemplateColumns: `repeat(${days}, minmax(0, 1fr))`,
-                    }}
-                  >
-                    {Array.from({ length: days }, (_, index) => index + 1).map(
-                      (day) => {
-                        // Show every 5th day plus the month-end day, avoiding a 30/31 collision.
-                        const shouldShowLabel =
-                          day === days || (day % 5 === 0 && day + 1 < days);
-
-                        return (
-                          <span
-                            key={day}
-                            className={`${styles.chartXAxisLabel} ${
-                              hoveredDailyDay === day
-                                ? styles.chartXAxisLabelActive
-                                : ""
-                            }`}
-                            onMouseEnter={() => setHoveredDailyDay(day)}
+                          <svg
+                            viewBox="0 0 1000 150"
+                            preserveAspectRatio="none"
+                            width="100%"
+                            height="100%"
                           >
-                            {shouldShowLabel ? day : ""}
-                          </span>
-                        );
-                      },
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+                            <defs>
+                              <linearGradient
+                                id="daily-completion-fill"
+                                x1="0"
+                                y1="0"
+                                x2="0"
+                                y2="1"
+                              >
+                                <stop
+                                  offset="0%"
+                                  style={{
+                                    stopColor: "rgb(var(--accent-rgb))",
+                                    stopOpacity: 0.34,
+                                  }}
+                                />
+                                <stop
+                                  offset="100%"
+                                  style={{
+                                    stopColor: "rgb(var(--accent-rgb))",
+                                    stopOpacity: 0.03,
+                                  }}
+                                />
+                              </linearGradient>
+                            </defs>
 
-            <div className={styles.chartSection}>
-              <div className={styles.chartHeader}>
-                <div className={styles.chartTitle}>
-                  Habit Success Rate — {MONTHS[viewMonth]} {viewYear}
-                </div>
-                <div className={styles.chartStats}>
-                  <div className={styles.chartStat}>{habits.length} habits</div>
-                  <div className={styles.chartStat}>
-                    {totalDoneMonth()} done
-                  </div>
-                </div>
-              </div>
+                            {dailyYAxisTicks.map((tick) => {
+                              const tickRatio = tick / 100;
+                              const y = 14 + (1 - tickRatio) * (150 - 28);
 
-              <div className={styles.habitBars}>
-                {habitPerformance.map((habit) => (
-                  <div key={habit._id} className={styles.habitBarRow}>
-                    <div className={styles.habitBarHeader}>
-                      <div className={styles.habitBarName}>
-                        <span className={styles.habitBarIcon}>
-                          {habit.icon}
-                        </span>
-                        <span className={styles.habitBarLabel}>
-                          {habit.name}
-                        </span>
+                              return (
+                                <line
+                                  key={tick}
+                                  x1="14"
+                                  x2="986"
+                                  y1={y}
+                                  y2={y}
+                                  className={styles.chartGridLine}
+                                />
+                              );
+                            })}
+
+                            <path
+                              d={dailyChartGeometry.areaD}
+                              fill="url(#daily-completion-fill)"
+                            />
+                            <path
+                              d={dailyChartGeometry.pathD}
+                              fill="none"
+                              style={{ stroke: "rgb(var(--accent-rgb))" }}
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+
+                            {hoveredDailyPoint ? (
+                              <>
+                                <line
+                                  x1={hoveredDailyPoint.x}
+                                  x2={hoveredDailyPoint.x}
+                                  y1="14"
+                                  y2="136"
+                                  className={styles.chartHoverLine}
+                                />
+                                <circle
+                                  cx={hoveredDailyPoint.x}
+                                  cy={hoveredDailyPoint.y}
+                                  r={5}
+                                  className={styles.chartHoverPoint}
+                                />
+                              </>
+                            ) : null}
+
+                            {dailyChartGeometry.points.map((point, index) => {
+                              const leftEdge =
+                                index === 0
+                                  ? 14
+                                  : (dailyChartGeometry.points[index - 1][0] +
+                                      point[0]) /
+                                    2;
+                              const rightEdge =
+                                index === dailyChartGeometry.points.length - 1
+                                  ? 986
+                                  : (point[0] +
+                                      dailyChartGeometry.points[index + 1][0]) /
+                                    2;
+
+                              return (
+                                <rect
+                                  key={`hover-zone-${index + 1}`}
+                                  x={leftEdge}
+                                  y="14"
+                                  width={rightEdge - leftEdge}
+                                  height="122"
+                                  className={styles.chartHoverZone}
+                                  onMouseEnter={() =>
+                                    setHoveredDailyDay(index + 1)
+                                  }
+                                />
+                              );
+                            })}
+                          </svg>
+                        </div>
+
+                        <div />
+                        <div
+                          className={styles.chartXAxis}
+                          style={{
+                            gridTemplateColumns: `repeat(${days}, minmax(0, 1fr))`,
+                          }}
+                        >
+                          {Array.from(
+                            { length: days },
+                            (_, index) => index + 1,
+                          ).map((day) => {
+                            // Show every 5th day plus the month-end day, avoiding a 30/31 collision.
+                            const shouldShowLabel =
+                              day === days || (day % 5 === 0 && day + 1 < days);
+
+                            return (
+                              <span
+                                key={day}
+                                className={`${styles.chartXAxisLabel} ${
+                                  hoveredDailyDay === day
+                                    ? styles.chartXAxisLabelActive
+                                    : ""
+                                }`}
+                                onMouseEnter={() => setHoveredDailyDay(day)}
+                              >
+                                {shouldShowLabel ? day : ""}
+                              </span>
+                            );
+                          })}
+                        </div>
                       </div>
-                      <div className={styles.habitBarValue}>
-                        {habit.completionPct}%
-                      </div>
-                    </div>
-                    <div className={styles.habitBarTrack}>
-                      <div
-                        className={styles.habitBarFill}
-                        style={{ width: `${habit.completionPct}%` }}
-                      />
-                    </div>
-                    <div className={styles.habitBarMeta}>
-                      <span>
-                        {habit.completed}/{habit.goalDays} days
-                      </span>
-                      <span>{habit.streak} day streak</span>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
+
+                  <div className={styles.chartSection}>
+                    <div className={styles.chartHeader}>
+                      <div className={styles.chartTitle}>
+                        Habit Success Rate — {MONTHS[viewMonth]} {viewYear}
+                      </div>
+                      <div className={styles.chartStats}>
+                        <div className={styles.chartStat}>
+                          {habits.length} habits
+                        </div>
+                        <div className={styles.chartStat}>
+                          {totalDoneMonth()} done
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={styles.habitBars}>
+                      {habitPerformance.map((habit) => (
+                        <div key={habit._id} className={styles.habitBarRow}>
+                          <div className={styles.habitBarHeader}>
+                            <div className={styles.habitBarName}>
+                              <span className={styles.habitBarIcon}>
+                                {habit.icon}
+                              </span>
+                              <span className={styles.habitBarLabel}>
+                                {habit.name}
+                              </span>
+                            </div>
+                            <div className={styles.habitBarValue}>
+                              {habit.completionPct}%
+                            </div>
+                          </div>
+                          <div className={styles.habitBarTrack}>
+                            <div
+                              className={styles.habitBarFill}
+                              style={{ width: `${habit.completionPct}%` }}
+                            />
+                          </div>
+                          <div className={styles.habitBarMeta}>
+                            <span>
+                              {habit.completed}/{habit.goalDays} days
+                            </span>
+                            <span>{habit.streak} day streak</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+        {/* MANAGE HABITS */}
+        <div className={styles.manageSection}>
+          <div className={styles.manageTitle}>Manage Habits</div>
+          <div className={styles.addHabit}>
+            <input
+              className={styles.iconInput}
+              value={newIcon}
+              onChange={(e) => setNewIcon(e.target.value)}
+              placeholder="🎯"
+              maxLength={2}
+              disabled={addingHabit}
+            />
+            <input
+              className={styles.addInput}
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              placeholder="Add a new habit…"
+              minLength={HABIT_NAME_MIN_LENGTH}
+              maxLength={HABIT_NAME_MAX_LENGTH}
+              onKeyDown={(e) => e.key === "Enter" && addHabit()}
+              disabled={addingHabit}
+            />
+            <button
+              type="button"
+              className={styles.addBtn}
+              onClick={addHabit}
+              disabled={addingHabit}
+            >
+              {addingHabit ? (
+                <>
+                  <ClipLoader
+                    size={14}
+                    color={loaderColor}
+                    loading
+                    aria-label="Adding habit"
+                  />
+                  Adding...
+                </>
+              ) : (
+                "+ Add"
+              )}
+            </button>
           </div>
-        </>
-      )}
+          {habits.length === 0 && (
+            <button
+              className={styles.seedBtn}
+              style={{ marginTop: 12 }}
+              onClick={seedDefaults}
+              disabled={seeding}
+            >
+              {seeding ? "Loading..." : "Load Starter Habits"}
+            </button>
+          )}
+        </div>
 
-      {/* MANAGE HABITS */}
-      <div className={styles.manageSection}>
-        <div className={styles.manageTitle}>Manage Habits</div>
-        <div className={styles.addHabit}>
-          <input
-            className={styles.iconInput}
-            value={newIcon}
-            onChange={(e) => setNewIcon(e.target.value)}
-            placeholder="🎯"
-            maxLength={2}
-            disabled={addingHabit}
-          />
-          <input
-            className={styles.addInput}
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            placeholder="Add a new habit…"
-            minLength={HABIT_NAME_MIN_LENGTH}
-            maxLength={HABIT_NAME_MAX_LENGTH}
-            onKeyDown={(e) => e.key === "Enter" && addHabit()}
-            disabled={addingHabit}
-          />
+        <div className={styles.archiveFooter}>
           <button
             type="button"
-            className={styles.addBtn}
-            onClick={addHabit}
-            disabled={addingHabit}
+            className={styles.deletedHabitsBtn}
+            onClick={openHabitArchive}
           >
-            {addingHabit ? (
-              <>
-                <ClipLoader
-                  size={14}
-                  color={loaderColor}
-                  loading
-                  aria-label="Adding habit"
-                />
-                Adding...
-              </>
-            ) : (
-              "+ Add"
-            )}
+            All Habits
           </button>
         </div>
-        {habits.length === 0 && (
-          <button
-            className={styles.seedBtn}
-            style={{ marginTop: 12 }}
-            onClick={seedDefaults}
-            disabled={seeding}
-          >
-            {seeding ? "Loading..." : "Load Starter Habits"}
-          </button>
-        )}
-      </div>
 
-      <div className={styles.archiveFooter}>
-        <button
-          type="button"
-          className={styles.deletedHabitsBtn}
-          onClick={openHabitArchive}
-        >
-          All Habits
-        </button>
-      </div>
-
-      {archiveOpen && (
-        <div className={styles.modalBackdrop} onClick={closeHabitArchive}>
-          <div
-            className={styles.archiveModal}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="habit-archive-title"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className={styles.archiveHeader}>
-              <div>
-                <div className={styles.archiveEyebrow}>Habit archive</div>
-                <h3 id="habit-archive-title" className={styles.archiveTitle}>
-                  All Habits
-                </h3>
+        {archiveOpen && (
+          <div className={styles.modalBackdrop} onClick={closeHabitArchive}>
+            <div
+              className={styles.archiveModal}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="habit-archive-title"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className={styles.archiveHeader}>
+                <div>
+                  <div className={styles.archiveEyebrow}>Habit archive</div>
+                  <h3 id="habit-archive-title" className={styles.archiveTitle}>
+                    All Habits
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  className={styles.archiveClose}
+                  onClick={closeHabitArchive}
+                  disabled={Boolean(archiveActionId)}
+                  aria-label="Close all habits"
+                >
+                  ×
+                </button>
               </div>
-              <button
-                type="button"
-                className={styles.archiveClose}
-                onClick={closeHabitArchive}
-                disabled={Boolean(archiveActionId)}
-                aria-label="Close all habits"
-              >
-                ×
-              </button>
-            </div>
 
-            {archiveLoading ? (
-              <div className={styles.archiveLoader}>
-                <ClipLoader
-                  size={28}
-                  color={loaderColor}
-                  loading
-                  aria-label="Loading all habits"
-                />
-              </div>
-            ) : (
-              <div className={styles.archiveBody}>
-                <section className={styles.archiveGroup}>
-                  <div className={styles.archiveGroupTitle}>
-                    <span>Current Habits</span>
-                    <span>{activeArchiveHabits.length}</span>
-                  </div>
-                  <div className={styles.archiveList}>
-                    {activeArchiveHabits.length > 0 ? (
-                      activeArchiveHabits.map((habit) => {
-                        const isEditingDetails =
-                          editingHabitId === habit._id &&
-                          editingHabitIconId === habit._id;
-                        const isSavingDetails =
-                          renamingHabitId === habit._id ||
-                          updatingHabitIconId === habit._id;
-                        const anotherHabitIsBusy =
-                          (Boolean(renamingHabitId) &&
-                            renamingHabitId !== habit._id) ||
-                          (Boolean(updatingHabitIconId) &&
-                            updatingHabitIconId !== habit._id);
+              {archiveLoading ? (
+                <div className={styles.archiveLoader}>
+                  <ClipLoader
+                    size={28}
+                    color={loaderColor}
+                    loading
+                    aria-label="Loading all habits"
+                  />
+                </div>
+              ) : (
+                <div className={styles.archiveBody}>
+                  <section className={styles.archiveGroup}>
+                    <div className={styles.archiveGroupTitle}>
+                      <span>Current Habits</span>
+                      <span>{activeArchiveHabits.length}</span>
+                    </div>
+                    <div className={styles.archiveList}>
+                      {activeArchiveHabits.length > 0 ? (
+                        activeArchiveHabits.map((habit) => {
+                          const isEditingDetails =
+                            editingHabitId === habit._id &&
+                            editingHabitIconId === habit._id;
+                          const isSavingDetails =
+                            renamingHabitId === habit._id ||
+                            updatingHabitIconId === habit._id;
+                          const anotherHabitIsBusy =
+                            (Boolean(renamingHabitId) &&
+                              renamingHabitId !== habit._id) ||
+                            (Boolean(updatingHabitIconId) &&
+                              updatingHabitIconId !== habit._id);
 
-                        return (
+                          return (
+                            <div
+                              key={habit._id}
+                              className={`${styles.archiveItem} ${styles.archiveItemCurrent}`}
+                            >
+                              <div className={styles.archiveHabitName}>
+                                {isEditingDetails ? (
+                                  <input
+                                    className={styles.archiveIconInput}
+                                    value={editingHabitIcon}
+                                    onChange={(event) =>
+                                      setEditingHabitIcon(event.target.value)
+                                    }
+                                    onKeyDown={(event) => {
+                                      if (event.key === "Enter") {
+                                        void saveEditedHabitDetails(habit._id);
+                                      }
+
+                                      if (event.key === "Escape") {
+                                        event.preventDefault();
+                                        cancelEditHabitDetails();
+                                      }
+                                    }}
+                                    maxLength={4}
+                                    disabled={isSavingDetails}
+                                    aria-label={`Change ${habit.name} icon`}
+                                    autoFocus
+                                  />
+                                ) : (
+                                  <span className={styles.archiveIcon}>
+                                    {habit.icon}
+                                  </span>
+                                )}
+                                {isEditingDetails ? (
+                                  <input
+                                    className={styles.archiveNameInput}
+                                    value={editingHabitName}
+                                    onChange={(event) => {
+                                      setEditingHabitName(event.target.value);
+                                      setRenameHadDuplicateError(false);
+                                    }}
+                                    onKeyDown={(event) => {
+                                      if (event.key === "Enter") {
+                                        void saveEditedHabitDetails(habit._id);
+                                      }
+
+                                      if (event.key === "Escape") {
+                                        event.preventDefault();
+                                        cancelEditHabitDetails();
+                                      }
+                                    }}
+                                    minLength={HABIT_NAME_MIN_LENGTH}
+                                    maxLength={HABIT_NAME_MAX_LENGTH}
+                                    disabled={isSavingDetails}
+                                    aria-label={`Rename ${habit.name}`}
+                                  />
+                                ) : (
+                                  <span>{habit.name}</span>
+                                )}
+                              </div>
+                              <div
+                                className={`${styles.archiveActions} ${styles.archiveCurrentActions}`}
+                              >
+                                <button
+                                  type="button"
+                                  className={`${styles.archiveActionBtn} ${styles.archiveIconActionBtn} ${styles.archiveEditBtn}`}
+                                  onClick={() => {
+                                    if (isEditingDetails) {
+                                      void saveEditedHabitDetails(habit._id);
+                                    } else {
+                                      beginEditHabitDetails(habit);
+                                    }
+                                  }}
+                                  disabled={
+                                    isSavingDetails || anotherHabitIsBusy
+                                  }
+                                  aria-label={
+                                    isEditingDetails
+                                      ? `Save ${habit.name}`
+                                      : `Edit ${habit.name}`
+                                  }
+                                >
+                                  {isEditingDetails ? "✓" : "✎"}
+                                </button>
+                                <button
+                                  type="button"
+                                  className={`${styles.archiveActionBtn} ${styles.archiveIconActionBtn} ${styles.archivePermanentBtn}`}
+                                  onClick={() =>
+                                    requestRemoveHabit(habit._id, habit.name)
+                                  }
+                                  disabled={
+                                    Boolean(removingHabitId) ||
+                                    isEditingDetails ||
+                                    anotherHabitIsBusy
+                                  }
+                                  aria-label={`Delete ${habit.name}`}
+                                >
+                                  ×
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <div className={styles.archiveEmpty}>
+                          No current habits
+                        </div>
+                      )}
+                    </div>
+                  </section>
+
+                  <section className={styles.archiveGroup}>
+                    <div className={styles.archiveGroupTitle}>
+                      <span>Deleted Habits</span>
+                      <span>{deletedArchiveHabits.length}</span>
+                    </div>
+                    <div className={styles.archiveList}>
+                      {deletedArchiveHabits.length > 0 ? (
+                        deletedArchiveHabits.map((habit) => (
                           <div
                             key={habit._id}
-                            className={`${styles.archiveItem} ${styles.archiveItemCurrent}`}
+                            className={`${styles.archiveItem} ${styles.archiveItemDeleted}`}
                           >
-                          <div className={styles.archiveHabitName}>
-                            {isEditingDetails ? (
-                              <input
-                                className={styles.archiveIconInput}
-                                value={editingHabitIcon}
-                                onChange={(event) =>
-                                  setEditingHabitIcon(event.target.value)
-                                }
-                                onKeyDown={(event) => {
-                                  if (event.key === "Enter") {
-                                    void saveEditedHabitDetails(habit._id);
-                                  }
-
-                                  if (event.key === "Escape") {
-                                    event.preventDefault();
-                                    cancelEditHabitDetails();
-                                  }
-                                }}
-                                maxLength={4}
-                                disabled={
-                                  isSavingDetails
-                                }
-                                aria-label={`Change ${habit.name} icon`}
-                                autoFocus
-                              />
-                            ) : (
+                            <div className={styles.archiveHabitName}>
                               <span className={styles.archiveIcon}>
                                 {habit.icon}
                               </span>
-                            )}
-                            {isEditingDetails ? (
-                              <input
-                                className={styles.archiveNameInput}
-                                value={editingHabitName}
-                                onChange={(event) => {
-                                  setEditingHabitName(event.target.value);
-                                  setRenameHadDuplicateError(false);
-                                }}
-                                onKeyDown={(event) => {
-                                  if (event.key === "Enter") {
-                                    void saveEditedHabitDetails(habit._id);
-                                  }
-
-                                  if (event.key === "Escape") {
-                                    event.preventDefault();
-                                    cancelEditHabitDetails();
-                                  }
-                                }}
-                                minLength={HABIT_NAME_MIN_LENGTH}
-                                maxLength={HABIT_NAME_MAX_LENGTH}
-                                disabled={
-                                  isSavingDetails
-                                }
-                                aria-label={`Rename ${habit.name}`}
-                              />
-                            ) : (
                               <span>{habit.name}</span>
-                            )}
-                          </div>
-                          <div
-                            className={`${styles.archiveActions} ${styles.archiveCurrentActions}`}
-                          >
-                            <button
-                              type="button"
-                              className={`${styles.archiveActionBtn} ${styles.archiveIconActionBtn} ${styles.archiveEditBtn}`}
-                              onClick={() => {
-                                if (isEditingDetails) {
-                                  void saveEditedHabitDetails(habit._id);
-                                } else {
-                                  beginEditHabitDetails(habit);
+                            </div>
+                            <div className={styles.archiveActions}>
+                              <button
+                                type="button"
+                                className={`${styles.archiveActionBtn} ${styles.archiveRestoreBtn}`}
+                                onClick={() =>
+                                  requestRestoreHabit(habit._id, habit.name)
                                 }
-                              }}
-                              disabled={
-                                isSavingDetails || anotherHabitIsBusy
-                              }
-                              aria-label={
-                                isEditingDetails
-                                  ? `Save ${habit.name}`
-                                  : `Edit ${habit.name}`
-                              }
-                            >
-                              {isEditingDetails ? "✓" : "✎"}
-                            </button>
-                            <button
-                              type="button"
-                              className={`${styles.archiveActionBtn} ${styles.archiveIconActionBtn} ${styles.archivePermanentBtn}`}
-                              onClick={() =>
-                                requestRemoveHabit(habit._id, habit.name)
-                              }
-                              disabled={
-                                Boolean(removingHabitId) ||
-                                isEditingDetails ||
-                                anotherHabitIsBusy
-                              }
-                              aria-label={`Delete ${habit.name}`}
-                            >
-                              ×
-                            </button>
+                                disabled={Boolean(archiveActionId)}
+                              >
+                                {archiveActionId === habit._id && restoreTarget
+                                  ? "Restoring..."
+                                  : "Restore"}
+                              </button>
+                              <button
+                                type="button"
+                                className={`${styles.archiveActionBtn} ${styles.archivePermanentBtn}`}
+                                onClick={() =>
+                                  requestPermanentDeleteHabit(
+                                    habit._id,
+                                    habit.name,
+                                  )
+                                }
+                                disabled={Boolean(archiveActionId)}
+                              >
+                                {archiveActionId === habit._id &&
+                                permanentDeleteTarget
+                                  ? "Deleting..."
+                                  : "Permanently delete"}
+                              </button>
+                            </div>
                           </div>
+                        ))
+                      ) : (
+                        <div className={styles.archiveEmpty}>
+                          No deleted habits
                         </div>
-                        );
-                      })
-                    ) : (
-                      <div className={styles.archiveEmpty}>
-                        No current habits
-                      </div>
-                    )}
-                  </div>
-                </section>
-
-                <section className={styles.archiveGroup}>
-                  <div className={styles.archiveGroupTitle}>
-                    <span>Deleted Habits</span>
-                    <span>{deletedArchiveHabits.length}</span>
-                  </div>
-                  <div className={styles.archiveList}>
-                    {deletedArchiveHabits.length > 0 ? (
-                      deletedArchiveHabits.map((habit) => (
-                        <div
-                          key={habit._id}
-                          className={`${styles.archiveItem} ${styles.archiveItemDeleted}`}
-                        >
-                          <div className={styles.archiveHabitName}>
-                            <span className={styles.archiveIcon}>
-                              {habit.icon}
-                            </span>
-                            <span>{habit.name}</span>
-                          </div>
-                          <div className={styles.archiveActions}>
-                            <button
-                              type="button"
-                              className={`${styles.archiveActionBtn} ${styles.archiveRestoreBtn}`}
-                              onClick={() =>
-                                requestRestoreHabit(habit._id, habit.name)
-                              }
-                              disabled={Boolean(archiveActionId)}
-                            >
-                              {archiveActionId === habit._id && restoreTarget
-                                ? "Restoring..."
-                                : "Restore"}
-                            </button>
-                            <button
-                              type="button"
-                              className={`${styles.archiveActionBtn} ${styles.archivePermanentBtn}`}
-                              onClick={() =>
-                                requestPermanentDeleteHabit(
-                                  habit._id,
-                                  habit.name,
-                                )
-                              }
-                              disabled={Boolean(archiveActionId)}
-                            >
-                              {archiveActionId === habit._id &&
-                              permanentDeleteTarget
-                                ? "Deleting..."
-                                : "Permanently delete"}
-                            </button>
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <div className={styles.archiveEmpty}>
-                        No deleted habits
-                      </div>
-                    )}
-                  </div>
-                </section>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {deletedDuplicate && (
-        <div
-          className={`${styles.modalBackdrop} ${styles.confirmBackdrop}`}
-          onClick={closeDeletedDuplicateDialog}
-        >
-          <div
-            className={styles.confirmModal}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="deleted-duplicate-title"
-            aria-describedby="deleted-duplicate-text"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className={styles.confirmEyebrow}>Deleted match found</div>
-            <h3 id="deleted-duplicate-title" className={styles.confirmTitle}>
-              Restore "{deletedDuplicate.habit.name}"?
-            </h3>
-            <p id="deleted-duplicate-text" className={styles.confirmText}>
-              You deleted a habit with this name before. It has about{" "}
-              {deletedDuplicate.logCount} saved{" "}
-              {deletedDuplicate.logCount === 1 ? "log" : "logs"}. Restore it or
-              create a new habit with the same name?
-            </p>
-            <div className={styles.confirmActions}>
-              <button
-                type="button"
-                className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}
-                onClick={closeDeletedDuplicateDialog}
-                disabled={Boolean(duplicateAction)}
-                autoFocus
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}
-                onClick={createNewDuplicateHabit}
-                disabled={Boolean(duplicateAction)}
-              >
-                {duplicateAction === "create" ? (
-                  <>
-                    <ClipLoader
-                      size={14}
-                      color={loaderColor}
-                      loading
-                      aria-label="Creating new habit"
-                    />
-                    Creating...
-                  </>
-                ) : (
-                  "Create new"
-                )}
-              </button>
-              <button
-                type="button"
-                className={`${styles.modalBtn} ${styles.modalBtnRestore}`}
-                onClick={restoreDeletedDuplicate}
-                disabled={Boolean(duplicateAction)}
-              >
-                {duplicateAction === "restore" ? (
-                  <>
-                    <ClipLoader
-                      size={14}
-                      color={loaderColor}
-                      loading
-                      aria-label="Restoring habit"
-                    />
-                    Restoring...
-                  </>
-                ) : (
-                  "Restore previous"
-                )}
-              </button>
+                      )}
+                    </div>
+                  </section>
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {deleteTarget && (
-        <div className={styles.modalBackdrop} onClick={closeDeleteDialog}>
+        {deletedDuplicate && (
           <div
-            className={styles.confirmModal}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="delete-habit-title"
-            aria-describedby="delete-habit-text"
-            onClick={(event) => event.stopPropagation()}
+            className={`${styles.modalBackdrop} ${styles.confirmBackdrop}`}
+            onClick={closeDeletedDuplicateDialog}
           >
-            <div className={styles.confirmEyebrow}>Delete habit</div>
-            <h3 id="delete-habit-title" className={styles.confirmTitle}>
-              Remove "{deleteTarget.name}"?
-            </h3>
-            <p id="delete-habit-text" className={styles.confirmText}>
-              This will move the habit to Deleted Habits. Its saved logs stay
-              available if you restore it.
-            </p>
-            <div className={styles.confirmActions}>
-              <button
-                type="button"
-                className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}
-                onClick={closeDeleteDialog}
-                disabled={Boolean(removingHabitId)}
-                autoFocus
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className={`${styles.modalBtn} ${styles.modalBtnDanger}`}
-                onClick={removeHabit}
-                disabled={Boolean(removingHabitId)}
-              >
-                {removingHabitId === deleteTarget.id ? (
-                  <>
-                    <ClipLoader
-                      size={14}
-                      color={loaderColor}
-                      loading
-                      aria-label="Deleting habit"
-                    />
-                    Deleting...
-                  </>
-                ) : (
-                  "Move to Deleted"
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {restoreTarget && (
-        <div
-          className={`${styles.modalBackdrop} ${styles.confirmBackdrop}`}
-          onClick={closeRestoreDialog}
-        >
-          <div
-            className={styles.confirmModal}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="restore-habit-title"
-            aria-describedby="restore-habit-text"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className={styles.confirmEyebrow}>Restore habit</div>
-            <h3 id="restore-habit-title" className={styles.confirmTitle}>
-              Restore "{restoreTarget.name}"?
-            </h3>
-            <p id="restore-habit-text" className={styles.confirmText}>
-              This habit will return to your active homepage tracker.
-            </p>
-            <div className={styles.confirmActions}>
-              <button
-                type="button"
-                className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}
-                onClick={closeRestoreDialog}
-                disabled={Boolean(archiveActionId)}
-                autoFocus
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className={`${styles.modalBtn} ${styles.modalBtnRestore}`}
-                onClick={restoreHabit}
-                disabled={Boolean(archiveActionId)}
-              >
-                {archiveActionId === restoreTarget.id ? (
-                  <>
-                    <ClipLoader
-                      size={14}
-                      color={loaderColor}
-                      loading
-                      aria-label="Restoring habit"
-                    />
-                    Restoring...
-                  </>
-                ) : (
-                  "Yes, restore"
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {permanentDeleteTarget && (
-        <div
-          className={`${styles.modalBackdrop} ${styles.confirmBackdrop}`}
-          onClick={closePermanentDeleteDialog}
-        >
-          <div
-            className={styles.confirmModal}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="permanent-delete-habit-title"
-            aria-describedby="permanent-delete-habit-text"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className={styles.confirmEyebrow}>Permanently delete</div>
-            <h3
-              id="permanent-delete-habit-title"
-              className={styles.confirmTitle}
+            <div
+              className={styles.confirmModal}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="deleted-duplicate-title"
+              aria-describedby="deleted-duplicate-text"
+              onClick={(event) => event.stopPropagation()}
             >
-              Delete "{permanentDeleteTarget.name}" forever?
-            </h3>
-            <p id="permanent-delete-habit-text" className={styles.confirmText}>
-              This will permanently delete the habit and all of its saved logs
-              from the database.
-            </p>
-            <div className={styles.confirmActions}>
-              <button
-                type="button"
-                className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}
-                onClick={closePermanentDeleteDialog}
-                disabled={Boolean(archiveActionId)}
-                autoFocus
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className={`${styles.modalBtn} ${styles.modalBtnDanger}`}
-                onClick={permanentlyDeleteHabit}
-                disabled={Boolean(archiveActionId)}
-              >
-                {archiveActionId === permanentDeleteTarget.id ? (
-                  <>
-                    <ClipLoader
-                      size={14}
-                      color={loaderColor}
-                      loading
-                      aria-label="Permanently deleting habit"
-                    />
-                    Deleting...
-                  </>
-                ) : (
-                  "Delete forever"
-                )}
-              </button>
+              <div className={styles.confirmEyebrow}>Deleted match found</div>
+              <h3 id="deleted-duplicate-title" className={styles.confirmTitle}>
+                Restore "{deletedDuplicate.habit.name}"?
+              </h3>
+              <p id="deleted-duplicate-text" className={styles.confirmText}>
+                You deleted a habit with this name before. It has about{" "}
+                {deletedDuplicate.logCount} saved{" "}
+                {deletedDuplicate.logCount === 1 ? "log" : "logs"}. Restore it
+                or create a new habit with the same name?
+              </p>
+              <div className={styles.confirmActions}>
+                <button
+                  type="button"
+                  className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}
+                  onClick={closeDeletedDuplicateDialog}
+                  disabled={Boolean(duplicateAction)}
+                  autoFocus
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}
+                  onClick={createNewDuplicateHabit}
+                  disabled={Boolean(duplicateAction)}
+                >
+                  {duplicateAction === "create" ? (
+                    <>
+                      <ClipLoader
+                        size={14}
+                        color={loaderColor}
+                        loading
+                        aria-label="Creating new habit"
+                      />
+                      Creating...
+                    </>
+                  ) : (
+                    "Create new"
+                  )}
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.modalBtn} ${styles.modalBtnRestore}`}
+                  onClick={restoreDeletedDuplicate}
+                  disabled={Boolean(duplicateAction)}
+                >
+                  {duplicateAction === "restore" ? (
+                    <>
+                      <ClipLoader
+                        size={14}
+                        color={loaderColor}
+                        loading
+                        aria-label="Restoring habit"
+                      />
+                      Restoring...
+                    </>
+                  ) : (
+                    "Restore previous"
+                  )}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* TOAST */}
-      <div
-        className={`${styles.toast} ${toast.visible ? styles.toastShow : ""}`}
-        role="status"
-        aria-live="polite"
-      >
-        {toast.loading ? (
-          <ClipLoader
-            size={14}
-            color={loaderColor}
-            loading
-            aria-label="Loading"
-          />
-        ) : null}
-        <span>{toast.msg}</span>
-      </div>
+        {deleteTarget && (
+          <div className={styles.modalBackdrop} onClick={closeDeleteDialog}>
+            <div
+              className={styles.confirmModal}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="delete-habit-title"
+              aria-describedby="delete-habit-text"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className={styles.confirmEyebrow}>Delete habit</div>
+              <h3 id="delete-habit-title" className={styles.confirmTitle}>
+                Remove "{deleteTarget.name}"?
+              </h3>
+              <p id="delete-habit-text" className={styles.confirmText}>
+                This will move the habit to Deleted Habits. Its saved logs stay
+                available if you restore it.
+              </p>
+              <div className={styles.confirmActions}>
+                <button
+                  type="button"
+                  className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}
+                  onClick={closeDeleteDialog}
+                  disabled={Boolean(removingHabitId)}
+                  autoFocus
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.modalBtn} ${styles.modalBtnDanger}`}
+                  onClick={removeHabit}
+                  disabled={Boolean(removingHabitId)}
+                >
+                  {removingHabitId === deleteTarget.id ? (
+                    <>
+                      <ClipLoader
+                        size={14}
+                        color={loaderColor}
+                        loading
+                        aria-label="Deleting habit"
+                      />
+                      Deleting...
+                    </>
+                  ) : (
+                    "Move to Deleted"
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {restoreTarget && (
+          <div
+            className={`${styles.modalBackdrop} ${styles.confirmBackdrop}`}
+            onClick={closeRestoreDialog}
+          >
+            <div
+              className={styles.confirmModal}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="restore-habit-title"
+              aria-describedby="restore-habit-text"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className={styles.confirmEyebrow}>Restore habit</div>
+              <h3 id="restore-habit-title" className={styles.confirmTitle}>
+                Restore "{restoreTarget.name}"?
+              </h3>
+              <p id="restore-habit-text" className={styles.confirmText}>
+                This habit will return to your active homepage tracker.
+              </p>
+              <div className={styles.confirmActions}>
+                <button
+                  type="button"
+                  className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}
+                  onClick={closeRestoreDialog}
+                  disabled={Boolean(archiveActionId)}
+                  autoFocus
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.modalBtn} ${styles.modalBtnRestore}`}
+                  onClick={restoreHabit}
+                  disabled={Boolean(archiveActionId)}
+                >
+                  {archiveActionId === restoreTarget.id ? (
+                    <>
+                      <ClipLoader
+                        size={14}
+                        color={loaderColor}
+                        loading
+                        aria-label="Restoring habit"
+                      />
+                      Restoring...
+                    </>
+                  ) : (
+                    "Yes, restore"
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {permanentDeleteTarget && (
+          <div
+            className={`${styles.modalBackdrop} ${styles.confirmBackdrop}`}
+            onClick={closePermanentDeleteDialog}
+          >
+            <div
+              className={styles.confirmModal}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="permanent-delete-habit-title"
+              aria-describedby="permanent-delete-habit-text"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className={styles.confirmEyebrow}>Permanently delete</div>
+              <h3
+                id="permanent-delete-habit-title"
+                className={styles.confirmTitle}
+              >
+                Delete "{permanentDeleteTarget.name}" forever?
+              </h3>
+              <p
+                id="permanent-delete-habit-text"
+                className={styles.confirmText}
+              >
+                This will permanently delete the habit and all of its saved logs
+                from the database.
+              </p>
+              <div className={styles.confirmActions}>
+                <button
+                  type="button"
+                  className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}
+                  onClick={closePermanentDeleteDialog}
+                  disabled={Boolean(archiveActionId)}
+                  autoFocus
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.modalBtn} ${styles.modalBtnDanger}`}
+                  onClick={permanentlyDeleteHabit}
+                  disabled={Boolean(archiveActionId)}
+                >
+                  {archiveActionId === permanentDeleteTarget.id ? (
+                    <>
+                      <ClipLoader
+                        size={14}
+                        color={loaderColor}
+                        loading
+                        aria-label="Permanently deleting habit"
+                      />
+                      Deleting...
+                    </>
+                  ) : (
+                    "Delete forever"
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TOAST */}
+        <div
+          className={`${styles.toast} ${toast.visible ? styles.toastShow : ""}`}
+          role="status"
+          aria-live="polite"
+        >
+          {toast.loading ? (
+            <ClipLoader
+              size={14}
+              color={loaderColor}
+              loading
+              aria-label="Loading"
+            />
+          ) : null}
+          <span>{toast.msg}</span>
+        </div>
       </div>
     </DndProvider>
   );
