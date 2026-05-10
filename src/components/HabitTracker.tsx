@@ -1822,7 +1822,7 @@ export default function HabitTracker({
     let streak = 0;
     const todayLog = isCurrentMonth ? getLogForDay(habitId, todayDay) : null;
     const startDay =
-      isCurrentMonth && !todayLog && !autoMarkedToday
+      isCurrentMonth && !todayLog?.done && !autoMarkedToday
         ? todayDay - 1
         : isCurrentMonth
           ? todayDay
